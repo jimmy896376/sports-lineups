@@ -509,6 +509,7 @@ function teamCard(team, players, pitcher) {
 function recentResults(team, event, events, side, prediction) {
   const supplied = event.recentForm?.[side] || prediction?.recentForm?.[side];
   if (Array.isArray(supplied) && supplied.length) return supplied.slice(-5);
+  if (sport === 'football' && /^[WDL]{5}$/.test(team.form || '')) return [...team.form];
   const cutoff = Date.parse(event.date);
   return events.filter(candidate => Date.parse(candidate.date) < Math.min(cutoff,Date.now()) && candidate.status?.type?.completed).sort((a,b)=>Date.parse(a.date)-Date.parse(b.date))
     .map(candidate => {

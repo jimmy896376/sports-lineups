@@ -122,7 +122,7 @@ const nhlPlayerKo = {
 };
 // Add Korean spellings after checking Google and Naver results against official club material; use Transfermarkt to confirm player identity. Unverified names stay English.
 const naverKo = {...footballKo,...extraKo,...leagueKo,...nhlPlayerKo,...playerKo};
-const normalizePlayerName = value => String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase();
+const normalizePlayerName = value => String(value||'').replace(/Ł/g,'L').replace(/ł/g,'l').normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase();
 const naverKoNormalized = Object.fromEntries(Object.entries(naverKo).map(([name,korean])=>[normalizePlayerName(name),korean]));
 const koreanPlayerNames = new Set([
   'Son Heung-min','Son Heung Min','Lee Kang-in','Lee Kang In','Kim Min-jae','Kim Min Jae','Hwang Hee-chan','Lee Jae-sung','Hwang Ui-jo','Cho Gue-sung','Jeong Woo-yeong','Jung Woo-young','Oh Hyeon-gyu','Paik Seung-ho','Seol Young-woo','Hong Hyun-seok','Bae Jun-ho','Yang Hyun-jun','Kwon Hyeok-kyu','Kim Ji-soo','Ji So-yun','Cho So-hyun','Casey Phair','Chun Ga-ram','Lee Geum-min','Jang Sel-gi','Kang Chae-rim','Son Hwa-yeon','Lee Min-a','Ryu Hyun-jin','Kim Ha-seong','Lee Jung-hoo','Kim Hye-seong','Choi Ji-man','Park Hyo-jun'

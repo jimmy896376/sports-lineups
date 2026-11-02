@@ -432,12 +432,13 @@ def scrape_khl():
         if not names['home'] or not names['away']:
             continue
         kickoff = datetime.fromtimestamp(game['start_at'] / 1000, timezone.utc).isoformat().replace('+00:00', 'Z')
+        logos = {'home': home.get('image', ''), 'away': away.get('image', '')}
         competitors = [
-            {'homeAway': 'home', 'team': {'id': str(home['id']), 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': str(home['id'])}},
-            {'homeAway': 'away', 'team': {'id': str(away['id']), 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id'])}}
+            {'homeAway': 'home', 'team': {'id': str(home['id']), 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': str(home['id']), 'logo': logos['home']}},
+            {'homeAway': 'away', 'team': {'id': str(away['id']), 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id']), 'logo': logos['away']}}
         ]
         lineups = {'home': recent_starters.get(str(home['id']), []), 'away': recent_starters.get(str(away['id']), [])}
-        prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])},
+        prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
             'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}
         events.append({'event': {'id': str(game['id']), 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
@@ -698,6 +699,9 @@ def post_json(url, values, referer):
 
 
 def scrape_kbo_official():
+    logo_codes = {'LG', 'HH', 'SK', 'SS', 'NC', 'KT', 'LT', 'HT', 'OB', 'WO'}
+    def logo(code):
+        return f'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/emblem/regular/fixed/emblem_{code}.png' if code in logo_codes else ''
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     events = []
     for offset in range(2):
@@ -730,11 +734,11 @@ def scrape_kbo_official():
             kickoff = datetime.strptime(day + game['G_TM'], '%Y%m%d%H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
             names = {'home': game['HOME_NM'], 'away': game['AWAY_NM']}
             competitors = [
-                {'homeAway': 'home', 'team': {'id': game['HOME_ID'], 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': game['HOME_ID']}},
-                {'homeAway': 'away', 'team': {'id': game['AWAY_ID'], 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': game['AWAY_ID']}}
+                {'homeAway': 'home', 'team': {'id': game['HOME_ID'], 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': game['HOME_ID'], 'logo': logo(game['HOME_ID'])}},
+                {'homeAway': 'away', 'team': {'id': game['AWAY_ID'], 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': game['AWAY_ID'], 'logo': logo(game['AWAY_ID'])}}
             ]
             prediction = {'league': 'kbo', 'kickoff': kickoff.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z'), 'names': names,
-                'teams': {'home': game['HOME_ID'], 'away': game['AWAY_ID']}, 'lineups': {'home': home, 'away': away},
+                'teams': {'home': game['HOME_ID'], 'away': game['AWAY_ID']}, 'logos': {'home': logo(game['HOME_ID']), 'away': logo(game['AWAY_ID'])}, 'lineups': {'home': home, 'away': away},
                 'startingPitchers': announced_pitchers(game, {'home': 'B_PIT_P_NM', 'away': 'T_PIT_P_NM'}, referer), 'injuries': {},
                 'statuses': {'home': 'confirmed' if confirmed else 'predicted', 'away': 'confirmed' if confirmed else 'predicted'},
                 'note': 'KBO 공식 당일 타순' if confirmed else 'KBO 공식 최근 선발 타순 기준 예상',
@@ -831,6 +835,14 @@ def scrape_kbl_statgg():
 def scrape_kovo_bkvolley():
     """Build six-player KOVO estimates from the match-linked registered roster."""
     from html.parser import HTMLParser
+    logo_ids = {'SOOP': 'soopers', 'IBK기업은행': 'altos', '정관장': 'redsparks',
+                '흥국생명': 'pinkspiders', 'GS칼텍스': 'kixx', '한국도로공사': 'hipass',
+                '현대건설': 'hillstate', '대한항공': 'jumbos', '현대캐피탈': 'skywalkers',
+                '우리카드': 'wooriwon', 'KB손해보험': 'stars', '한국전력': 'vixtorm',
+                'OK저축은행': 'okman', '삼성화재': 'bluefangs'}
+    def logo(team_name):
+        code = next((value for name, value in logo_ids.items() if name in team_name), '')
+        return f'https://cdn.kovo.co.kr/emblems/{code}.svg' if code else ''
     class Text(HTMLParser):
         def __init__(self):
             super().__init__(); self.value = []
@@ -873,9 +885,10 @@ def scrape_kovo_bkvolley():
             continue
         home, away = [name.strip() for name in pair.groups()]
         kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
+        logos = {'home': logo(home), 'away': logo(away)}
         competitors = [
-            {'homeAway': 'home', 'team': {'id': home, 'displayName': home, 'shortDisplayName': home, 'abbreviation': home}},
-            {'homeAway': 'away', 'team': {'id': away, 'displayName': away, 'shortDisplayName': away, 'abbreviation': away}}
+            {'homeAway': 'home', 'team': {'id': home, 'displayName': home, 'shortDisplayName': home, 'abbreviation': home, 'logo': logos['home']}},
+            {'homeAway': 'away', 'team': {'id': away, 'displayName': away, 'shortDisplayName': away, 'abbreviation': away, 'logo': logos['away']}}
         ]
         url = 'https://bkvolley.kr' + path
         try:
@@ -931,7 +944,7 @@ def scrape_kovo_bkvolley():
             lineups = {'home': estimate(home, away), 'away': estimate(away, home)}
         except Exception:
             lineups = {'home': [], 'away': []}
-        prediction = {'league': 'kovo', 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away},
+        prediction = {'league': 'kovo', 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away}, 'logos': logos,
             'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': '등록 선수 명단과 포지션을 기준으로 구성한 6인 예상 라인업', 'source': url}
         events.append({'event': {'id': path.rsplit('/', 1)[-1], 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})

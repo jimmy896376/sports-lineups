@@ -28,7 +28,7 @@ class StartingPitchers(TestCase):
         class Clock(datetime):
             @classmethod
             def now(cls, tz=None): return cls(2026,10,24,12,tzinfo=ZoneInfo('Asia/Seoul'))
-        game={'LE_ID':1,'SR_ID':0,'SEASON_ID':2026,'G_ID':'game','G_TM':'18:30','HOME_NM':'LG','AWAY_NM':'KT','HOME_ID':'LG','AWAY_ID':'KT','B_PIT_P_NM':'홈투수','T_PIT_P_NM':'원정투수'}
+        game={'LE_ID':1,'SR_ID':0,'SEASON_ID':2026,'G_ID':'game','G_TM':'18:30','HOME_NM':'삼성','AWAY_NM':'KT','HOME_ID':'SS','AWAY_ID':'KT','B_PIT_P_NM':'홈투수','T_PIT_P_NM':'원정투수'}
         def post(url, data, referer):
             if 'GetKboGameList' in url: return {'game':[game] if data['date']=='20261024' else []}
             raise RuntimeError('batting order not available')
@@ -37,6 +37,9 @@ class StartingPitchers(TestCase):
         self.assertEqual(len(rows),1)
         self.assertEqual(rows[0]['prediction']['startingPitchers']['home']['name'],'홈투수')
         self.assertEqual(rows[0]['prediction']['startingPitchers']['away']['name'],'원정투수')
+        self.assertTrue(rows[0]['prediction']['logos']['home'].endswith('/emblem_SS.png'))
+        self.assertTrue(rows[0]['prediction']['logos']['away'].endswith('/emblem_KT.png'))
+        self.assertEqual(rows[0]['event']['competitions'][0]['competitors'][0]['team']['logo'],rows[0]['prediction']['logos']['home'])
         self.assertFalse(rows[0]['confirmed'])
     def test_cpbl_review_is_exact_game_and_never_overwrites_live_pitcher(self):
         names={'home':'味全龍','away':'中信兄弟'}

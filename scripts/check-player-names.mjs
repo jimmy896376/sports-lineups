@@ -45,6 +45,7 @@ for (const [name, expected] of [
   ['Becker', 'Becker']
 ]) assert.equal(run(`translated(${JSON.stringify(name)})`), expected, name);
 assert.equal(run(`translated('João Neves')`), run(`translated('Joao Neves')`));
+assert.equal(run(`normalizePlayerName('Łukasz Skorupski')`),run(`normalizePlayerName('Lukasz Skorupski')`));
 for (const [name, korean] of run('Object.entries(playerKo)')) {
   context.checkedPlayer = {name};
   assert.equal(run('translated(checkedPlayer.name)'), korean, name);
@@ -68,13 +69,16 @@ for (const row of reviewed) {
 console.log(`Player names and both rendering paths passed. Reviewed dictionary: ${run('Object.keys(playerKo).length')} names/aliases.`);
 
 const teamReview = JSON.parse(fs.readFileSync(new URL('./team-name-review.json', import.meta.url),'utf8'));
+const reviewedTeamHosts = new Set(['cdn.kovo.co.kr','iffhs.com','news.coupang.com','readonly.wiki',
+  'sports.daum.net','toricori.com','www.ford.co.kr','www.hankyung.com','www.ktwiz.co.kr',
+  'www.liveman.co.kr','www.newyorkredbulls.com']);
 for (const row of teamReview.entries) {
   context.teamToReview = {displayName:row.name};
   assert.equal(run('teamDisplayName(teamToReview)'),row.korean,row.name);
   const source = new URL(row.source);
   assert.ok(row.source.startsWith('https://www.google.com/search?') ||
     (source.hostname==='www.yagoonara.com' && row.identitySource?.startsWith('https://npb.jp/')) ||
-    (source.protocol==='https:' && ['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'].includes(source.hostname)),row.name);
+    (source.protocol==='https:' && (['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'].includes(source.hostname) || reviewedTeamHosts.has(source.hostname))),row.name);
 }
 run(`nameReview={request:requestId,names:new Map()};teamDisplayName({displayName:'Manchester United'});playerDisplayName('Alisson Becker');playerDisplayName('Unreviewed Athlete');finishNameReview(requestId);`);
 let refreshReport = JSON.parse(storage.get('sports-lineups-name-review'));

@@ -60,6 +60,8 @@ jobs:
         run: node scripts/build-name-catalog.mjs
       - name: Validate player and team rendering
         run: node scripts/check-player-names.mjs --inventory scripts/fixtures/player-name-inventory.json --require-reviewed
+      - name: Audit every currently collected name
+        run: node scripts/check-player-names.mjs --inventory scripts/player-name-live-inventory.json
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -69,6 +71,8 @@ jobs:
             scripts/player-name-auto-review.json
             scripts/player-name-search-state.json
             scripts/player-name-run-report.json
+            scripts/player-name-live-audit.json
+            scripts/team-name-live-audit.json
           retention-days: 7
       - name: Publish the name catalog
         run: |

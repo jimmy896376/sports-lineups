@@ -40,6 +40,11 @@ if (process.argv.includes('--queue')) {
         const url=new URL(s.url), item=new URL(s.wikidataUrl);
         return url.protocol==='https:' && ['en.wikipedia.org','ja.wikipedia.org','zh.wikipedia.org'].includes(url.hostname) && url.pathname.startsWith('/wiki/') && item.protocol==='https:' && item.hostname==='www.wikidata.org' && item.pathname===`/wiki/${s.wikidataItem}` && /^Q[1-9][0-9]*$/.test(s.wikidataItem) && s.koreanLabelMatched && s.englishLabelMatched && s.englishNameMatched && s.sportMatched && (s.exactEnglishTitleMatched || s.teamMatched) && s.contentHash;
       }),'Wikidata label needs exact player and sports biography evidence');
+    } else if(row.method==='namuwiki-team-roster-v1') {
+      assert.ok(row.sources.length===1 && row.sources.every(s=>{
+        const url=new URL(s.url);
+        return url.protocol==='https:' && url.hostname==='namu.moe' && url.pathname.startsWith('/w/') && s.domain==='namu.moe' && s.teamMatched && s.englishNameMatched && s.rowMatched && s.contentHash;
+      }),'NamuWiki roster needs exact team and bilingual player row');
     } else if(row.method==='google-search-result-v1') {
       assert.ok(row.sources.length>=1 && row.sources.every(s=>{
         const url=new URL(s.url);

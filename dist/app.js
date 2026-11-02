@@ -772,7 +772,7 @@ async function loadMajorGames(current,preferFresh=false) {
     }
   } finally {sport=previousSport;league=previousLeague;}
 }
-async function loadGames(preferFresh=false) {
+async function loadGames(preferFresh=true) {
   const current = ++requestId;
   nameReview = {request:current,names:new Map()};
   try {

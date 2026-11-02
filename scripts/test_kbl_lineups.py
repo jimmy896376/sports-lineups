@@ -10,8 +10,8 @@ spec.loader.exec_module(module)
 class KBLProjectedLineups(TestCase):
     def test_current_preview_table_keeps_home_and_away(self):
         def team(name, player):
-            row = '<tr><td><a><span class="flex items-center gap-1.5 whitespace-nowrap font-medium">' + player + '</span></a></td><td>35.3</td></tr>'
-            return '<h3 data-no-section-index="true" class="font-semibold">' + name + '</h3><table><tbody>' + row + '</tbody></table>'
+            row = '<tr><td><a><span class="flex items-center gap-1.5 whitespace-nowrap font-medium">' + player + '</span></a></td>' + '<td>1</td>' * 5 + '<td>35.3</td><td>80.0%</td></tr>'
+            return '<h3 data-no-section-index="true" class="font-semibold">' + name + '</h3><table><thead><tr>' + ''.join('<th>' + col + '</th>' for col in ('선수', '경기', '득점', '리바운드', '어시스트', 'TS%', '출장', '야투%')) + '</tr></thead><tbody class="stats">' + row + '</tbody></table>'
         detail = team('서울 SK', '자밀 워니') + team('수원 KT', '허훈')
         lineups = module.kbl_projected_lineups(detail, ['서울 SK', '수원 KT'])
         self.assertEqual(lineups['home'][0]['name'], '자밀 워니')

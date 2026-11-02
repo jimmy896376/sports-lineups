@@ -95,7 +95,9 @@ def scrape_page(league, code, kind):
         expected = 11 if kind == 'soccer' else 9 if kind == 'mlb' else 5
         if any(len(rosters.get(side, [])) != expected for side in ('home', 'away')):
             continue
-        results.append({'league': league, 'kickoff': kickoff, 'teams': teams, 'names': names, 'lineups': rosters, 'injuries': injuries, 'injuryDetails': injury_details, 'statuses': statuses, 'source': source_url(league, code, kind)})
+        logos = {side: 'https://a.espncdn.com/i/teamlogos/soccer/500/493.png'
+                 for side, name in names.items() if league == 'ucl' and 'Shakhtar' in name}
+        results.append({'league': league, 'kickoff': kickoff, 'teams': teams, 'names': names, 'logos': logos, 'lineups': rosters, 'injuries': injuries, 'injuryDetails': injury_details, 'statuses': statuses, 'source': source_url(league, code, kind)})
     return results
 
 
@@ -749,18 +751,24 @@ def scrape_kbo_official():
 
 
 def kbl_projected_lineups(detail, names):
-    tables = re.findall(r'<h3[^>]*class="font-semibold"[^>]*>([^<]+)</h3>.*?<tbody>(.*?)</tbody>', detail, re.S)
+    tables = re.findall(r'<h3[^>]*class="font-semibold"[^>]*>([^<]+)</h3>.*?<table[^>]*>(.*?)</table>', detail, re.S)
     lineups = {}
     for team_name, table in tables[:2]:
         if team_name.strip() not in names:
             continue
+        header = re.search(r'<thead[^>]*>(.*?)</thead>', table, re.S)
+        columns = [re.sub(r'<[^>]+>', '', cell).strip() for cell in re.findall(r'<th\b[^>]*>(.*?)</th>', header.group(1), re.S)] if header else []
+        minute_column = columns.index('출장') if '출장' in columns else -1
+        body = re.search(r'<tbody[^>]*>(.*?)</tbody>', table, re.S)
+        if not body:
+            continue
         players = []
-        for row in re.findall(r'<tr[^>]*>(.*?)</tr>', table, re.S):
+        for row in re.findall(r'<tr[^>]*>(.*?)</tr>', body.group(1), re.S):
             name_match = re.search(r'<span class="flex items-center gap-1\.5 whitespace-nowrap font-medium">([^<]+)</span>', row)
             cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.S)
-            if not name_match or len(cells) < 2:
+            if not name_match or len(cells) < 2 or minute_column >= len(cells):
                 continue
-            minute_text = re.sub(r'<[^>]+>', '', cells[-1]).strip()
+            minute_text = re.sub(r'<[^>]+>', '', cells[minute_column]).strip()
             try:
                 minutes = float(minute_text)
             except ValueError:

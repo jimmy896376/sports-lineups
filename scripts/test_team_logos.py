@@ -1,4 +1,5 @@
 import importlib.util
+from io import BytesIO
 from datetime import datetime
 from pathlib import Path
 from unittest import TestCase, main
@@ -11,6 +12,19 @@ spec.loader.exec_module(projections)
 
 
 class TeamLogos(TestCase):
+    def test_shakhtar_logo_is_in_legacy_projection(self):
+        def team(side, code, name):
+            players = ''.join(f'<li class="lineup__player"><a title="Player {i}"></a></li>' for i in range(11))
+            return (f'<a class="lineup__team is-{side}"><div class="lineup__abbr">{code}</div></a>'
+                    f'<div class="lineup__mteam is-{side}">{name}</div>'
+                    f'<ul class="lineup__list is-{side}">{players}</ul>')
+        page = ('<div class="lineup is-soccer"><div class="lineup__time">November 3 12:45 PM ET</div>'
+                + team('home', 'DON', 'FC Shakhtar Donetsk') + team('visit', 'LIS', 'Sporting CP'))
+        response = BytesIO(page.encode())
+        with patch('urllib.request.urlopen', return_value=response):
+            row = projections.scrape_page('ucl', 'UCL', 'soccer')[0]
+        self.assertEqual(row['logos']['home'], 'https://a.espncdn.com/i/teamlogos/soccer/500/493.png')
+
     def test_khl_uses_fixture_images(self):
         game = {'event': {'id': 1, 'type_id': 24, 'start_at': 1793635200000,
                           'team_a': {'id': 40, 'name': 'Ak Bars', 'image': 'https://example.com/ak.png'},

@@ -1063,6 +1063,16 @@ def main():
     if not any(status['fresh'] for status in source_status.values()):
         raise SystemExit('No lineup sources refreshed; keeping the current snapshot')
     enrich_injury_details(payload)
+    # Recent results + season/home-road record from ESPN for each match (scripts/recent_form.py).
+    # A failure here never stops the lineup refresh — the items simply go out without those fields.
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('recent_form', Path(__file__).with_name('recent_form.py'))
+        recent_form = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(recent_form)
+        print('recent form', recent_form.enrich_recent_form(payload, previous, fetch_json))
+    except Exception as error:
+        print('recent form unavailable:', error)
     if previous.get('items') == payload.get('items') and previous.get('domestic') == payload.get('domestic') and previous.get('sourceStatus') == payload.get('sourceStatus'):
         print('No lineup changes')
         return

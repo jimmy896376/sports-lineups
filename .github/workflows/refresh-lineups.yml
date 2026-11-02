@@ -12,6 +12,8 @@ on:
       - 'scripts/test_wkbl_schedule.py'
       - 'scripts/test_kbl_lineups.py'
       - 'scripts/test_team_logos.py'
+      - 'scripts/recent_form.py'
+      - 'scripts/test_recent_form.py'
       - 'scripts/starting-pitcher-review.json'
       - 'scripts/check-player-names.mjs'
       - 'scripts/collect-player-names.mjs'
@@ -58,6 +60,8 @@ jobs:
         run: python3 scripts/test_kbl_lineups.py
       - name: Validate team logo mapping
         run: python3 scripts/test_team_logos.py
+      - name: Validate ESPN recent form matching
+        run: python3 scripts/test_recent_form.py
       - name: Fetch current lineup projections
         run: python3 scripts/update-projections.py
       - uses: actions/setup-node@v4

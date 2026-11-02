@@ -1,0 +1,224 @@
+"""Attach each team's recent results and season record from ESPN to the lineup items.
+
+For every item in a league ESPN covers, find the ESPN event (by date and team) and read its
+summary page once: `lastFiveGames` gives the team's last results (all competitions), and the
+header competitors give the season record plus the home/road record. Nothing is invented — a
+match that cannot be found or fetched keeps empty fields.
+
+Fields added to an item (all optional):
+  espnEventId     ESPN event id used
+  recentForm      {'home': ['W','L','D',...], 'away': [...]}  oldest first, newest last, max 5
+  records         {'home': {'record': '4-2', 'sideRecord': '3-0'}, 'away': {...}}
+                  record = ESPN season total (soccer is W-D-L, e.g. '6-1-2'); sideRecord = this
+                  team's home record when home / road record when away (ESPN gives none for soccer)
+  formCheckedAt   when ESPN was read (UTC ISO)
+
+ESPN calls per run: one scoreboard per (league, ESPN date) only for items whose event id is not
+known yet, plus one summary per item whose data is older than REFRESH_SECONDS. Values from the
+previous snapshot are reused in between, so a 15-minute schedule does not re-read every match.
+"""
+import re
+import time
+import unicodedata
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+ESPN_PATHS = {
+    'nba': 'basketball/nba', 'wnba': 'basketball/wnba', 'mlb': 'baseball/mlb', 'nhl': 'hockey/nhl',
+    'epl': 'soccer/eng.1', 'championship': 'soccer/eng.2', 'laliga': 'soccer/esp.1',
+    'bundesliga': 'soccer/ger.1', 'seriea': 'soccer/ita.1', 'ligue1': 'soccer/fra.1',
+    'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
+    'scottish': 'soccer/sco.1', 'j1': 'soccer/jpn.1', 'mls': 'soccer/usa.1',
+    'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa',
+}
+REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 hours keeps calls low
+KEEP_STALE_SECONDS = 12 * 3600  # if ESPN fails, previous values younger than this are kept (they were read, not guessed)
+MAX_CALLS = 80                  # per run — a ceiling so a bad day never hammers ESPN
+RESULT = {'W': 'W', 'L': 'L', 'D': 'D', 'T': 'D'}
+# Lineup-source codes that ESPN spells differently (checked against ESPN scoreboards 2026-11-03)
+CODE_ALIASES = {
+    'nba': {'GSW': 'GS', 'NYK': 'NY', 'NOP': 'NO', 'SAS': 'SA', 'UTA': 'UTAH', 'WAS': 'WSH', 'PHO': 'PHX', 'BRK': 'BKN'},
+    'wnba': {'WAS': 'WSH', 'GSV': 'GS', 'NYL': 'NY', 'LVA': 'LV', 'LAS': 'LA', 'PHO': 'PHX', 'CON': 'CONN'},
+    'mlb': {'CWS': 'CHW', 'WAS': 'WSH', 'AZ': 'ARI', 'KCR': 'KC', 'SDP': 'SD', 'SFG': 'SF', 'TBR': 'TB'},
+}
+NAME_NOISE = {'fc', 'cf', 'sc', 'afc', 'ac', 'ssc', 'club', 'de', 'the', 'cd', 'ud', 'rc', 'sv', 'vfl', 'vfb', 'tsg', 'bv', 'ogc', 'as'}
+NAME_ALIASES = {'newyorkredbulls': 'redbullnewyork', 'losangelesfootball': 'lafc', 'losangelesgalaxy': 'lagalaxy'}
+
+
+class Blocked(Exception):
+    """ESPN answered 403/429 — stop calling for this run."""
+
+
+def now_iso():
+    return datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+
+
+def espn_date(kickoff):
+    """ESPN scoreboards are grouped by US Eastern date."""
+    moment = datetime.fromisoformat(kickoff.replace('Z', '+00:00'))
+    return moment.astimezone(ZoneInfo('America/New_York')).strftime('%Y%m%d')
+
+
+def name_key(value):
+    text = unicodedata.normalize('NFKD', str(value or '')).encode('ascii', 'ignore').decode().lower()
+    words = [w for w in re.split(r'[^a-z0-9]+', text) if w and w not in NAME_NOISE]
+    key = ''.join(words)
+    return NAME_ALIASES.get(key, key)
+
+
+def item_key(item):
+    teams = item.get('teams') or {}
+    return (item.get('league'), item.get('kickoff'), teams.get('home'), teams.get('away'))
+
+
+def side_matches(item, side, competitor):
+    team = competitor.get('team') or {}
+    code = str((item.get('teams') or {}).get(side) or '').upper()
+    code = CODE_ALIASES.get(item.get('league'), {}).get(code, code)
+    if code and code == str(team.get('abbreviation') or '').upper():
+        return True
+    wanted = name_key((item.get('names') or {}).get(side))
+    if not wanted:
+        return False
+    names = {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')}
+    names.discard('')
+    return wanted in names
+
+
+def match_event(item, events):
+    """Return the ESPN event for this item.
+
+    Match both teams and choose the unique closest kickoff. This avoids assigning the wrong
+    opponent's record or the first game of a baseball doubleheader."""
+    try:
+        kickoff = datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00'))
+    except (KeyError, TypeError, ValueError):
+        return None
+    matches = []
+    for event in events or []:
+        competition = (event.get('competitions') or [{}])[0]
+        sides = {c.get('homeAway'): c for c in competition.get('competitors') or []}
+        if 'home' not in sides or 'away' not in sides:
+            continue
+        try:
+            start = datetime.fromisoformat(str(event.get('date')).replace('Z', '+00:00'))
+        except ValueError:
+            continue
+        difference = abs((start - kickoff).total_seconds())
+        if difference > 3 * 3600:
+            continue
+        home, away = side_matches(item, 'home', sides['home']), side_matches(item, 'away', sides['away'])
+        if home and away:
+            matches.append((difference, event))
+    matches.sort(key=lambda pair: pair[0])
+    return matches[0][1] if matches and (len(matches) == 1 or matches[0][0] < matches[1][0]) else None
+
+
+def read_summary(summary, kickoff=None):
+    """lastFiveGames + header records → {'home': {...}, 'away': {...}} keyed by side."""
+    competitors = ((summary.get('header') or {}).get('competitions') or [{}])[0].get('competitors') or []
+    by_team = {str((g.get('team') or {}).get('id')): g.get('events') or [] for g in summary.get('lastFiveGames') or []}
+    cutoff = datetime.fromisoformat(kickoff.replace('Z', '+00:00')) if kickoff else None
+    result = {}
+    for competitor in competitors:
+        side = competitor.get('homeAway')
+        if side not in ('home', 'away'):
+            continue
+        entry = {}
+        games = sorted(by_team.get(str((competitor.get('team') or {}).get('id')), []), key=lambda g: str(g.get('gameDate') or ''))
+        if cutoff:
+            games = [g for g in games if g.get('gameDate') and datetime.fromisoformat(g['gameDate'].replace('Z', '+00:00')) < cutoff]
+        form = [RESULT[g.get('gameResult')] for g in games if g.get('gameResult') in RESULT]
+        if form:
+            entry['form'] = form[-5:]
+        records = {r.get('type'): r.get('summary') for r in competitor.get('record') or [] if r.get('summary')}
+        if records.get('total'):
+            entry['record'] = str(records['total'])[:40]
+        own = records.get('home') if side == 'home' else (records.get('road') or records.get('away'))
+        if own:
+            entry['sideRecord'] = str(own)[:40]
+        if entry:
+            result[side] = entry
+    return result
+
+
+def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause=0.25):
+    """Add recentForm/records to payload['items'] in place. Returns counts for the run log."""
+    now = now or time.time()
+    before = {item_key(item): item for item in (previous or {}).get('items', [])}
+    stats = {'items': 0, 'withForm': 0, 'reused': 0, 'scoreboardCalls': 0, 'summaryCalls': 0, 'notFound': 0, 'failed': 0, 'blocked': False}
+    boards = {}
+    calls = 0
+
+    def get(url):
+        nonlocal calls
+        if stats['blocked'] or calls >= MAX_CALLS:
+            raise Blocked('call ceiling or blocked')
+        calls += 1
+        if pause:
+            time.sleep(pause)
+        try:
+            return fetch_json(url)
+        except Exception as error:
+            if re.search(r'\b(403|429)\b', str(error)):
+                stats['blocked'] = True
+                raise Blocked(str(error))
+            raise
+
+    def checked_age(old):
+        try:
+            return now - datetime.fromisoformat(old['formCheckedAt'].replace('Z', '+00:00')).timestamp()
+        except (KeyError, TypeError, ValueError, AttributeError):
+            return None
+
+    def keep_previous(item, old, limit):
+        age = checked_age(old) if old else None
+        if age is None or age > limit:
+            return False
+        for field in ('espnEventId', 'recentForm', 'records', 'formCheckedAt'):
+            if old.get(field) is not None:
+                item[field] = old[field]
+        return True
+
+    for item in payload.get('items', []):
+        path = ESPN_PATHS.get(item.get('league'))
+        if not path:
+            continue
+        stats['items'] += 1
+        old = before.get(item_key(item))
+        if keep_previous(item, old, REFRESH_SECONDS):
+            stats['reused'] += 1
+        else:
+            try:
+                event_id = (old or {}).get('espnEventId')
+                if not event_id:
+                    board_key = (path, espn_date(item['kickoff']))
+                    if board_key not in boards:
+                        boards[board_key] = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard?dates={board_key[1]}&limit=500').get('events', [])
+                        stats['scoreboardCalls'] += 1
+                    event = match_event(item, boards[board_key])
+                    event_id = event and str(event.get('id'))
+                if not event_id:
+                    stats['notFound'] += 1
+                    keep_previous(item, old, KEEP_STALE_SECONDS)
+                else:
+                    summary = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event_id}')
+                    stats['summaryCalls'] += 1
+                    sides = read_summary(summary, item['kickoff'])
+                    item['espnEventId'] = event_id
+                    item['formCheckedAt'] = datetime.fromtimestamp(now, timezone.utc).isoformat().replace('+00:00', 'Z')
+                    form = {side: v['form'] for side, v in sides.items() if v.get('form')}
+                    records = {side: {k: v[k] for k in ('record', 'sideRecord') if v.get(k)} for side, v in sides.items() if v.get('record') or v.get('sideRecord')}
+                    if form:
+                        item['recentForm'] = form
+                    if records:
+                        item['records'] = records
+            except Blocked:
+                keep_previous(item, old, KEEP_STALE_SECONDS)
+            except Exception as error:
+                stats['failed'] += 1
+                log('recent form', item.get('league'), item.get('kickoff'), 'failed:', error)
+                keep_previous(item, old, KEEP_STALE_SECONDS)
+        if item.get('recentForm'):
+            stats['withForm'] += 1
+    return stats

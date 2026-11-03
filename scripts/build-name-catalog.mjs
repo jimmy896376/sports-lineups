@@ -46,6 +46,13 @@ if (process.argv.includes('--queue')) {
         const hosts=row.method==='namuwiki-team-roster-v2' ? ['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'] : ['namu.moe'];
         return url.protocol==='https:' && hosts.includes(url.hostname) && url.pathname.startsWith('/w/') && s.domain==='namu.moe' && s.teamMatched && s.englishNameMatched && s.rowMatched && s.contentHash;
       }),'NamuWiki roster needs exact team and bilingual player row');
+    } else if(row.method==='scorebase-nhl-roster-v1') {
+      assert.ok(row.league==='nhl' && row.sources.length===1 && row.sources.every(s=>{
+        const team=new URL(s.url),player=new URL(s.playerUrl);
+        return team.protocol==='https:' && team.hostname==='www.scorebase.kr' && /^\/teams\/[0-9]+$/.test(team.pathname)
+          && player.protocol==='https:' && player.hostname==='www.scorebase.kr' && /^\/players\/[0-9]+$/.test(player.pathname)
+          && player.searchParams.get('league')==='NHL' && s.englishNameMatched && s.koreanNameMatched && s.contentHash;
+      }),'Scorebase NHL roster needs bilingual player link and team identity');
     } else if(row.method==='google-search-result-v1') {
       assert.ok(row.sources.length>=1 && row.sources.every(s=>{
         const url=new URL(s.url);

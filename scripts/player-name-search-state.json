@@ -1432,8 +1432,8 @@
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T23:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "anastasios douvikas": {
       "status": "verified",
@@ -2613,14 +2613,14 @@
     "max finkgrafe": {
       "nextBulkCheckAt": "2026-11-01T15:10:09.222364+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T17:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "maxime esteve": {
       "nextBulkCheckAt": "2026-11-02T14:53:45.241284+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T06:32:11.620998+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Maxime+Esteve+RB+Leipzig+-site%3Awikipedia.org&hl=ko",
@@ -4933,14 +4933,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Jack+Moylan+Cardiff+City+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jack+Moylan+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "jack rudoni": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -5029,14 +5035,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Jacques+Ekomie+Wrexham+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jacques+Ekomie+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "jake o brien": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -5053,8 +5065,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T20:30:15.941906+00:00",
       "nextCheckAt": "2026-11-03T02:30:15.941906+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T14:58:13.750833+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jakob romsaas": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -5359,14 +5371,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Joel+Bagan+Cardiff+City+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Joel+Bagan+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "joel colwill": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -5375,14 +5393,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Joel+Colwill+Cardiff+City+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Joel+Colwill+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "joel cotterill": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -6272,14 +6296,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Max+Kilman+West+Ham+United+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Max+Kilman+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "max o leary": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -6408,14 +6438,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Mohamadou+Kant%C3%A9+West+Ham+United+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohamadou+Kant%C3%A9+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mohamed kone": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -6486,14 +6522,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Nathan+Trott+Cardiff+City+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nathan+Trott+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "nesta guinness walker": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -12389,8 +12431,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "matthew wood": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
@@ -17499,14 +17541,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Dennis+Geiger+NEC+Nijmegen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Dennis+Geiger+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "dennis man": {
       "status": "verified",
@@ -17812,14 +17860,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Anan+Khalaili+Crystal+Palace+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Anan+Khalaili+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T11:27:54.537413+00:00",
-      "nextCheckAt": "2026-11-02T17:27:54.537413+00:00",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-03T23:58:59.382285+00:00"
     },
@@ -17888,8 +17942,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T15:54:28.893928+00:00",
       "nextCheckAt": "2026-11-03T21:54:28.893928+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "axel disasi": {
       "status": "verified",
@@ -18086,8 +18140,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "ferdi kadioglu": {
       "nextBulkCheckAt": "2026-10-25T17:42:47.084380+00:00",
@@ -18254,8 +18308,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T12:40:44.721448+00:00",
       "nextCheckAt": "2026-11-03T18:40:44.721448+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T12:40:44.721448+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "harvey barnes": {
       "status": "verified",
@@ -18508,8 +18562,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:54:13.398778+00:00",
       "nextCheckAt": "2026-11-03T23:54:13.398778+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "keane lewis potter": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -18589,8 +18643,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:54:13.398778+00:00",
       "nextCheckAt": "2026-11-03T23:54:13.398778+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "kotkov matvei": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -18804,8 +18858,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:46:11.945166+00:00",
       "nextCheckAt": "2026-11-03T23:46:11.945166+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "malachi walcott": {
       "nextBulkCheckAt": "2026-11-01T20:36:37.715678+00:00",
@@ -18852,8 +18906,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:54:13.398778+00:00",
       "nextCheckAt": "2026-11-03T23:54:13.398778+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "marco carnesecchi": {
       "status": "verified",
@@ -19007,8 +19061,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "mohamed belloumi": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -19461,14 +19515,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Walter+Ben%C3%ADtez+Crystal+Palace+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Walter+Ben%C3%ADtez+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T06:50:30.306748+00:00",
-      "nextCheckAt": "2026-11-02T12:50:30.306748+00:00",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-03T23:58:59.382285+00:00"
     },
@@ -19530,14 +19590,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Bambas%C3%A9+Cont%C3%A9+TSG+Hoffenheim+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Bambas%C3%A9+Cont%C3%A9+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T11:27:54.537413+00:00",
-      "nextCheckAt": "2026-11-02T17:27:54.537413+00:00",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-04T17:58:59.382285+00:00"
     },
@@ -19624,14 +19690,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Robin+Hran%C3%A1c+TSG+Hoffenheim+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Robin+Hran%C3%A1c+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tim lemperle": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -19640,14 +19712,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tim+Lemperle+TSG+Hoffenheim+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tim+Lemperle+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T13:46:49.661156+00:00",
-      "nextCheckAt": "2026-11-02T19:46:49.661156+00:00",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-04T17:58:59.382285+00:00"
     },
@@ -21923,8 +22001,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "ivanov georgy": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -21995,8 +22073,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "surin yegor": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -22840,14 +22918,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Marten+Winkler+Anderlecht+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Marten+Winkler+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T11:27:54.537413+00:00",
-      "nextCheckAt": "2026-11-02T17:27:54.537413+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mathias delorge knieper": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -24756,8 +24840,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T01:43:20.378960+00:00",
       "nextCheckAt": "2026-11-03T07:43:20.378960+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T19:41:03.186185+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jaden mcdaniels": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -25331,8 +25415,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "costantino favasuli": {
       "nextBulkCheckAt": "2026-11-02T20:39:07.893975+00:00",
@@ -26122,8 +26206,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "alexander nikishin": {
       "nextBulkCheckAt": "2026-11-02T20:39:07.893975+00:00",
@@ -26256,8 +26340,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "dakota joshua": {
       "nextBulkCheckAt": "2026-10-29T18:15:46.794318+00:00",
@@ -26350,8 +26434,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jason dickinson": {
       "nextBulkCheckAt": "2026-10-29T18:15:46.794318+00:00",
@@ -26436,8 +26520,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "justin sourdif": {
       "nextBulkCheckAt": "2026-10-25T15:27:15.608902+00:00"
@@ -26531,8 +26615,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "matt savoie": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -27684,8 +27768,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-10-29T11:25:59.998405+00:00",
       "nextCheckAt": "2026-10-29T17:25:59.998405+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jonathan huberdeau": {
       "status": "verified",
@@ -27788,8 +27872,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-10-29T11:25:59.998405+00:00",
       "nextCheckAt": "2026-10-29T17:25:59.998405+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "samuel honzek": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -27821,8 +27905,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T04:29:26.845737+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "archie goodwin": {
       "nextBulkCheckAt": "2026-11-01T01:21:20.386985+00:00",
@@ -28055,8 +28139,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:46:11.945166+00:00",
       "nextCheckAt": "2026-11-03T23:46:11.945166+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T17:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "john stones": {
       "status": "verified",
@@ -29218,8 +29302,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "mathew barzal": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -29276,8 +29360,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "radek faksa": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -29345,8 +29429,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "ivan demidov": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -29405,8 +29489,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "nino niederreiter": {
       "status": "verified",
@@ -29490,8 +29574,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jack thompson": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
@@ -29512,8 +29596,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "thatcher demko": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -29530,8 +29614,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "alessandro circati": {
       "status": "verified",
@@ -29870,14 +29954,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Kail+Boudache+Lyon+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kail+Boudache+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T06:50:30.306748+00:00",
-      "nextCheckAt": "2026-11-02T12:50:30.306748+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mads bidstrup": {
       "nextBulkCheckAt": "2026-11-02T12:06:15.756904+00:00",
@@ -30493,14 +30583,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Rodrigo+Mora+AS+Roma+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Rodrigo+Mora+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T12:30:49.176924+00:00",
-      "nextCheckAt": "2026-11-02T18:30:49.176924+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "rolando mandragora": {
       "status": "verified",
@@ -32828,14 +32924,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Steeve+Kango+Lyon+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Steeve+Kango+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T06:50:30.306748+00:00",
-      "nextCheckAt": "2026-11-02T12:50:30.306748+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "aimar oroz": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -33948,8 +34050,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "andrea pinamonti": {
       "status": "verified",
@@ -34605,8 +34707,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "ado onaiwu": {
       "status": "verified",
@@ -35064,14 +35166,20 @@
         "google": {
           "url": "https://www.google.com/search?q=R%C3%A9mi+Himbert+Lyon+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=R%C3%A9mi+Himbert+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T06:50:30.306748+00:00",
-      "nextCheckAt": "2026-11-02T12:50:30.306748+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "abramov vitaly": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -35743,8 +35851,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "tomas magnusson": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -38288,14 +38396,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Noah+Nartey+Lyon+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Noah+Nartey+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "paolo gozzi iweru": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -39090,8 +39204,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "priskie chase evans": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -39123,8 +39237,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "korostelyov nikita": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -39715,14 +39829,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Oleg+Reabciuk+Anderlecht+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Oleg+Reabciuk+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T11:27:54.537413+00:00",
-      "nextCheckAt": "2026-11-02T17:27:54.537413+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "thelo aasgaard": {
       "status": "verified",
@@ -39753,14 +39873,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tristan+Degreef+Anderlecht+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tristan+Degreef+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T11:27:54.537413+00:00",
-      "nextCheckAt": "2026-11-02T17:27:54.537413+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "bright arrey mbi": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -42485,8 +42611,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T23:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "fedotov maxim s": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -42520,8 +42646,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:46:11.945166+00:00",
       "nextCheckAt": "2026-11-03T23:46:11.945166+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T15:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "khabarov makar": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -42587,8 +42713,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T23:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "provolnev vladislav": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -42607,8 +42733,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:53:26.061422+00:00",
       "nextCheckAt": "2026-11-03T23:53:26.061422+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T21:54:28.893928+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tkachyov vladimir a": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -42910,8 +43036,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T03:29:13.446987+00:00",
       "nextCheckAt": "2026-11-03T09:29:13.446987+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "yannik keitel": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -43163,8 +43289,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "sergio de larrea": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -43634,8 +43760,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "denisenko grigory": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -43908,8 +44034,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T23:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "elmer soderblom": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -44136,14 +44262,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Alphadjo+Ciss%C3%A8+AC+Milan+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alphadjo+Ciss%C3%A8+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T06:50:30.306748+00:00",
-      "nextCheckAt": "2026-11-02T12:50:30.306748+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "christopher applewhite": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -44256,8 +44388,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:23:40.331626+00:00",
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "nico daws": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -44896,8 +45028,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "shaimardanov damir": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -45216,14 +45348,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Alex+Newhook+Montreal+Canadiens+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alex+Newhook+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T14:44:18.321981+00:00",
-      "nextCheckAt": "2026-11-02T20:44:18.321981+00:00",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-03T23:58:59.382285+00:00"
     },
@@ -46609,8 +46747,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T07:50:35.709627+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "robert williams": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46632,8 +46770,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T18:38:52.212300+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "jake guentzel": {
       "status": "verified",
@@ -46658,8 +46796,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T17:53:26.061422+00:00",
       "nextCheckAt": "2026-11-03T23:53:26.061422+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T17:46:11.945166+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "karlo matkovic": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47227,14 +47365,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Abubakr+Barry+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Abubakr+Barry+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "adam madarasz": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47243,14 +47387,20 @@
         "google": {
           "url": "https://www.google.com/search?q=%C3%81d%C3%A1m+Madar%C3%A1sz+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=%C3%81d%C3%A1m+Madar%C3%A1sz+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "adam nagy": {
       "status": "verified",
@@ -47277,14 +47427,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Anders+Klynge+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Anders+Klynge+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "andronikos kakoulis": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47293,14 +47449,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Andronikos+Kakoulis+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Andronikos+Kakoulis+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "bafode diakite": {
       "status": "verified",
@@ -47315,14 +47477,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Bamidele+Isa+Yusuf+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Bamidele+Isa+Yusuf+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "ben gannon doak": {
       "status": "verified",
@@ -47337,14 +47505,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Bernardo+Vital+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Bernardo+Vital+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "callum o dowda": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47353,14 +47527,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Callum+O%27Dowda+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Callum+O%27Dowda+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "cheick souare": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47369,14 +47549,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Cheick+Souare+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Cheick+Souare+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "christian makoun": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47385,14 +47571,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Christian+Makoun+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Christian+Makoun+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "christian zawieschitzky": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47401,14 +47593,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Christian+Zawieschitzky+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Christian+Zawieschitzky+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "christophe kabongo": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47417,14 +47615,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Christophe+Kabongo+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Christophe+Kabongo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "damir redzic": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47433,14 +47637,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Damir+Redzic+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Damir+Redzic+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "daniel arzani": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47449,14 +47659,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Daniel+Arzani+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Daniel+Arzani+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "daniel bassi": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47465,14 +47681,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Daniel+Bassi+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Daniel+Bassi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "daniel radnoti": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47481,14 +47703,20 @@
         "google": {
           "url": "https://www.google.com/search?q=D%C3%A1niel+Radn%C3%B3ti+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=D%C3%A1niel+Radn%C3%B3ti+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "denis vavro": {
       "status": "verified",
@@ -47503,14 +47731,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Denis+Visinsk%C3%BD+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Denis+Visinsk%C3%BD+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "dominik schmid": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47519,14 +47753,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Dominik+Schmid+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Dominik+Schmid+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "el mehdi el moubarik": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47535,14 +47775,20 @@
         "google": {
           "url": "https://www.google.com/search?q=El+Mehdi+El+Moubarik+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=El+Mehdi+El+Moubarik+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "eryk kozlowski": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47551,14 +47797,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Eryk+Kozlowski+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Eryk+Kozlowski+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "everton bala": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47567,14 +47819,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Everton+Bala+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Everton+Bala+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "ewandro": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47583,14 +47841,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Ewandro+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ewandro+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "fabiano": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47599,14 +47863,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Fabiano+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Fabiano+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "filip ottosson": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47615,14 +47885,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Filip+Ottosson+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Filip+Ottosson+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "florian wiegele": {
       "status": "verified",
@@ -47643,14 +47919,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Guilherme+Montoia+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Guilherme+Montoia+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "gustav nyheim": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47659,14 +47941,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Gustav+Nyheim+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Gustav+Nyheim+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "hampus finndell": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47675,14 +47963,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Hampus+Finndell+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Hampus+Finndell+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "haris tabakovic": {
       "status": "verified",
@@ -47709,14 +48003,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Jaden+Montnor+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jaden+Montnor+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "jakub surovcik": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47725,14 +48025,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Jakub+Surovcik+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jakub+Surovcik+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "jaroslav zeleny": {
       "status": "verified",
@@ -47753,14 +48059,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Josimar+Alc%C3%B3cer+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Josimar+Alc%C3%B3cer+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "jure balkovec": {
       "status": "verified",
@@ -47775,14 +48087,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Kajetan+Szmyt+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kajetan+Szmyt+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "kamil jozwiak": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47791,14 +48109,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Kamil+Jozwiak+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kamil+Jozwiak+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "kevin boma": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47807,14 +48131,20 @@
         "google": {
           "url": "https://www.google.com/search?q=K%C3%A9vin+Boma+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=K%C3%A9vin+Boma+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "ki jana hoever": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47823,14 +48153,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Ki-Jana+Hoever+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ki-Jana+Hoever+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "kristian dimitrov": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47839,14 +48175,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Kristian+Dimitrov+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kristian+Dimitrov+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "kristoffer zachariassen": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47855,14 +48197,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Kristoffer+Zachariassen+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kristoffer+Zachariassen+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "leandro morgalla": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47871,14 +48219,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Leandro+Morgalla+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Leandro+Morgalla+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "loic nego": {
       "status": "verified",
@@ -47893,14 +48247,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Lubomir+Satka+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Lubomir+Satka+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "lukas cerv": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47909,14 +48269,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Luk%C3%A1s+Cerv+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Luk%C3%A1s+Cerv+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "maicon": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47925,14 +48291,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Maicon+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "HTTPError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Maicon+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T04:43:15.667797+00:00",
-      "nextCheckAt": "2026-11-02T10:43:15.667797+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mariano gomez": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47941,14 +48313,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Mariano+G%C3%B3mez+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mariano+G%C3%B3mez+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "marko grujic": {
       "status": "verified",
@@ -47963,14 +48341,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Martin+Suchomel+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Martin+Suchomel+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "matej jurasek": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47979,14 +48363,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Matej+Jur%C3%A1sek+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Matej+Jur%C3%A1sek+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mateo maric": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -47995,14 +48385,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Mateo+Maric+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mateo+Maric+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "matyas vojta": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48011,14 +48407,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Maty%C3%A1s+Vojta+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Maty%C3%A1s+Vojta+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "mazire soula": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48027,14 +48429,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Mazire+Soula+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mazire+Soula+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "michele di gregorio": {
       "status": "verified",
@@ -48049,14 +48457,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Nathan+Zohor%C3%A9+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nathan+Zohor%C3%A9+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "nik prelec": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48065,14 +48479,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Nik+Prelec+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nik+Prelec+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "oliver nagy": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48081,14 +48501,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Oliv%C3%A9r+Nagy+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Oliv%C3%A9r+Nagy+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "panagiotis andreou": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48097,14 +48523,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Panagiotis+Andreou+Omonia+Nicosia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Panagiotis+Andreou+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "patrik hrosovsky": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48113,14 +48545,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Patrik+Hrosovsk%C3%BD+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Patrik+Hrosovsk%C3%BD+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "pontus dahlberg": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48129,14 +48567,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Pontus+Dahlberg+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Pontus+Dahlberg+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "reinaldo": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48145,14 +48589,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Reinaldo+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Reinaldo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "rodrigo conceicao": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48161,14 +48611,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Rodrigo+Concei%C3%A7%C3%A3o+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Rodrigo+Concei%C3%A7%C3%A3o+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "roman macek": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48177,14 +48633,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Roman+Macek+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Roman+Macek+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "ruben gabrielsen": {
       "status": "verified",
@@ -48199,14 +48661,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Ruben+Kluivert+Lyon+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ruben+Kluivert+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "sampson dweh": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48215,14 +48683,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Sampson+Dweh+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Sampson+Dweh+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "sander moen foss": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48231,14 +48705,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Sander+Moen+Foss+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Sander+Moen+Foss+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "santiago eneme": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48247,14 +48727,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Santiago+Eneme+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Santiago+Eneme+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "serginho": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48263,14 +48749,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Serginho+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Serginho+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "slawomir abramowicz": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48279,14 +48771,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Slawomir+Abramowicz+Jagiellonia+Bialystok+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Slawomir+Abramowicz+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "sota kitano": {
       "status": "verified",
@@ -48301,14 +48799,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Sturla+Ottesen+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Sturla+Ottesen+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "svetoslav vutsov": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48317,14 +48821,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Svetoslav+Vutsov+Levski+Sofia+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Svetoslav+Vutsov+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "thomas lehne olsen": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48333,14 +48843,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Thomas+Lehne+Olsen+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Thomas+Lehne+Olsen+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tim drexler": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48349,14 +48865,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tim+Drexler+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tim+Drexler+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tobias guddal": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48365,14 +48887,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tobias+Guddal+Sparta+Prague+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tobias+Guddal+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tobias paliscak": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48381,14 +48909,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tobi%C3%A1s+Palisc%C3%A1k+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tobi%C3%A1s+Palisc%C3%A1k+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "tomas ladra": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48397,14 +48931,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Tom%C3%A1s+Ladra+Viktoria+Plzen+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tom%C3%A1s+Ladra+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "umut tohumcu": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48413,14 +48953,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Umut+Tohumcu+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Umut+Tohumcu+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "unai marrero": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48429,14 +48975,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Unai+Marrero+Real+Sociedad+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Unai+Marrero+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "va": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48445,14 +48997,20 @@
         "google": {
           "url": "https://www.google.com/search?q=V%C3%A1+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=V%C3%A1+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "veljko birmancevic": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48461,14 +49019,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Veljko+Birmancevic+Ferencvaros+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Veljko+Birmancevic+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "yaw paintsil": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48477,14 +49041,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Yaw+Paintsil+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Yaw+Paintsil+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "ylldren ibrahimaj": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48493,14 +49063,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Ylldren+Ibrahimaj+Lillestrom+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ylldren+Ibrahimaj+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "yorbe vertessen": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -48509,14 +49085,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Yorbe+Vertessen+RB+Salzburg+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Yorbe+Vertessen+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T05:45:18.381302+00:00",
-      "nextCheckAt": "2026-11-02T11:45:18.381302+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "yuki kobayashi": {
       "status": "verified",
@@ -50493,14 +51075,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Lewis+O%27Brien+Wrexham+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Lewis+O%27Brien+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "oliver rathbone": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -50509,14 +51097,20 @@
         "google": {
           "url": "https://www.google.com/search?q=Oliver+Rathbone+Wrexham+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "HTTPError",
+          "detail": "HTTP Error 429: Too Many Requests",
+          "httpStatus": 429
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Oliver+Rathbone+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T20:30:15.941906+00:00",
-      "nextCheckAt": "2026-11-03T02:30:15.941906+00:00"
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     },
     "rafael bauza": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -50589,8 +51183,8 @@
     "filip chytil": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Filip+Chytil+Vancouver+Canucks+-site%3Awikipedia.org&hl=ko",
@@ -53253,8 +53847,8 @@
     "eguinaldo": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T13:35:02.745329+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Eguinaldo+Shakhtar+Donetsk+-site%3Awikipedia.org&hl=ko",
@@ -53271,8 +53865,8 @@
     "kiril fesiun": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T13:35:02.745329+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Kiril+Fesiun+Shakhtar+Donetsk+-site%3Awikipedia.org&hl=ko",
@@ -53289,8 +53883,8 @@
     "marlon": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T13:35:02.745329+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Marlon+Shakhtar+Donetsk+-site%3Awikipedia.org&hl=ko",
@@ -53967,8 +54561,8 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-02T23:04:52.060560+00:00",
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00"
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00"
     },
     "juan cabal": {
       "status": "verified",
@@ -54622,8 +55216,8 @@
       "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
     },
     "kulbakov ivan": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T16:58:36.158874+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Kulbakov+Ivan+Admiral+-site%3Awikipedia.org&hl=ko",
@@ -54728,8 +55322,8 @@
       "nextCheckAt": "2026-11-03T06:23:40.331626+00:00"
     },
     "jamie benn": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T18:38:52.212300+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jamie+Benn+Dallas+Stars+-site%3Awikipedia.org&hl=ko",
@@ -54955,8 +55549,8 @@
       "nextCheckAt": "2026-11-03T01:41:03.186185+00:00"
     },
     "quenton jackson": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T19:41:03.186185+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Quenton+Jackson+Indiana+Pacers+-site%3Awikipedia.org&hl=ko",
@@ -55005,8 +55599,8 @@
       "nextCheckAt": "2026-11-03T01:41:03.186185+00:00"
     },
     "a j greer": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T19:41:03.186185+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=A.J.+Greer+Anaheim+Ducks+-site%3Awikipedia.org&hl=ko",
@@ -55087,8 +55681,8 @@
       "nextCheckAt": "2026-11-03T04:11:30.288279+00:00"
     },
     "braden smith": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T23:41:58.311181+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Braden+Smith+Indiana+Pacers+-site%3Awikipedia.org&hl=ko",
@@ -55119,8 +55713,8 @@
       "nextCheckAt": "2026-11-03T05:41:58.311181+00:00"
     },
     "jalen slawson": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T00:23:40.331626+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jalen+Slawson+Indiana+Pacers+-site%3Awikipedia.org&hl=ko",
@@ -55206,8 +55800,8 @@
       "nextCheckAt": "2026-11-03T07:43:20.378960+00:00"
     },
     "collin murray boyles": {
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-04T03:29:13.446987+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-04T18:05:50.398354+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Collin+Murray-Boyles+Toronto+Raptors+-site%3Awikipedia.org&hl=ko",
@@ -55312,6 +55906,26 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T16:58:36.158874+00:00",
       "nextCheckAt": "2026-11-03T22:58:36.158874+00:00"
+    },
+    "devis vasquez": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Devis+Vasquez+AS+Roma+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Devis+Vasquez+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v4",
+      "checkedAt": "2026-11-03T18:05:50.398354+00:00",
+      "nextCheckAt": "2026-11-04T00:05:50.398354+00:00"
     }
   }
 }

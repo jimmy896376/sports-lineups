@@ -22,17 +22,18 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
            'yna.co.kr', 'yonhapnews.co.kr', 'newsis.com', 'news1.kr', 'sportsseoul.com',
            'sportschosun.com', 'sportalkorea.com', 'osen.co.kr', 'xportsnews.com', 'spotvnews.co.kr',
            'mk.co.kr', 'hankyung.com', 'chosun.com', 'donga.com', 'khan.co.kr', 'kbs.co.kr', 'sbs.co.kr')
-SEARCH_HOSTS = ('www.google.com', 'www.bing.com')
-POLICY = 'precollect-names-v4'
+SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
+POLICY = 'precollect-names-v5'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100
 GOOGLE_METHOD = 'google-search-result-v1'
+DAUM_METHOD = 'daum-sports-profile-v1'
 
 
 def normalize(value):
     value = ''.join(c for c in unicodedata.normalize('NFKD', str(value).translate(str.maketrans({'Ł':'L','ł':'l'}))) if not ('\u0300' <= c <= '\u036f'))
-    return re.sub(r'[^a-z0-9가-힣ぁ-ゟァ-ヿ一-龯々〆〤]+', ' ', unicodedata.normalize('NFC', value).lower()).strip()
+    return re.sub(r'[^\w]+|_', ' ', unicodedata.normalize('NFC', value).lower()).strip()
 
 
 def source_domain(url):
@@ -203,6 +204,30 @@ def google_result(row, url, page, team_dictionary):
             'league': row.get('league'), 'method': GOOGLE_METHOD, 'sources': [proof]}
 
 
+def daum_result(row, url, page, team_dictionary):
+    """Use only Daum's sports person card with exact original name and club."""
+    profiles = []
+    for href, title in page.links:
+        query = urllib.parse.parse_qs(urllib.parse.urlsplit(href).query)
+        if query.get('w') == ['profile2'] and query.get('coll') == ['person-main']:
+            profiles.extend(candidates([title]))
+    if len(set(profiles)) != 1:
+        return None
+    full, name = normalize(page.text), normalize(row['name'])
+    profile = full[full.find(normalize(profiles[0])):][:500]
+    if not re.search(r'(?:축구|야구|농구|배구|하키|아이스하키|e스포츠) ?선수 ' + re.escape(name) + r'(?!\w)', profile):
+        return None
+    team = row.get('team', '')
+    korean_team = next((korean for alias, korean in team_dictionary.items() if normalize(alias) == normalize(team)), '')
+    if not korean_team or normalize(korean_team) not in profile:
+        return None
+    proof = {'url': url, 'domain': 'daum.net', 'teamMatched': True,
+             'originalNameMatched': True, 'sportsProfileMatched': True,
+             'contentHash': hashlib.sha256(page.text.encode()).hexdigest()}
+    return {'name': row['name'], 'korean': profiles[0], 'team': team,
+            'league': row.get('league'), 'method': DAUM_METHOD, 'sources': [proof]}
+
+
 def namu_team_roster(team, korean_team, rows, get=fetch_page):
     """Match names only within the same row of the club's bilingual roster."""
     page = None
@@ -248,6 +273,7 @@ def namu_team_roster(team, korean_team, rows, get=fetch_page):
 def resolve(row, get=fetch_page, team_dictionary=None):
     query = row['name'] + ' ' + (row.get('team') or '') + ' -site:wikipedia.org'
     urls = {'google': 'https://www.google.com/search?' + urllib.parse.urlencode({'q': query, 'hl': 'ko'}),
+            'daum': 'https://search.daum.net/search?' + urllib.parse.urlencode({'w': 'tot', 'q': row['name']}),
             'bing': 'https://www.bing.com/search?' + urllib.parse.urlencode({'q': row['name'] + ' 한글 이름 -site:wikipedia.org', 'setlang': 'ko'})}
     found, searches, errors = {}, {}, []
     for engine, url in urls.items():
@@ -258,6 +284,11 @@ def resolve(row, get=fetch_page, team_dictionary=None):
                 if approved:
                     return approved, {'searches': {'google': {'url': url, 'status': 'direct-name-result'}},
                                       'sourceErrors': [], 'status': 'verified'}
+            if engine == 'daum':
+                approved = daum_result(row, url, page, team_dictionary or {})
+                if approved:
+                    searches[engine] = {'url': url, 'status': 'direct-name-result'}
+                    return approved, {'searches': searches, 'sourceErrors': [], 'status': 'verified'}
             links = search_links(page, engine)
             searches[engine] = {'url': url, 'status': 'results' if links else 'no-readable-trusted-results'}
             for link, title in links:
@@ -310,7 +341,7 @@ def main():
     for row in inventory['records']:
         key = normalize(row['name'])
         if row.get('team'): contexts.setdefault(key, set()).add(normalize(row['team']))
-        if re.search(r'[a-zA-Zぁ-ゟァ-ヿ一-龯々〆〤]', row['name']) and key == normalize(row.get('korean', row['name'])) and key not in known:
+        if any(char.isalpha() and not ('가' <= char <= '힣') for char in row['name']) and key == normalize(row.get('korean', row['name'])) and key not in known:
             if key not in pending or priority(row, state, now) < priority(pending[key], state, now): pending[key] = row
     candidates_for_review = [row for key, row in pending.items() if len(contexts.get(key, set())) == 1]
     candidates_for_review.sort(key=lambda row: priority(row, state, now))
@@ -369,11 +400,11 @@ def main():
         state['players'][key] = {**state['players'].get(key, {}), **report, 'policy': POLICY, 'checkedAt': now.isoformat(), 'nextCheckAt': (now + delay).isoformat()}
         write(approved_path, approved)
         write(state_path, state)
-        statuses = {engine: report['searches'].get(engine, {}).get('status', 'unavailable') for engine in ('google', 'bing')}
+        statuses = {engine: report['searches'].get(engine, {}).get('status', 'unavailable') for engine in ('google', 'daum', 'bing')}
         if all(status == 'unavailable' for status in statuses.values()):
             search_unavailable += 1
             if search_unavailable >= 3: break
-        elif statuses['google'] == 'unavailable' and statuses['bing'] == 'no-readable-trusted-results':
+        elif statuses['google'] == 'unavailable' and all(status == 'no-readable-trusted-results' for status in (statuses['daum'], statuses['bing'])):
             search_unavailable += 1
             if search_unavailable >= 5: break
         else:

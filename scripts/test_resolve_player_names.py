@@ -20,6 +20,8 @@ class NameVerification(unittest.TestCase):
         self.assertEqual(r.normalize('岳政華'), '岳政華')
         self.assertNotEqual(r.normalize('尾形　崇斗'), r.normalize('石田　裕太郎'))
         self.assertNotEqual(r.normalize('ベイスターズ'), r.normalize('ヘイスターズ'))
+        self.assertNotEqual(r.normalize('Александр Овечкин'), r.normalize('Алексей Овечкин'))
+        self.assertNotEqual(r.normalize('محمد علي'), r.normalize('محمد حسن'))
     def test_google_result_registers_without_second_source(self):
         calls=[]
         def get(url):
@@ -57,6 +59,24 @@ class NameVerification(unittest.TestCase):
     def test_google_knowledge_panel(self):
         page=r.Page('<div data-attrid="title"><span>모리츠 니콜라스</span></div><p>Moritz Nicolas Borussia Monchengladbach</p>')
         self.assertEqual(r.google_result(self.row,'https://www.google.com/search?q=test',page,{})['korean'],'모리츠 니콜라스')
+    def test_daum_sports_profile_requires_original_name_sport_and_club(self):
+        html='<a href="?w=profile2&coll=person-main&spId=123">모리츠 니콜라스</a><p>축구선수 Moritz Nicolas</p><a>보루시아 묀헨글라트바흐</a>'
+        team={'Borussia Mönchengladbach':'보루시아 묀헨글라트바흐'}
+        url='https://search.daum.net/search?w=tot&q=Moritz+Nicolas'
+        approved=r.daum_result(self.row,url,r.Page(html),team)
+        self.assertEqual(approved['korean'],'모리츠 니콜라스')
+        self.assertEqual(approved['method'],r.DAUM_METHOD)
+        for invalid in (html.replace('Moritz Nicolas','Other Player'),html.replace('축구선수','배우'),html.replace('보루시아 묀헨글라트바흐','다른 팀')):
+            self.assertIsNone(r.daum_result(self.row,url,r.Page(invalid),team))
+    def test_daum_profile_recovers_when_google_is_blocked(self):
+        html='<a href="?w=profile2&coll=person-main&spId=123">모리츠 니콜라스</a><p>축구선수 Moritz Nicolas</p><a>보루시아 묀헨글라트바흐</a>'
+        def get(url):
+            if 'google.com' in url: raise ValueError('search-challenge')
+            if 'daum.net' in url: return r.Page(html)
+            self.fail('Bing should not run after exact profile approval')
+        approved, report=r.resolve(self.row,get,{'Borussia Mönchengladbach':'보루시아 묀헨글라트바흐'})
+        self.assertEqual(approved['korean'],'모리츠 니콜라스')
+        self.assertEqual(report['searches']['daum']['status'],'direct-name-result')
     def test_google_wrong_identity_rejected(self):
         for page in (self.page(english='Other Nicolas'), self.page(team='Other FC'), r.Page('<h1>모리츠 니콜라스</h1>')):
             self.assertIsNone(r.google_result(self.row,'https://www.google.com/search?q=test',page,{}))
@@ -125,7 +145,7 @@ class NameVerification(unittest.TestCase):
                    'team':'Test FC','kind':'lineup','eventDate':now} for i in range(8)]
             (root/'scripts/player-name-live-inventory.json').write_text(json.dumps({'at':now,'records':rows}))
             (root/'dist/team-ko.json').write_text('{}')
-            report={'searches':{'google':{'status':'unavailable'},'bing':{'status':'no-readable-trusted-results'}},'status':'needs-verification'}
+            report={'searches':{'google':{'status':'unavailable'},'daum':{'status':'no-readable-trusted-results'},'bing':{'status':'no-readable-trusted-results'}},'status':'needs-verification'}
             with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
                 r.main()
             self.assertEqual(search.call_count,5)
@@ -171,8 +191,8 @@ class NameVerification(unittest.TestCase):
             raise ValueError('search-challenge')
         approved, report=r.resolve(self.row,get)
         self.assertIsNone(approved)
-        self.assertEqual(len(calls),2)
-        self.assertEqual(set(report['searches']),{'google','bing'})
+        self.assertEqual(len(calls),3)
+        self.assertEqual(set(report['searches']),{'google','daum','bing'})
         self.assertTrue(all(x['status']=='unavailable' for x in report['searches'].values()))
     def test_bing_recovers_verified_name_when_google_unavailable(self):
         sources=['https://namu.moe/w/Moritz','https://www.transfermarkt.co.kr/Moritz']

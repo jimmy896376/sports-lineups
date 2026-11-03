@@ -185,11 +185,13 @@ if (process.argv.includes('--inventory')) {
   const allowed = new Set(exceptions.map(row => row.name));
   const names = [...new Map(inventory.records.map(row => [row.name, row])).values()];
   const pending = [], english = [];
+  const needsKorean = name => [...name].some(char => /\p{L}/u.test(char) && !/\p{Script=Hangul}/u.test(char));
+  assert.ok(needsKorean('Александр Овечкин') && needsKorean('山田 哲人') && !needsKorean('김민재'));
   for (const row of names) {
     context.checkedPlayer = row;
     run(`language='ko'`);
     const korean = run('translated(checkedPlayer.name,checkedPlayer.short)');
-    if (/\p{Script=Latin}/u.test(row.name) && korean === row.name) {
+    if (needsKorean(row.name) && korean === row.name) {
       (allowed.has(row.name) ? english : pending).push(row);
     }
     run(`language='en'`);
@@ -226,7 +228,7 @@ if (process.argv.includes('--audit')) {
       for (const group of ['lineups', 'injuries', 'injuryDetails']) {
         for (const player of prediction[group]?.[side] || []) {
           const name = typeof player === 'string' ? player : player.name || player.player;
-          if (!name || !/\p{Script=Latin}/u.test(name)) continue;
+          if (!name || ![...name].some(char => /\p{L}/u.test(char) && !/\p{Script=Hangul}/u.test(char))) continue;
           if (!names.has(name)) names.set(name, new Set());
           names.get(name).add(prediction.league);
         }
@@ -238,7 +240,7 @@ if (process.argv.includes('--audit')) {
     google: `https://www.google.com/search?q=${encodeURIComponent(name)}`,
     status: 'needs-source-review'
   }));
-  const report = {snapshotAsOf: snapshot.asOf, totalLatinNames: names.size, translated: names.size - missing.length, missing};
+  const report = {snapshotAsOf: snapshot.asOf, totalForeignNames: names.size, translated: names.size - missing.length, missing};
   const output = new URL('../scripts/player-name-audit.json', import.meta.url);
   fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
   console.log(`All leagues: ${report.translated}/${names.size} names mapped; ${missing.length} queued for source review.`);

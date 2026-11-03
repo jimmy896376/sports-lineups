@@ -50,6 +50,11 @@ if (process.argv.includes('--queue')) {
         const url=new URL(s.url);
         return url.protocol==='https:' && url.hostname==='www.google.com' && url.pathname==='/search' && s.domain==='google.com' && s.teamMatched && (s.bilingualNameMatched || s.knowledgePanelMatched) && s.contentHash;
       }),'Google result needs player identity evidence');
+    } else if(row.method==='daum-sports-profile-v1') {
+      assert.ok(row.sources.length===1 && row.sources.every(s=>{
+        const url=new URL(s.url);
+        return url.protocol==='https:' && url.hostname==='search.daum.net' && url.pathname==='/search' && s.domain==='daum.net' && s.teamMatched && s.originalNameMatched && s.sportsProfileMatched && s.contentHash;
+      }),'Daum profile needs exact player, sport and club identity');
     } else {
       assert.equal(row.method,'independent-bilingual-sources-v1');
       assert.ok(row.sources.length>=2 && new Set(row.sources.map(s=>s.domain)).size>=2 && row.sources.some(s=>s.teamMatched),'Automatic name needs independent identity evidence');

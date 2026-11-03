@@ -80,26 +80,32 @@ if (process.argv.includes('--queue')) {
       assert.ok(name && typeof korean==='string' && korean.length<=160 && /\p{Script=Hangul}/u.test(korean),`Invalid approved name: ${name}`);
     }
   }
-  const observed=read('scripts/fixtures/player-name-inventory.json').records;
+  const fixture=read('scripts/fixtures/player-name-inventory.json');
+  const observed=fixture.records;
+  const observedTeams=fixture.teams || [];
   const inventoryPath = new URL('scripts/player-name-live-inventory.json',root);
   if (fs.existsSync(inventoryPath)) {
     const inventory=read('scripts/player-name-live-inventory.json');
-    if (Date.now()-Date.parse(inventory.at)<2*60*60*1000) observed.push(...(inventory.records || []));
-  }
-  const known=new Map();
-  for (const [name,korean] of Object.entries(players)) {
-    const key=normalized(name);
-    if (!known.has(key)) known.set(key,korean);
-    else if (known.get(key)!==korean) known.set(key,null);
-  }
-  for (const {name} of observed) {
-    if (typeof name!=='string' || name in players) continue;
-    const korean=known.get(normalized(name));
-    if (korean) {
-      players[name]=korean;
-      assert.equal(known.get(normalized(name)),players[name]);
+    if (Date.now()-Date.parse(inventory.at)<2*60*60*1000) {
+      observed.push(...(inventory.records || []));
+      observedTeams.push(...(inventory.teams || []));
     }
   }
+  const addObservedAliases=(dictionary,rows)=>{
+    const known=new Map();
+    for (const [name,korean] of Object.entries(dictionary)) {
+      const key=normalized(name);
+      if (!known.has(key)) known.set(key,korean);
+      else if (known.get(key)!==korean) known.set(key,null);
+    }
+    for (const {name} of rows) {
+      if (typeof name!=='string' || name in dictionary) continue;
+      const korean=known.get(normalized(name));
+      if (korean) dictionary[name]=korean;
+    }
+  };
+  addObservedAliases(players,observed);
+  addObservedAliases(teams,observedTeams);
   const teamEnglish=Object.fromEntries(review.entries.filter(row=>row.english).map(row=>[row.name,row.english]));
   const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
   const unchanged = ['teams','teamEnglish','players'].every(key=>JSON.stringify(previous[key])===JSON.stringify({teams,teamEnglish,players}[key]));

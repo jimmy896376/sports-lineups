@@ -215,6 +215,17 @@ if (process.argv.includes('--inventory')) {
   const report = {collectedAt:inventory.at, totalNames:names.length, mapped:names.length-pending.length-english.length, reviewedEnglish:english, pending, fetchFailures:inventory.failures};
   fs.writeFileSync(new URL('./player-name-live-audit.json', import.meta.url), JSON.stringify(report,null,2)+'\n');
   const teams = [...new Map((inventory.teams||inventory.records.filter(row=>row.team).map(row=>({name:row.team,league:row.league}))).map(row=>[row.name,row])).values()];
+  const teamByNormalized = new Map();
+  for (const [name,korean] of Object.entries(approvedCatalog.teams)) {
+    const key=run(`normalizePlayerName(${JSON.stringify(name)})`);
+    if (!teamByNormalized.has(key)) teamByNormalized.set(key,korean);
+    else if (teamByNormalized.get(key)!==korean) teamByNormalized.set(key,null);
+  }
+  for (const row of teams) {
+    if (teamByNormalized.get(run(`normalizePlayerName(${JSON.stringify(row.name)})`)) && !approvedCatalog.teams[row.name]) {
+      assert.fail(`Observed provider team spelling has no exact catalog alias: ${row.name}`);
+    }
+  }
   const pendingTeams = teams.filter(row=>!run(`teamKo[${JSON.stringify(row.name)}]||teamKoNormalized[normalizePlayerName(${JSON.stringify(row.name)})]`)).map(row=>({...row,google:`https://www.google.com/search?q=${encodeURIComponent(row.name)}`,status:'needs-source-review'}));
   fs.writeFileSync(new URL('./team-name-live-audit.json',import.meta.url),JSON.stringify({collectedAt:inventory.at,totalTeams:teams.length,reviewed:teams.length-pendingTeams.length,pending:pendingTeams},null,2)+'\n');
   console.log(`Team inventory: ${teams.length-pendingTeams.length}/${teams.length} source-reviewed; ${pendingTeams.length} queued.`);

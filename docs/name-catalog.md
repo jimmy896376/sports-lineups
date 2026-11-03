@@ -15,7 +15,7 @@
 
 `scripts/player-name-run-report.json` records pending names by league, roster approvals, search approvals and collection failures. The workflow also uploads `scripts/player-name-live-audit.json` and the current inventory as artifacts. Repeated zero search approvals require a source or matching-rule investigation; more scheduling alone cannot improve coverage. Google and Bing can return challenges or unreadable pages on GitHub runners. No API key is configured.
 
-The standalone board normalizes case, accents and punctuation before lookup. The catalog also publishes exact aliases for verified names as they appear in the latest collected inventory. This covers newly observed provider variants on NudeTV staging without inventing new Korean spellings. The NudeTV staging renderer must still apply the same normalization or use an approved stable player ID to handle a variant before the next scheduled catalog build.
+The standalone board normalizes case, accents and punctuation before lookup. The catalog also publishes exact aliases for verified player and team names as they appear in the latest collected inventory. This covers newly observed provider variants on NudeTV staging without inventing new Korean spellings. The NudeTV staging renderer must still apply the same normalization or use an approved stable player ID to handle a variant before the next scheduled catalog build.
 
 ## Checks
 

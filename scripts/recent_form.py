@@ -73,16 +73,14 @@ def item_key(item):
 
 def side_matches(item, side, competitor):
     team = competitor.get('team') or {}
+    wanted = name_key((item.get('names') or {}).get(side))
+    if wanted:
+        names = {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')}
+        names.discard('')
+        return wanted in names
     code = str((item.get('teams') or {}).get(side) or '').upper()
     code = CODE_ALIASES.get(item.get('league'), {}).get(code, code)
-    if code and code == str(team.get('abbreviation') or '').upper():
-        return True
-    wanted = name_key((item.get('names') or {}).get(side))
-    if not wanted:
-        return False
-    names = {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')}
-    names.discard('')
-    return wanted in names
+    return bool(code and code == str(team.get('abbreviation') or '').upper())
 
 
 def match_event(item, events):
@@ -175,7 +173,7 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
         age = checked_age(old) if old else None
         if age is None or age > limit:
             return False
-        for field in ('espnEventId', 'recentForm', 'records', 'formCheckedAt'):
+        for field in ('espnEventId', 'recentForm', 'records', 'formCheckedAt', 'logos'):
             if old.get(field) is not None:
                 item[field] = old[field]
         return True
@@ -186,12 +184,14 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
             continue
         stats['items'] += 1
         old = before.get(item_key(item))
-        if keep_previous(item, old, REFRESH_SECONDS):
+        needs_logos = item.get('league') in ('ucl', 'uel', 'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'eredivisie', 'jupiler', 'primeira', 'scottish', 'j1', 'mls') and not all((old or {}).get('logos', {}).get(side) for side in ('home', 'away'))
+        if not needs_logos and keep_previous(item, old, REFRESH_SECONDS):
             stats['reused'] += 1
         else:
             try:
                 event_id = (old or {}).get('espnEventId')
-                if not event_id:
+                event = None
+                if not event_id or needs_logos:
                     board_key = (path, espn_date(item['kickoff']))
                     if board_key not in boards:
                         boards[board_key] = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard?dates={board_key[1]}&limit=500').get('events', [])
@@ -204,6 +204,10 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                 else:
                     summary = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event_id}')
                     stats['summaryCalls'] += 1
+                    if event:
+                        competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
+                        logos = {side: (next((c for c in competitors if c.get('homeAway') == side), {}).get('team') or {}).get('logo') for side in ('home', 'away')}
+                        item['logos'] = {**(item.get('logos') or {}), **{side: logo for side, logo in logos.items() if logo}}
                     sides = read_summary(summary, item['kickoff'])
                     item['espnEventId'] = event_id
                     item['formCheckedAt'] = datetime.fromtimestamp(now, timezone.utc).isoformat().replace('+00:00', 'Z')

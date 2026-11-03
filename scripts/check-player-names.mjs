@@ -19,6 +19,8 @@ for (const file of ['football-ko.js', 'player-ko.js', 'win-probability.js', 'app
 }
 const run = code => vm.runInContext(code, context);
 const approvedCatalog = JSON.parse(fs.readFileSync(new URL('../dist/name-catalog.json',import.meta.url),'utf8'));
+context.approvedPlayers = approvedCatalog.players;
+run('Object.assign(naverKo,approvedPlayers);Object.assign(naverKoNormalized,Object.fromEntries(Object.entries(approvedPlayers).map(([name,korean])=>[normalizePlayerName(name),korean])))');
 for (const [name,korean] of Object.entries({
   'Jabari Smith':'자바리 스미스 주니어','Dennis Seimen':'데니스 자이멘',
   'Atakan Karazor':'아타칸 카라조르','Lorenz Assignon':'로랑 아시뇽',
@@ -51,9 +53,29 @@ for (const [name, expected] of [
   ['Joshua Kimmich', '요주아 키미히'],
   ['Sidney Crosby', '시드니 크로스비'],
   ['Shohei Ohtani', '오타니 쇼헤이'],
+  ['Alexey Batrakov', '알렉세이 바트라코프'],
+  ['Baris Alper Yilmaz', '바리스 알페르 일마즈'],
+  ['Eduardo Felicíssimo', '에두아르도 펠리시시모'],
+  ['Silas Andersen', '실라스 안데르센'],
+  ['Fotis Ioannidis', '포티스 이오아니디스'],
+  ['Yehor Nazaryna', '예호르 나자리나'],
+  ['Brayden Burries', '브레이든 버리스'],
+  ['Baylor Scheierman', '베일러 샤이어맨'],
   ['Unknown Player', 'Unknown Player'], ['Alisson Santos', 'Alisson Santos'],
   ['Becker', 'Becker']
 ]) assert.equal(run(`translated(${JSON.stringify(name)})`), expected, name);
+run("sport='football'");
+assert.match(run("teamLogo({team:{displayName:'Manchester United',logo:'https://a.espncdn.com/i/teamlogos/soccer/500/132.png'}})"),/soccer\/500\/360\.png/);
+assert.match(run("teamLogo({team:{displayName:'Roma'}})"),/soccer\/500\/104\.png/);
+context.logoEvent = {date:'2026-11-03T20:00:00Z',competitions:[{competitors:[
+  {homeAway:'home',team:{displayName:'Manchester United',abbreviation:'MAN'}},
+  {homeAway:'away',team:{displayName:'Roma',abbreviation:'ROMA'}}
+]}]};
+context.logoItems = [
+  {league:'ucl',kickoff:context.logoEvent.date,teams:{home:'MUN',away:'ROM'},names:{home:'Bayern Munich',away:'Roma'}},
+  {league:'ucl',kickoff:context.logoEvent.date,teams:{home:'MUN',away:'ROM'},names:{home:'Manchester United',away:'Roma'}}
+];
+assert.equal(run('predictionFor(logoEvent,logoItems,"ucl").names.home'),'Manchester United');
 assert.equal(run(`translated('João Neves')`), run(`translated('Joao Neves')`));
 assert.equal(run(`normalizePlayerName('Łukasz Skorupski')`),run(`normalizePlayerName('Lukasz Skorupski')`));
 for (const [name, korean] of run('Object.entries(playerKo)')) {

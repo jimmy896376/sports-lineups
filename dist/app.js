@@ -431,8 +431,9 @@ function predictionFor(event, items, key) {
     const codesAvailable = item.teams?.away && item.teams?.home && away.team.abbreviation && home.team.abbreviation;
     const codesNormal = codesAvailable && code(item.teams.away) === code(away.team.abbreviation) && code(item.teams.home) === code(home.team.abbreviation);
     const codesReversed = codesAvailable && code(item.teams.away) === code(home.team.abbreviation) && code(item.teams.home) === code(away.team.abbreviation);
-    if (normal || codesNormal) return item;
-    return reversed || codesReversed ? {...item,
+    const named = Boolean(item.names?.away && item.names?.home && away.team.displayName && home.team.displayName);
+    if (normal || (!named && codesNormal)) return item;
+    return reversed || (!named && codesReversed) ? {...item,
       lineups:{away:item.lineups?.home,home:item.lineups?.away},
       injuries:{away:item.injuries?.home,home:item.injuries?.away},
       injuryDetails:{away:item.injuryDetails?.home,home:item.injuryDetails?.away},
@@ -466,8 +467,10 @@ async function recentLineups(event, allEvents, source, kind) {
 const kblLogoCodes = {'원주 DB':'db','서울 삼성':'ss','서울 삼성 썬더스':'ss','고양 소노':'sono','서울 SK':'sk','창원 LG':'lg','창원 LG 세이커스':'lg','안양 정관장':'kgc','부산 KCC':'kcc','부산 KCC 이지스':'kcc','수원 KT':'kt','대구 한국가스공사':'pega','울산 현대모비스':'hd','울산 현대모비스 피버스':'hd'};
 function teamLogo(team, className = 'team-logo') {
   const data = team?.team || team || {};
+  const footballLogoIds = {'Manchester United':'360','Man Utd':'360','AS Roma':'104','Roma':'104'};
+  const footballLogo = sport === 'football' && footballLogoIds[data.displayName || data.name] ? `https://a.espncdn.com/i/teamlogos/soccer/500/${footballLogoIds[data.displayName || data.name]}.png` : '';
   const kblCode = sport === 'kbl' ? kblLogoCodes[data.displayName || data.name] : null;
-  const url = data.logo || data.logos?.[0]?.href || team?.logo || team?.logos?.[0]?.href || (kblCode && `https://www.kbl.or.kr/assets/img/logo/logo-${kblCode}.svg`);
+  const url = footballLogo || data.logo || data.logos?.[0]?.href || team?.logo || team?.logos?.[0]?.href || (kblCode && `https://www.kbl.or.kr/assets/img/logo/logo-${kblCode}.svg`);
   return typeof url === 'string' && /^https:\/\//i.test(url)
     ? `<img class="${className}" src="${safe(url)}" alt="" aria-hidden="true" loading="lazy" onerror="this.hidden=true">`
     : '';

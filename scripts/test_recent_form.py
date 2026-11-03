@@ -65,6 +65,18 @@ class RecentForm(TestCase):
             item = {'league': 'mls', 'kickoff': kickoff, 'teams': {'home': 'X1', 'away': 'X2'}, 'names': {'home': home, 'away': away}}
             self.assertIsNotNone(module.match_event(item, board), home)
 
+    def test_shared_abbreviation_does_not_swap_manchester_and_bayern(self):
+        item = {'league': 'ucl', 'kickoff': '2026-11-03T20:00:00Z',
+                'teams': {'home': 'MUN', 'away': 'ROM'},
+                'names': {'home': 'Manchester United', 'away': 'Roma'}}
+        wrong = {'id': 'bayern', 'date': item['kickoff'], 'competitions': [{'competitors': [
+            {'homeAway': 'home', 'team': {'abbreviation': 'MUN', 'displayName': 'Bayern Munich'}},
+            {'homeAway': 'away', 'team': {'abbreviation': 'ROM', 'displayName': 'Roma'}}]}]}
+        right = {'id': 'united', 'date': item['kickoff'], 'competitions': [{'competitors': [
+            {'homeAway': 'home', 'team': {'abbreviation': 'MAN', 'displayName': 'Manchester United'}},
+            {'homeAway': 'away', 'team': {'abbreviation': 'ROMA', 'displayName': 'AS Roma'}}]}]}
+        self.assertEqual(module.match_event(item, [wrong, right])['id'], 'united')
+
     def test_match_requires_both_teams_and_nearest_kickoff(self):
         def event(event_id, kickoff, away):
             return {'id': event_id, 'date': kickoff, 'competitions': [{'competitors': [

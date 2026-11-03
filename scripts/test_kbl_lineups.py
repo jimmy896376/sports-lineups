@@ -11,6 +11,24 @@ spec.loader.exec_module(module)
 
 
 class KBLProjectedLineups(TestCase):
+    def test_schedule_excludes_easl_and_includes_day_after_tomorrow(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 4, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        schedule = ('<span class="stat-num tabular-nums">2026.11.05</span>'
+                    '<a href="/ko/kbl/matches/EASL">예정<span class="stat-num text-fg-muted">19:10</span>'
+                    '<span class="break-keep text-lg">부산 KCC</span>'
+                    '<span class="break-keep text-lg">마카오 호우촌</span></a>'
+                    '<span class="stat-num tabular-nums">2026.11.06</span>'
+                    '<a href="/ko/kbl/matches/KBL">예정<span class="stat-num text-fg-muted">19:00</span>'
+                    '<span class="break-keep text-lg">서울 SK</span>'
+                    '<span class="break-keep text-lg">수원 KT</span></a>')
+        comparison = {'recentForm': {}, 'records': {}}
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', side_effect=[schedule, '']), patch.object(module, 'kbl_projected_lineups', return_value={}), patch.object(module, 'kbl_recent_and_records', return_value=comparison):
+            rows = module.scrape_kbl_statgg()
+        self.assertEqual([row['event']['id'] for row in rows], ['KBL'])
+
     def test_current_preview_table_keeps_home_and_away(self):
         def team(name, player):
             row = '<tr><td><a><span class="flex items-center gap-1.5 whitespace-nowrap font-medium">' + player + '</span></a></td>' + '<td>1</td>' * 5 + '<td>35.3</td><td>80.0%</td></tr>'

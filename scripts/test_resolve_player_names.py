@@ -13,7 +13,7 @@ class NameVerification(unittest.TestCase):
         rows=[{'name':'Matthew Knies','team':'Columbus Blue Jackets','league':'nhl'},
               {'name':'Unknown Player','team':'Columbus Blue Jackets','league':'nhl'}]
         league=r.Page('<a href="/teams/722">콜럼버스 블루재키츠</a>')
-        roster=r.Page('<a href="/players/8482720?league=NHL"><img alt="Matthew Knies">'
+        roster=r.Page('<a href="/players/8482720"><img alt="Matthew Knies">'
                       '<div class="font-semibold text-sm truncate">매튜 나이스</div></a>'
                       '<a href="/players/1?league=NHL"><img alt="Other Person">'
                       '<div class="font-semibold text-sm truncate">다른 선수</div></a>')
@@ -21,7 +21,7 @@ class NameVerification(unittest.TestCase):
             return league if url.endswith('/leagues/NHL') else roster
         entries=r.scorebase_nhl_names(rows,get)
         self.assertEqual([(e['name'],e['korean']) for e in entries],[('Matthew Knies','매튜 나이스')])
-        self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720?league=NHL')
+        self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720')
         self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nba'}],get),[])
 
     def test_scorebase_nhl_conflicting_names_stay_unverified(self):

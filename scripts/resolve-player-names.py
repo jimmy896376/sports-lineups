@@ -23,7 +23,7 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
            'mk.co.kr', 'hankyung.com', 'chosun.com', 'donga.com', 'khan.co.kr', 'kbs.co.kr', 'sbs.co.kr')
 SEARCH_HOSTS = ('www.google.com',)
 POLICY = 'precollect-names-v3'
-NAMU_POLICY = 'namuwiki-team-roster-v1'
+NAMU_POLICY = 'namuwiki-team-roster-v2'
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100
 GOOGLE_METHOD = 'google-search-result-v1'
@@ -196,11 +196,22 @@ def google_result(row, url, page, team_dictionary):
 
 def namu_team_roster(team, korean_team, rows, get=fetch_page):
     """Match names only within the same row of the club's bilingual roster."""
-    url = 'https://namu.moe/w/' + urllib.parse.quote(korean_team, safe='')
-    page = get(url)
-    if not page.headings or normalize(page.headings[0]) != normalize(korean_team):
-        return {}
-    if not re.search(r'(?<!\w)' + re.escape(normalize(team)) + r'(?!\w)', normalize(page.text)):
+    page = None
+    url = ''
+    last_error = None
+    for host in ('namu.moe', 'd.namu.moe', 'm.namu.moe', 'www.namu.moe'):
+        candidate = 'https://' + host + '/w/' + urllib.parse.quote(korean_team, safe='')
+        try:
+            current = get(candidate)
+        except Exception as error:
+            last_error = error
+            continue
+        if current.headings and normalize(current.headings[0]) == normalize(korean_team) and re.search(r'(?<!\w)' + re.escape(normalize(team)) + r'(?!\w)', normalize(current.text)):
+            page, url = current, candidate
+            break
+    if page is None:
+        if last_error:
+            raise last_error
         return {}
     wanted = {normalize(row['name']): row for row in rows}
     matches = {}

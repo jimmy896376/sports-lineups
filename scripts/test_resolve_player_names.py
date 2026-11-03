@@ -172,6 +172,18 @@ class NameVerification(unittest.TestCase):
         self.assertEqual(r.namu_team_roster('Portland Timbers','포틀랜드 팀버스',[row],lambda url:r.Page(html.replace('Portland Timbers','Other Club'))),{})
         self.assertEqual(r.namu_team_roster('Portland Timbers','포틀랜드 팀버스',[row],lambda url:r.Page(html.replace('Brandon Bye','Different Player'))),{})
         self.assertEqual(r.namu_team_roster('Portland Timbers','포틀랜드 팀버스',[row],lambda url:r.Page(html.replace('<h1>포틀랜드 팀버스</h1>','<h1>다른 팀</h1>'))),{})
+    def test_namu_roster_tries_mirror_after_primary_error(self):
+        html='<h1>포틀랜드 팀버스</h1><p>Portland Timbers</p><table><tr><th>한글 성명</th><th>로마자 성명</th></tr><tr><td>브랜든 바이</td><td>Brandon Bye</td></tr></table>'
+        calls=[]
+        def get(url):
+            calls.append(url)
+            if url.startswith('https://namu.moe/'):
+                raise RuntimeError('HTTP 403')
+            return r.Page(html)
+        found=r.namu_team_roster('Portland Timbers','포틀랜드 팀버스',[{'name':'Brandon Bye','team':'Portland Timbers','league':'mls'}],get)
+        self.assertEqual(found['brandon bye']['korean'],'브랜든 바이')
+        self.assertTrue(found['brandon bye']['sources'][0]['url'].startswith('https://d.namu.moe/'))
+        self.assertEqual(len(calls),2)
     def test_main_searches_more_than_thirty_without_wikipedia(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

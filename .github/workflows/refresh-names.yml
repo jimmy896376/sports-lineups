@@ -38,8 +38,6 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -54,6 +52,8 @@ jobs:
           python-version: '3.x'
       - name: Test name verification
         run: python3 scripts/test_resolve_player_names.py
+      - name: Build reviewed team aliases before roster lookup
+        run: node scripts/build-name-catalog.mjs
       - name: Collect current names from every league
         run: node scripts/collect-player-names.mjs --allow-partial
       - name: Verify Korean player names from public sources

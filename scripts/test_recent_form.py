@@ -89,6 +89,23 @@ class RecentForm(TestCase):
         self.assertEqual(payload['items'][0]['logos'], {
             'home': 'https://example.com/CLE.png', 'away': 'https://example.com/OKC.png'})
 
+    def test_missing_scoreboard_uses_verified_team_directory_for_logos(self):
+        item = {'league': 'ucl', 'kickoff': '2026-11-03T20:00:00Z',
+                'teams': {'home': 'GLI', 'away': 'LIL'}, 'names': {'home': 'Glimt', 'away': 'Lille'}}
+        teams = [{'team': {'displayName': name, 'id': id, 'logos': [
+            {'href': f'https://a.espncdn.com/i/teamlogos/soccer/500/{id}.png', 'rel': ['default']}]}}
+            for name, id in [('Bodo/Glimt', '2980'), ('Lille', '166'), ('Bayern Munich', '132')]]
+        urls = []
+        def fetch(url):
+            urls.append(url)
+            return {'sports': [{'leagues': [{'teams': teams}]}]} if '/teams?' in url else {'events': []}
+        payload = {'items': [item]}
+        stats = module.enrich_recent_form(payload, {}, fetch, pause=0)
+        self.assertEqual(stats['logoDirectoryCalls'], 1)
+        self.assertEqual(item['logos'], {'home': 'https://a.espncdn.com/i/teamlogos/soccer/500/2980.png',
+                                         'away': 'https://a.espncdn.com/i/teamlogos/soccer/500/166.png'})
+        self.assertEqual(len(urls), 2)
+
     def test_match_requires_both_teams_and_nearest_kickoff(self):
         def event(event_id, kickoff, away):
             return {'id': event_id, 'date': kickoff, 'competitions': [{'competitors': [

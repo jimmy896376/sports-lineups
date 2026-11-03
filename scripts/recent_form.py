@@ -42,7 +42,8 @@ CODE_ALIASES = {
     'mlb': {'CWS': 'CHW', 'WAS': 'WSH', 'AZ': 'ARI', 'KCR': 'KC', 'SDP': 'SD', 'SFG': 'SF', 'TBR': 'TB'},
 }
 NAME_NOISE = {'fc', 'cf', 'sc', 'afc', 'ac', 'ssc', 'club', 'de', 'the', 'cd', 'ud', 'rc', 'sv', 'vfl', 'vfb', 'tsg', 'bv', 'ogc', 'as'}
-NAME_ALIASES = {'newyorkredbulls': 'redbullnewyork', 'losangelesfootball': 'lafc', 'losangelesgalaxy': 'lagalaxy'}
+NAME_ALIASES = {'newyorkredbulls': 'redbullnewyork', 'losangelesfootball': 'lafc', 'losangelesgalaxy': 'lagalaxy',
+                'glimt': 'bodoglimt', 'lask': 'lasklinz'}
 
 
 class Blocked(Exception):
@@ -146,7 +147,7 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
     """Add recentForm/records to payload['items'] in place. Returns counts for the run log."""
     now = now or time.time()
     before = {item_key(item): item for item in (previous or {}).get('items', [])}
-    stats = {'items': 0, 'withForm': 0, 'reused': 0, 'scoreboardCalls': 0, 'summaryCalls': 0, 'notFound': 0, 'failed': 0, 'blocked': False}
+    stats = {'items': 0, 'withForm': 0, 'reused': 0, 'scoreboardCalls': 0, 'summaryCalls': 0, 'logoDirectoryCalls': 0, 'notFound': 0, 'failed': 0, 'blocked': False}
     boards = {}
     calls = 0
 
@@ -234,4 +235,34 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                 keep_previous(item, old, KEEP_STALE_SECONDS)
         if item.get('recentForm'):
             stats['withForm'] += 1
+    # Some valid fixtures are absent from ESPN scoreboards. Match their clubs in ESPN's team directory.
+    missing = {}
+    for item in payload.get('items', []):
+        path = ESPN_PATHS.get(item.get('league'), '')
+        if (path.startswith('soccer/') or path == 'hockey/nhl') and any(not (item.get('logos') or {}).get(side) for side in ('home', 'away')):
+            missing.setdefault(path, []).append(item)
+    for path, items in missing.items():
+        try:
+            directory = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/teams?limit=500')
+            stats['logoDirectoryCalls'] += 1
+            teams = [entry.get('team') or {} for sport in directory.get('sports', [])
+                     for league in sport.get('leagues', []) for entry in league.get('teams', [])]
+            for item in items:
+                for side in ('home', 'away'):
+                    if (item.get('logos') or {}).get(side):
+                        continue
+                    wanted = name_key((item.get('names') or {}).get(side))
+                    code = str((item.get('teams') or {}).get(side) or '').upper()
+                    matches = [team for team in teams if (wanted and wanted in {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')})
+                               or (path == 'hockey/nhl' and code and code == str(team.get('abbreviation') or '').upper())]
+                    if len(matches) == 1:
+                        team = matches[0]
+                        logo = team.get('logo') or next((value.get('href') for value in team.get('logos', []) if 'default' in value.get('rel', [])), None)
+                        if logo:
+                            item.setdefault('logos', {})[side] = logo
+        except Blocked:
+            break
+        except Exception as error:
+            stats['failed'] += 1
+            log('logo directory', path, 'failed:', error)
     return stats

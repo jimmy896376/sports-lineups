@@ -72,7 +72,14 @@ if (process.argv.includes('--queue')) {
   }
   // Human-reviewed spellings always take precedence over automated additions.
   vm.runInContext(fs.readFileSync(new URL('dist/football-ko.js',root),'utf8'),context);
-  const manual={...vm.runInContext('footballKo',context),...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
+  const element=()=>({innerHTML:'',textContent:'',dataset:{},addEventListener(){},setAttribute(){}});
+  context.document={documentElement:{dataset:{}},getElementById:element,querySelector:element,addEventListener(){}};
+  context.localStorage={getItem(){return null}};
+  context.window={setInterval(){}};
+  Object.assign(context,{fetch(){},atob,TextDecoder,Uint8Array});
+  vm.runInContext(fs.readFileSync(new URL('dist/win-probability.js',root),'utf8'),context);
+  vm.runInContext(fs.readFileSync(new URL('dist/app.js',root),'utf8').replace(/loadGames\(\);\s*$/,''),context);
+  const manual={...vm.runInContext('footballKo',context),...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context),...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
   const normalized=name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
   const manualKeys=new Set(Object.keys(manual).map(normalized));
   const players = {...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};

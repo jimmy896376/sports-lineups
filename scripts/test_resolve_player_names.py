@@ -9,6 +9,21 @@ r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 class NameVerification(unittest.TestCase):
+    def test_scorebase_nhl_roster_pairs_english_and_korean_in_same_player_card(self):
+        rows=[{'name':'Matthew Knies','team':'Columbus Blue Jackets','league':'nhl'},
+              {'name':'Unknown Player','team':'Columbus Blue Jackets','league':'nhl'}]
+        league=r.Page('<a href="/teams/722">콜럼버스 블루재키츠</a>')
+        roster=r.Page('<a href="/players/8482720?league=NHL"><img alt="Matthew Knies">'
+                      '<div class="font-semibold text-sm truncate">매튜 나이스</div></a>'
+                      '<a href="/players/1?league=NHL"><img alt="Other Person">'
+                      '<div class="font-semibold text-sm truncate">다른 선수</div></a>')
+        def get(url):
+            return league if url.endswith('/leagues/NHL') else roster
+        entries=r.scorebase_nhl_names(rows,get)
+        self.assertEqual([(e['name'],e['korean']) for e in entries],[('Matthew Knies','매튜 나이스')])
+        self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720?league=NHL')
+        self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nba'}],get),[])
+
     row = {'name': 'Moritz Nicolas', 'team': 'Borussia Monchengladbach', 'league': 'bundesliga'}
     def page(self, korean='모리츠 니콜라스', english='Moritz Nicolas', team='Borussia Monchengladbach'):
         return r.Page(f'<title>{korean} - 선수 프로필</title><h1>{korean}</h1><p>{korean} ({english}) {team}</p>')

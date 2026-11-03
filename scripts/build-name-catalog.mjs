@@ -70,6 +70,12 @@ if (process.argv.includes('--queue')) {
   const manualKeys=new Set(Object.keys(manual).map(normalized));
   const players = {...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};
   for (const dictionary of [teams,players]) {
+    const aliases=new Map();
+    for (const [name,korean] of Object.entries(dictionary)) {
+      const plain=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC');
+      if (plain!==name && !(plain in dictionary)) aliases.set(plain,aliases.has(plain) && aliases.get(plain)!==korean ? null : korean);
+    }
+    for (const [name,korean] of aliases) if (korean) dictionary[name]=korean;
     for (const [name,korean] of Object.entries(dictionary)) {
       assert.ok(name && typeof korean==='string' && korean.length<=160 && /\p{Script=Hangul}/u.test(korean),`Invalid approved name: ${name}`);
     }

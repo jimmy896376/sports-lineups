@@ -29,6 +29,7 @@ for (const [name,korean] of Object.entries({
   'Pedro Lima':'페드로 리마','Pedro Henrique':'페드루 엔히키',
   'Gleiker Mendoza':'글라이커 멘도사','Isaque':'이자키'
 })) assert.equal(approvedCatalog.players[name],korean,name);
+for (const [name,korean] of [['Joan Garcia','조안 가르시아'],['Victor Lindelof','빅토르 린델뢰프'],['Niclas Fullkrug','니클라스 퓔크루크']]) assert.equal(approvedCatalog.players[name],korean,name);
 assert.equal(run("availability('QUES')"),'출전 불투명');
 context.checkedTeamDictionary=JSON.parse(fs.readFileSync(new URL('../dist/team-ko.json',import.meta.url),'utf8'));
 run('applyTeamNames(checkedTeamDictionary)');

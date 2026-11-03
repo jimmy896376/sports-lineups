@@ -103,7 +103,8 @@ console.log(`Player names and both rendering paths passed. Reviewed dictionary: 
 const teamReview = JSON.parse(fs.readFileSync(new URL('./team-name-review.json', import.meta.url),'utf8'));
 const reviewedTeamHosts = new Set(['cdn.kovo.co.kr','iffhs.com','news.coupang.com','readonly.wiki',
   'sports.daum.net','toricori.com','www.ford.co.kr','www.hankyung.com','www.ktwiz.co.kr',
-  'www.liveman.co.kr','www.newyorkredbulls.com']);
+  'www.liveman.co.kr','www.newyorkredbulls.com','www.nike.com','www.flashscore.co.kr',
+  'www.allfootballapp.com','www.korean.go.kr']);
 for (const row of teamReview.entries) {
   context.teamToReview = {displayName:row.name};
   assert.equal(run('teamDisplayName(teamToReview)'),row.korean,row.name);

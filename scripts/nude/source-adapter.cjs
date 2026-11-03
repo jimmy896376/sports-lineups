@@ -24,7 +24,7 @@
     const detailed=Array.isArray(p.injuryDetails?.[side])?p.injuryDetails[side]:[];
     const injuries=detailed.length?detailed:(Array.isArray(p.injuries?.[side])?p.injuries[side].map(name=>({name})):[]);
     const pitcher=p.startingPitchers?.[side];
-    return {side,id:text(String(p.teams?.[side]||eventTeam?.id||name)),name:translated(teamFull(name),{...catalog.teams,...teamNames}),players,status:players.length?(p.statuses?.[side]==='confirmed'?'confirmed':'predicted'):'pending',injuries:injuries.filter(x=>text(x?.name)).map(x=>({name:translated(x.name,catalog.players),status:text(x.status),detail:text(x.detail||x.description||x.injury)})),pitcher:typeof pitcher==='string'?translated(pitcher,catalog.players):pitcher?.name?{...pitcher,name:translated(pitcher.name,catalog.players)}:null};
+    return {side,id:text(String(p.teams?.[side]||eventTeam?.id||name)),name:translated(teamFull(name),{...catalog.teams,...teamNames}),logo:text(p.logos?.[side]||eventTeam?.logo),players,status:players.length?(p.statuses?.[side]==='confirmed'?'confirmed':'predicted'):'pending',injuries:injuries.filter(x=>text(x?.name)).map(x=>({name:translated(x.name,catalog.players),status:text(x.status),detail:text(x.detail||x.description||x.injury)})),pitcher:typeof pitcher==='string'?translated(pitcher,catalog.players):pitcher?.name?{...pitcher,name:translated(pitcher.name,catalog.players)}:null};
    });
    if(teams.some(t=>!t.name)){rejected++;continue;}
    // Names/translation changes do not change the identity; home and away remain ordered.

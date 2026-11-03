@@ -1,9 +1,9 @@
 import importlib.util
 from pathlib import Path
 from datetime import datetime
+from unittest import TestCase, main
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
-from unittest import TestCase, main
 
 spec = importlib.util.spec_from_file_location('projections_wkbl', Path(__file__).with_name('update-projections.py'))
 module = importlib.util.module_from_spec(spec)
@@ -11,17 +11,27 @@ spec.loader.exec_module(module)
 
 
 class WKBLOfficialSchedule(TestCase):
-    def test_official_monthly_schedule_keeps_home_side_and_kst_time(self):
-        page = '<ul class="list_schedule"><li><span class="date">11.01</span>' \
-               '<strong class="team_name">KB스타즈</strong><strong class="team_name">BNK 썸</strong>' \
-               '<div class="place_block"><span>청주<br />16:00</span></div></li></ul>'
-        rows = module.parse_wkbl_schedule(page, 2026, 11)
-        self.assertEqual(rows, [{'date': '2026-11-01T07:00:00Z', 'home': 'KB스타즈', 'away': 'BNK 썸'}])
-        self.assertEqual(module.parse_wkbl_schedule(page, 2026, 10), [])
-
-    def test_missing_list_fails_instead_of_reporting_no_games(self):
-        with self.assertRaises(ValueError):
-            module.parse_wkbl_schedule('<html></html>', 2026, 11)
+    def test_projected_players_use_current_roster_and_verified_minutes(self):
+        def table(index, kind, players, minutes):
+            rows = ''.join('<tr><td><a><span class="font-medium">' + name +
+                           '</span><span class="text-3xs">' + position +
+                           '</span></a></td><td>1</td><td>' + str(value) + '</td></tr>'
+                           for (name, position), value in zip(players, minutes))
+            return (f'<div role="tabpanel" id="wkbl-pregame-{index}-{kind}-panel">'
+                    '<table><thead><tr><th>선수</th><th>경기</th><th>출장</th></tr></thead>'
+                    f'<tbody>{rows}</tbody></table></div>')
+        home = [(f'홈{i}', 'G' if i < 3 else 'F') for i in range(6)]
+        away = [(f'원정{i}', 'G' if i < 3 else 'F') for i in range(6)]
+        detail = '<h1>신한은행 vs 우리은행</h1>' + ''.join(
+            table(index, 'season', players, [0] * 6).replace('<th>출장</th>', '') +
+            table(index, 'vs', players + [('이적 선수', 'F')], [10, 20, 30, 40, 50, 60, 99])
+            for index, players in enumerate((home, away)))
+        result = module.wkbl_projected_lineups(detail, {'home': '신한은행', 'away': '우리은행'})
+        self.assertEqual([row['name'] for row in result['home']], ['홈5', '홈4', '홈3', '홈2', '홈1'])
+        self.assertEqual(len(result['away']), 5)
+        self.assertNotIn('이적 선수', [row['name'] for row in result['away']])
+        with self.assertRaisesRegex(ValueError, 'do not match'):
+            module.wkbl_projected_lineups(detail, {'home': 'KB스타즈', 'away': '우리은행'})
 
     def test_schedule_includes_official_team_logos(self):
         class Clock(datetime):
@@ -35,6 +45,18 @@ class WKBLOfficialSchedule(TestCase):
             row = module.scrape_wkbl_official()[0]
         self.assertEqual(row['prediction']['logos']['home'], 'https://www.wkbl.or.kr/static/images/team/teamlogo_07.png')
         self.assertEqual(row['prediction']['logos']['away'], 'https://www.wkbl.or.kr/static/images/team/teamlogo_05.png')
+
+    def test_official_monthly_schedule_keeps_home_side_and_kst_time(self):
+        page = '<ul class="list_schedule"><li><span class="date">11.01</span>' \
+               '<strong class="team_name">KB스타즈</strong><strong class="team_name">BNK 썸</strong>' \
+               '<div class="place_block"><span>청주<br />16:00</span></div></li></ul>'
+        rows = module.parse_wkbl_schedule(page, 2026, 11)
+        self.assertEqual(rows, [{'date': '2026-11-01T07:00:00Z', 'home': 'KB스타즈', 'away': 'BNK 썸'}])
+        self.assertEqual(module.parse_wkbl_schedule(page, 2026, 10), [])
+
+    def test_missing_list_fails_instead_of_reporting_no_games(self):
+        with self.assertRaises(ValueError):
+            module.parse_wkbl_schedule('<html></html>', 2026, 11)
 
 
 if __name__ == '__main__':

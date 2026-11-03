@@ -103,7 +103,7 @@ class NameVerification(unittest.TestCase):
             with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
                 r.main()
             self.assertEqual(search.call_count,3)
-            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['googleBlocked'])
+            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['googleUnavailable'])
     def test_namu_roster_rechecks_names_before_google_retry(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

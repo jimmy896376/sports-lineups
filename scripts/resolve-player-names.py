@@ -244,7 +244,7 @@ def resolve(row, get=fetch_page, team_dictionary=None):
                 item['engines'].add(engine)
         except (ValueError, OSError, urllib.error.URLError) as exc:
             searches[engine] = {'url': url, 'status': 'unavailable', 'reason': type(exc).__name__,
-                                'httpStatus': getattr(exc, 'code', None)}
+                                'detail': str(exc)[:120], 'httpStatus': getattr(exc, 'code', None)}
     proofs = []
     for url, result in found.items():
         try:
@@ -305,7 +305,7 @@ def main():
         record = state['players'].get(normalize(row['name']), {})
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
-    checked = added = namu_checked = namu_approved = google_blocked = 0
+    checked = added = namu_checked = namu_approved = google_unavailable = 0
     namu_errors = []
     for team, rows in list(groups.items())[:MAX_NAMU_TEAMS]:
         if time.monotonic() >= deadline: break
@@ -348,15 +348,15 @@ def main():
         state['players'][key] = {**state['players'].get(key, {}), **report, 'policy': POLICY, 'checkedAt': now.isoformat(), 'nextCheckAt': (now + delay).isoformat()}
         write(approved_path, approved)
         write(state_path, state)
-        if report['searches'].get('google', {}).get('httpStatus') in (403, 429):
-            google_blocked += 1
-            if google_blocked >= 3: break
+        if report['searches'].get('google', {}).get('status') == 'unavailable':
+            google_unavailable += 1
+            if google_unavailable >= 3: break
         else:
-            google_blocked = 0
+            google_unavailable = 0
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'eligible': len(eligible), 'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
-               'searchChecked': checked, 'approved': added, 'googleBlocked': google_blocked >= 3,
+               'searchChecked': checked, 'approved': added, 'googleUnavailable': google_unavailable >= 3,
                'namuErrors': namu_errors,
                'collectionFailures': len(inventory.get('failures', [])), 'policy': 'Unverified names remain English'}
     write(ROOT / 'scripts/player-name-run-report.json', summary)

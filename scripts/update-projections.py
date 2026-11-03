@@ -290,7 +290,7 @@ def scrape_nhl_dailyfaceoff():
         competitors = competition.get('competitors', [])
         if len(competitors) != 2:
             continue
-        teams, names = {}, {}
+        teams, names, logos = {}, {}, {}
         lineups = {}
         for competitor in competitors:
             side = str(competitor.get('homeAway') or '').strip().lower()
@@ -301,6 +301,8 @@ def scrape_nhl_dailyfaceoff():
                 continue
             teams[side] = team.get('abbreviation', '')
             names[side] = display
+            logo = team.get('logo') or next((item.get('href') for item in team.get('logos', []) if item.get('href')), '')
+            logos[side] = logo if isinstance(logo, str) and logo.startswith('https://') else ''
             if slug not in pages:
                 try:
                     parser = DailyFaceoffParser()
@@ -325,7 +327,7 @@ def scrape_nhl_dailyfaceoff():
                 lineups[side] = [{'name': player, 'position': '', 'flag': ''} for player in selected]
         if len(lineups) != 2 or len(names) != 2:
             continue
-        results.append({'league': 'nhl', 'kickoff': event.get('date'), 'teams': teams, 'names': names,
+        results.append({'league': 'nhl', 'kickoff': event.get('date'), 'teams': teams, 'names': names, 'logos': logos,
                         'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
                         'note': 'Daily Faceoff 1선·1수비 조합과 첫 골리 기준 예상',
                         'source': 'https://www.dailyfaceoff.com/teams'})

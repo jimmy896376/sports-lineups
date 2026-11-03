@@ -18,6 +18,14 @@ for (const file of ['football-ko.js', 'player-ko.js', 'win-probability.js', 'app
   vm.runInContext(source, context, {filename: file});
 }
 const run = code => vm.runInContext(code, context);
+const approvedCatalog = JSON.parse(fs.readFileSync(new URL('../dist/name-catalog.json',import.meta.url),'utf8'));
+for (const [name,korean] of Object.entries({
+  'Jabari Smith':'자바리 스미스 주니어','Dennis Seimen':'데니스 자이멘',
+  'Atakan Karazor':'아타칸 카라조르','Lorenz Assignon':'로랑 아시뇽',
+  'Robin Le Normand':'로뱅 르노르망','Oleg Ocheretko':'올레 오쉐레트코',
+  'Valerii Bondar':'발레리 본다르'
+})) assert.equal(approvedCatalog.players[name],korean,name);
+assert.equal(run("availability('QUES')"),'출전 불투명');
 context.checkedTeamDictionary=JSON.parse(fs.readFileSync(new URL('../dist/team-ko.json',import.meta.url),'utf8'));
 run('applyTeamNames(checkedTeamDictionary)');
 assert.throws(()=>run('applyTeamNames({bad:123})'),/Invalid team name dictionary/);

@@ -69,7 +69,9 @@ if (process.argv.includes('--queue')) {
     }
   }
   const teamEnglish=Object.fromEntries(review.entries.filter(row=>row.english).map(row=>[row.name,row.english]));
-  const catalog = {schemaVersion:1,generatedAt:new Date().toISOString(),teams,teamEnglish,players};
+  const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
+  const unchanged = ['teams','teamEnglish','players'].every(key=>JSON.stringify(previous[key])===JSON.stringify({teams,teamEnglish,players}[key]));
+  const catalog = {schemaVersion:1,generatedAt:unchanged && previous.generatedAt ? previous.generatedAt : new Date().toISOString(),teams,teamEnglish,players};
   write('dist/team-ko.json',teams);
   write('dist/name-catalog.json',catalog);
   console.log(`Approved name catalog: ${Object.keys(teams).length} team aliases, ${Object.keys(players).length} player aliases.`);

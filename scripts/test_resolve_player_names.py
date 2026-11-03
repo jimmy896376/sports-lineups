@@ -91,6 +91,19 @@ class NameVerification(unittest.TestCase):
             self.assertEqual(search.call_count,2)
             report=json.loads((root/'scripts/player-name-run-report.json').read_text())
             self.assertEqual((report['searchChecked'],report['approved']),(2,1))
+    def test_main_stops_repeated_google_rate_limit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
+            now=r.dt.datetime.now(r.dt.timezone.utc).isoformat()
+            rows=[{'name':f'Blocked Player {i}','korean':f'Blocked Player {i}',
+                   'team':'Test FC','kind':'lineup','eventDate':now} for i in range(5)]
+            (root/'scripts/player-name-live-inventory.json').write_text(json.dumps({'at':now,'records':rows}))
+            (root/'dist/team-ko.json').write_text('{}')
+            report={'searches':{'google':{'status':'unavailable','httpStatus':403}},'status':'needs-verification'}
+            with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
+                r.main()
+            self.assertEqual(search.call_count,3)
+            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['googleBlocked'])
     def test_namu_roster_rechecks_names_before_google_retry(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

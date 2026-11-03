@@ -272,7 +272,7 @@ function injuryNames(prediction) {
   return ['away','home'].flatMap(side=>[...(prediction?.injuryDetails?.[side]||[]),...(prediction?.injuries?.[side]||[])].map(record=>typeof record==='string'?record:record?.name||record?.player||''));
 }
 function availability(value) {
-  const flags={DTD:['DTD','출전 불투명'],OUT:['Out','결장'],IR:['IR','부상자 명단'],'IR-LT':['IR-LT','장기 부상자 명단'],GTD:['GTD','경기 직전 결정']};
+  const flags={DTD:['DTD','출전 불투명'],QUES:['Questionable','출전 불투명'],OUT:['Out','결장'],IR:['IR','부상자 명단'],'IR-LT':['IR-LT','장기 부상자 명단'],GTD:['GTD','경기 직전 결정']};
   const match=flags[String(value||'').toUpperCase()];
   return match?label(...[match[0],match[1]]):value;
 }

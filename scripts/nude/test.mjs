@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {buildFeed} from './export.mjs';
+const root=process.argv[2]||process.cwd(),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const source=read('dist/projections.json'),catalog=read('dist/name-catalog.json'),teams=read('dist/team-ko.json'),config=read('scripts/nude/config.json');catalog.teamCodes=read('scripts/nude/team-codes.json');
+const feed=buildFeed(source,catalog,teams,config,'test'),validate=globalThis.NudeLineupContract.validate;
+assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);
+assert.throws(()=>validate({...feed,schemaVersion:2}));
+assert.throws(()=>validate({...feed,asOf:'not-date'}));
+assert.throws(()=>validate({...feed,pollSeconds:0}));
+if(feed.matches.length){
+assert.throws(()=>validate({...feed,matches:[feed.matches[0],feed.matches[0]]}));
+const broken=structuredClone(feed);broken.matches[0].teams[0].side='away';assert.throws(()=>validate(broken));
+const newLeague=structuredClone(feed);newLeague.matches[0].league='new-league';newLeague.matches[0].leagueName='새 리그';assert.equal(validate(newLeague).matches.length,feed.matches.length);
+const enriched=structuredClone(source);
+enriched.items[0].logos={home:'https://example.com/home.png',away:'https://example.com/away.png'};
+enriched.items[0].recentForm={home:['W','L','W','W','D']};
+enriched.items[0].records={home:{record:'4-1'}};
+enriched.items[0].startingPitchers={home:'Unknown Pitcher'};
+const first=buildFeed(enriched,catalog,teams,config,'test').matches.find(m=>m.league===enriched.items[0].league&&m.kickoff===Date.parse(enriched.items[0].kickoff));
+assert.deepEqual(first.logos,enriched.items[0].logos);
+assert.deepEqual(first.recentForm,enriched.items[0].recentForm);
+assert.deepEqual(first.records,enriched.items[0].records);
+assert.equal(first.teams[0].pitcher,'Unknown Pitcher');
+}
+const unknown=structuredClone(source);unknown.items.push({...source.items[0],league:'unknown'});assert.throws(()=>buildFeed(unknown,catalog,teams,config,'test'));
+assert.throws(()=>buildFeed({...source,items:[],domestic:{}},catalog,teams,{...config,allowEmptyFeed:false},'test'));
+assert.equal(buildFeed({...source,items:[],domestic:{}},catalog,teams,{...config,allowEmptyFeed:true},'test').matches.length,0);
+console.log(`PASS all ${feed.matches.length} matches; contract, identity, unknown league, empty protection, new league compatibility`);

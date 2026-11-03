@@ -79,7 +79,10 @@ if (process.argv.includes('--queue')) {
   Object.assign(context,{fetch(){},atob,TextDecoder,Uint8Array});
   vm.runInContext(fs.readFileSync(new URL('dist/win-probability.js',root),'utf8'),context);
   vm.runInContext(fs.readFileSync(new URL('dist/app.js',root),'utf8').replace(/loadGames\(\);\s*$/,''),context);
-  const manual={...vm.runInContext('footballKo',context),...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context),...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
+  const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
+  const appNames={...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context)};
+  for(const name of Object.keys(appNames)) if(previous.players?.[name]) appNames[name]=previous.players[name];
+  const manual={...vm.runInContext('footballKo',context),...appNames,...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
   const normalized=name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
   const manualKeys=new Set(Object.keys(manual).map(normalized));
   const players = {...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};
@@ -121,7 +124,6 @@ if (process.argv.includes('--queue')) {
   addObservedAliases(players,observed);
   addObservedAliases(teams,observedTeams);
   const teamEnglish=Object.fromEntries(review.entries.filter(row=>row.english).map(row=>[row.name,row.english]));
-  const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
   const unchanged = ['teams','teamEnglish','players'].every(key=>JSON.stringify(previous[key])===JSON.stringify({teams,teamEnglish,players}[key]));
   const catalog = {schemaVersion:1,generatedAt:unchanged && previous.generatedAt ? previous.generatedAt : new Date().toISOString(),teams,teamEnglish,players};
   write('dist/team-ko.json',teams);

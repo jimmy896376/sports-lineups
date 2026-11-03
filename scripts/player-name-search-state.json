@@ -24699,14 +24699,16 @@
         "google": {
           "url": "https://www.google.com/search?q=Jarace+Walker+Indiana+Pacers+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T19:41:03.186185+00:00",
-      "nextCheckAt": "2026-11-03T01:41:03.186185+00:00",
+      "checkedAt": "2026-11-03T01:43:20.378960+00:00",
+      "nextCheckAt": "2026-11-03T07:43:20.378960+00:00",
       "namuPolicy": "namuwiki-team-roster-v1",
       "nextNamuCheckAt": "2026-11-03T19:41:03.186185+00:00"
     },
@@ -54719,7 +54721,7 @@
     },
     "jose silva": {
       "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T01:41:03.186185+00:00",
+      "nextNamuCheckAt": "2026-11-03T07:43:20.378960+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jos%C3%A9+Silva+Gil+Vicente+-site%3Awikipedia.org&hl=ko",
@@ -54735,7 +54737,7 @@
     },
     "tidjany toure": {
       "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T01:41:03.186185+00:00",
+      "nextNamuCheckAt": "2026-11-03T07:43:20.378960+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Tidjany+Tour%C3%A9+Gil+Vicente+-site%3Awikipedia.org&hl=ko",
@@ -54957,6 +54959,42 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:46:54.038481+00:00",
       "nextCheckAt": "2026-11-03T06:46:54.038481+00:00"
+    },
+    "baylor scheierman": {
+      "namuPolicy": "namuwiki-team-roster-v1",
+      "nextNamuCheckAt": "2026-11-04T01:43:20.378960+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Baylor+Scheierman+Boston+Celtics+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v3",
+      "checkedAt": "2026-11-03T01:43:20.378960+00:00",
+      "nextCheckAt": "2026-11-03T07:43:20.378960+00:00"
+    },
+    "brook lopez": {
+      "namuPolicy": "namuwiki-team-roster-v1",
+      "nextNamuCheckAt": "2026-11-04T01:43:20.378960+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Brook+Lopez+LA+Clippers+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v3",
+      "checkedAt": "2026-11-03T01:43:20.378960+00:00",
+      "nextCheckAt": "2026-11-03T07:43:20.378960+00:00"
     }
   }
 }

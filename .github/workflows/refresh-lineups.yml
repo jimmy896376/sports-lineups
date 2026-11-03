@@ -45,8 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
@@ -71,6 +69,8 @@ jobs:
           node-version: '22'
       - name: Validate game outcome estimates
         run: node scripts/check-win-probability.mjs
+      - name: Build current Korean name catalog
+        run: node scripts/build-name-catalog.mjs
       - name: Audit Korean names across all leagues
         run: node scripts/check-player-names.mjs --audit
       - name: Collect names from live lineup and injury renderers

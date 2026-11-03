@@ -97,6 +97,10 @@ def scrape_page(league, code, kind):
             continue
         logos = {side: 'https://a.espncdn.com/i/teamlogos/soccer/500/493.png'
                  for side, name in names.items() if league == 'ucl' and 'Shakhtar' in name}
+        for role, team_html in re.findall(r'<(?:a|div)[^>]*class="lineup__team is-(home|visit)"[^>]*>(.*?)<div class="lineup__abbr">', block, re.S):
+            image = re.search(r'<img[^>]*class="lineup__logo"[^>]*src="([^"]+)"', team_html)
+            if image and image.group(1).startswith('https://'):
+                logos['away' if role == 'visit' else 'home'] = html.unescape(image.group(1))
         results.append({'league': league, 'kickoff': kickoff, 'teams': teams, 'names': names, 'logos': logos, 'lineups': rosters, 'injuries': injuries, 'injuryDetails': injury_details, 'statuses': statuses, 'source': source_url(league, code, kind)})
     return results
 

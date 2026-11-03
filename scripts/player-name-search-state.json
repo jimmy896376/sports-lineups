@@ -24476,32 +24476,36 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Anthony+Correia+Acad%C3%A9mico+de+Viseu&hl=ko",
+          "url": "https://www.google.com/search?q=Anthony+Correia+Acad%C3%A9mico+de+Viseu+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T08:47:04.072893+00:00",
-      "nextCheckAt": "2026-11-01T14:47:04.072893+00:00"
+      "checkedAt": "2026-11-03T00:46:54.038481+00:00",
+      "nextCheckAt": "2026-11-03T06:46:54.038481+00:00"
     },
     "cihan kahraman": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Cihan+Kahraman+Acad%C3%A9mico+de+Viseu&hl=ko",
+          "url": "https://www.google.com/search?q=Cihan+Kahraman+Acad%C3%A9mico+de+Viseu+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T08:47:04.072893+00:00",
-      "nextCheckAt": "2026-11-01T14:47:04.072893+00:00"
+      "checkedAt": "2026-11-03T00:46:54.038481+00:00",
+      "nextCheckAt": "2026-11-03T06:46:54.038481+00:00"
     },
     "ewerton": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -54935,6 +54939,24 @@
       "policy": "precollect-names-v3",
       "checkedAt": "2026-11-03T00:40:32.896716+00:00",
       "nextCheckAt": "2026-11-03T06:40:32.896716+00:00"
+    },
+    "jamal cain": {
+      "namuPolicy": "namuwiki-team-roster-v1",
+      "nextNamuCheckAt": "2026-11-04T00:46:54.038481+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jamal+Cain+Orlando+Magic+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v3",
+      "checkedAt": "2026-11-03T00:46:54.038481+00:00",
+      "nextCheckAt": "2026-11-03T06:46:54.038481+00:00"
     }
   }
 }

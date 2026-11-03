@@ -11,6 +11,19 @@ spec.loader.exec_module(module)
 
 
 class WKBLOfficialSchedule(TestCase):
+    def test_missing_scraped_side_keeps_same_game_forecast(self):
+        def game(event_id, away, home_players, away_players):
+            return {'event': {'id': event_id}, 'prediction': {
+                'names': {'home': '신한은행', 'away': away},
+                'lineups': {'home': home_players, 'away': away_players}}}
+        old = game('match-1', '우리은행', [{'name': '홈'}], [{'name': '원정'}])
+        current = game('match-1', '우리은행', [], [{'name': '새 원정'}])
+        wrong_team = game('match-1', 'KB스타즈', [], [])
+        module.restore_missing_lineups([current, wrong_team], [old])
+        self.assertEqual(current['prediction']['lineups']['home'], [{'name': '홈'}])
+        self.assertEqual(current['prediction']['lineups']['away'], [{'name': '새 원정'}])
+        self.assertEqual(wrong_team['prediction']['lineups']['home'], [])
+
     def test_projected_players_use_current_roster_and_verified_minutes(self):
         def table(index, kind, players, minutes):
             rows = ''.join('<tr><td><a><span class="font-medium">' + name +

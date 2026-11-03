@@ -43,7 +43,10 @@ CODE_ALIASES = {
 }
 NAME_NOISE = {'fc', 'cf', 'sc', 'afc', 'ac', 'ssc', 'club', 'de', 'the', 'cd', 'ud', 'rc', 'sv', 'vfl', 'vfb', 'tsg', 'bv', 'ogc', 'as'}
 NAME_ALIASES = {'newyorkredbulls': 'redbullnewyork', 'losangelesfootball': 'lafc', 'losangelesgalaxy': 'lagalaxy',
-                'glimt': 'bodoglimt', 'lask': 'lasklinz'}
+                'glimt': 'bodoglimt', 'lask': 'lasklinz', 'deportivoalaves': 'alaves',
+                'hamburger': 'hamburg', 'monchengladbach': 'borussiamonchengladbach',
+                'fsvmainz05': 'mainz', '07elversberg': 'elversberg',
+                '1koln': 'cologne', '1899hoffenheim': 'hoffenheim'}
 
 
 class Blocked(Exception):

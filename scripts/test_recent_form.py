@@ -65,6 +65,13 @@ class RecentForm(TestCase):
             item = {'league': 'mls', 'kickoff': kickoff, 'teams': {'home': 'X1', 'away': 'X2'}, 'names': {'home': home, 'away': away}}
             self.assertIsNotNone(module.match_event(item, board), home)
 
+    def test_verified_club_aliases_match_espn_directory(self):
+        for source, espn in [('Deportivo Alaves', 'Alavés'), ('Hamburger SV', 'Hamburg SV'),
+                             ('Mönchengladbach', 'Borussia Mönchengladbach'),
+                             ('FSV Mainz 05', 'Mainz'), ('SV 07 Elversberg', 'SV Elversberg'),
+                             ('1. FC Köln', 'FC Cologne'), ('1899 Hoffenheim', 'TSG Hoffenheim')]:
+            self.assertEqual(module.name_key(source), module.name_key(espn), source)
+
     def test_shared_abbreviation_does_not_swap_manchester_and_bayern(self):
         item = {'league': 'ucl', 'kickoff': '2026-11-03T20:00:00Z',
                 'teams': {'home': 'MUN', 'away': 'ROM'},

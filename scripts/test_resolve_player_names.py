@@ -24,6 +24,16 @@ class NameVerification(unittest.TestCase):
         self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720?league=NHL')
         self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nba'}],get),[])
 
+    def test_scorebase_nhl_conflicting_names_stay_unverified(self):
+        league=r.Page('<a href="/teams/1">A</a><a href="/teams/2">B</a><a href="/teams/3">C</a>')
+        names={'1':'매튜 나이스','2':'매슈 나이스','3':'매튜 나이스'}
+        def get(url):
+            if url.endswith('/leagues/NHL'):
+                return league
+            name=names[url.rsplit('/',1)[-1]]
+            return r.Page(f'<a href="/players/1?league=NHL"><img alt="Matthew Knies"><div class="font-semibold">{name}</div></a>')
+        self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nhl'}],get),[])
+
     row = {'name': 'Moritz Nicolas', 'team': 'Borussia Monchengladbach', 'league': 'bundesliga'}
     def page(self, korean='모리츠 니콜라스', english='Moritz Nicolas', team='Borussia Monchengladbach'):
         return r.Page(f'<title>{korean} - 선수 프로필</title><h1>{korean}</h1><p>{korean} ({english}) {team}</p>')

@@ -369,9 +369,13 @@ def main():
         state['players'][key] = {**state['players'].get(key, {}), **report, 'policy': POLICY, 'checkedAt': now.isoformat(), 'nextCheckAt': (now + delay).isoformat()}
         write(approved_path, approved)
         write(state_path, state)
-        if all(report['searches'].get(engine, {}).get('status', 'unavailable') == 'unavailable' for engine in ('google', 'bing')):
+        statuses = {engine: report['searches'].get(engine, {}).get('status', 'unavailable') for engine in ('google', 'bing')}
+        if all(status == 'unavailable' for status in statuses.values()):
             search_unavailable += 1
             if search_unavailable >= 3: break
+        elif statuses['google'] == 'unavailable' and statuses['bing'] == 'no-readable-trusted-results':
+            search_unavailable += 1
+            if search_unavailable >= 5: break
         else:
             search_unavailable = 0
         time.sleep(2)

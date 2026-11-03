@@ -117,6 +117,19 @@ class NameVerification(unittest.TestCase):
                 r.main()
             self.assertEqual(search.call_count,3)
             self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
+    def test_main_stops_when_bing_has_no_readable_sources(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
+            now=r.dt.datetime.now(r.dt.timezone.utc).isoformat()
+            rows=[{'name':f'Blocked Player {i}','korean':f'Blocked Player {i}',
+                   'team':'Test FC','kind':'lineup','eventDate':now} for i in range(8)]
+            (root/'scripts/player-name-live-inventory.json').write_text(json.dumps({'at':now,'records':rows}))
+            (root/'dist/team-ko.json').write_text('{}')
+            report={'searches':{'google':{'status':'unavailable'},'bing':{'status':'no-readable-trusted-results'}},'status':'needs-verification'}
+            with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
+                r.main()
+            self.assertEqual(search.call_count,5)
+            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
     def test_namu_roster_rechecks_names_before_google_retry(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

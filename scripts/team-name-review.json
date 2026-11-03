@@ -2603,6 +2603,20 @@
       "league": "mls",
       "source": "https://www.flashscore.co.kr/soccer/usa/mls/",
       "method": "Verified Korean club spelling and provider alias against Korean league schedule"
+    },
+    {
+      "name": "HC Sochi",
+      "korean": "HC 소치",
+      "league": "khl",
+      "source": "https://www.scorebase.kr/teams/612841",
+      "method": "Verified Korean club name and provider alias"
+    },
+    {
+      "name": "FC Shakhtar Donetsk",
+      "korean": "FC 샤흐타르 도네츠크",
+      "league": "ucl",
+      "source": "https://www.google.com/search?q=FC+Shakhtar+Donetsk+%EC%83%A4%ED%9D%90%ED%83%80%EB%A5%B4+%EB%8F%84%EB%84%A4%EC%B8%A0%ED%81%AC",
+      "method": "Verified provider alias against reviewed Shakhtar Donetsk club"
     }
   ],
   "policy": "Display verified full club names, including club suffixes, founding numbers and nicknames; preserve exact provider aliases. Never promote unrelated search headings."

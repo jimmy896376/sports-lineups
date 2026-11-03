@@ -11,6 +11,19 @@ spec.loader.exec_module(module)
 
 
 class KBLProjectedLineups(TestCase):
+    def test_wkbl_includes_day_after_tomorrow_only(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 4, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        games = [
+            {'date': f'2026-11-{day:02}T10:00:00Z', 'home': 'KB스타즈', 'away': '우리은행'}
+            for day in (6, 7)
+        ]
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', return_value=''), patch.object(module, 'parse_wkbl_schedule', return_value=games):
+            rows = module.scrape_wkbl_official()
+        self.assertEqual([row['event']['date'] for row in rows], ['2026-11-06T10:00:00Z'])
+
     def test_schedule_excludes_easl_and_includes_day_after_tomorrow(self):
         class Clock(datetime):
             @classmethod

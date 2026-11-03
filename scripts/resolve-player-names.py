@@ -114,9 +114,11 @@ def fetch_page(url):
         if len(raw) > 2_000_000:
             raise ValueError('page-too-large')
         page = Page(raw.decode(response.headers.get_content_charset() or 'utf-8', 'replace'))
-    if re.search(r'unusual traffic|verify you are human|자동입력 방지문자|비정상적인 접근|보안 확인을 완료', page.text, re.I):
+    if re.search(r'unusual traffic|verify you are human|자동입력 방지문자|비정상적인 접근|보안 확인을 완료|마지막 한 단계|계속하려면 아래 과제 해결|one last step|solve the puzzle', page.text, re.I):
         raise ValueError('search-challenge')
     if urllib.parse.urlsplit(url).hostname in SEARCH_HOSTS and not search_links(page, 'google') and not page.panel_titles and re.search(r'Google Search.*(?:이동하지 않는 경우|redirected)', page.text, re.I):
+        raise ValueError('search-results-unavailable')
+    if urllib.parse.urlsplit(url).hostname == 'www.bing.com' and not re.search(r'id=["\']b_results["\']', page.raw, re.I) and not re.search(r'검색 결과가 없습니다|no results found', page.text, re.I):
         raise ValueError('search-results-unavailable')
     return page
 

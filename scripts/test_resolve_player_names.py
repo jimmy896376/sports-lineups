@@ -41,6 +41,19 @@ class NameVerification(unittest.TestCase):
         with patch.object(r.urllib.request,'build_opener',return_value=opener):
             with self.assertRaisesRegex(ValueError,'search-results-unavailable'):
                 r.fetch_page('https://www.google.com/search?q=Moritz+Nicolas')
+    def test_bing_challenge_and_empty_shell_are_unavailable(self):
+        response=MagicMock()
+        response.__enter__.return_value=response
+        response.headers.get.return_value='text/html'
+        response.headers.get_content_charset.return_value='utf-8'
+        opener=MagicMock();opener.open.return_value=response
+        with patch.object(r.urllib.request,'build_opener',return_value=opener):
+            response.read.return_value='<html>마지막 한 단계 계속하려면 아래 과제 해결</html>'.encode()
+            with self.assertRaisesRegex(ValueError,'search-challenge'):
+                r.fetch_page('https://www.bing.com/search?q=Moritz+Nicolas')
+            response.read.return_value=b'<html><title>Bing Search</title></html>'
+            with self.assertRaisesRegex(ValueError,'search-results-unavailable'):
+                r.fetch_page('https://www.bing.com/search?q=Moritz+Nicolas')
     def test_google_knowledge_panel(self):
         page=r.Page('<div data-attrid="title"><span>모리츠 니콜라스</span></div><p>Moritz Nicolas Borussia Monchengladbach</p>')
         self.assertEqual(r.google_result(self.row,'https://www.google.com/search?q=test',page,{})['korean'],'모리츠 니콜라스')

@@ -77,6 +77,18 @@ class RecentForm(TestCase):
             {'homeAway': 'away', 'team': {'abbreviation': 'ROMA', 'displayName': 'AS Roma'}}]}]}
         self.assertEqual(module.match_event(item, [wrong, right])['id'], 'united')
 
+    def test_verified_scoreboard_logos_follow_team_sides(self):
+        board = fixture('espn-scoreboard-nba-20261102.json')
+        event = module.match_event(NBA_ITEM, board['events'])
+        for side in event['competitions'][0]['competitors']:
+            side['team']['logo'] = 'https://example.com/' + side['team']['abbreviation'] + '.png'
+        def fetch(url):
+            return board if 'scoreboard?' in url else fixture('espn-summary-nba-401909907.json')
+        payload = {'items': [dict(NBA_ITEM)]}
+        module.enrich_recent_form(payload, {}, fetch, pause=0)
+        self.assertEqual(payload['items'][0]['logos'], {
+            'home': 'https://example.com/CLE.png', 'away': 'https://example.com/OKC.png'})
+
     def test_match_requires_both_teams_and_nearest_kickoff(self):
         def event(event_id, kickoff, away):
             return {'id': event_id, 'date': kickoff, 'competitions': [{'competitors': [
@@ -119,10 +131,11 @@ class RecentForm(TestCase):
         stats = module.enrich_recent_form(again, payload, fake_espn(urls), now=module.time.time() + 900, pause=0)
         self.assertEqual(urls, [])
         self.assertEqual(again['items'][0]['recentForm'], item['recentForm'])
-        # 4 hours later: only the summary is read again (event id is remembered)
+        # 4 hours later: missing logos trigger a scoreboard retry before the summary.
         stats = module.enrich_recent_form({'items': [dict(NBA_ITEM)]}, payload, fake_espn(urls), now=module.time.time() + 4 * 3600, pause=0)
-        self.assertEqual(len(urls), 1)
-        self.assertIn('summary?event=401909907', urls[0])
+        self.assertEqual(len(urls), 2)
+        self.assertIn('scoreboard?dates=20261102', urls[0])
+        self.assertIn('summary?event=401909907', urls[1])
 
     def test_one_failure_leaves_only_that_match_empty(self):
         urls = []

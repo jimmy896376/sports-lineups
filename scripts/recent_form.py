@@ -74,13 +74,15 @@ def item_key(item):
 def side_matches(item, side, competitor):
     team = competitor.get('team') or {}
     wanted = name_key((item.get('names') or {}).get(side))
-    if wanted:
+    if wanted and ESPN_PATHS.get(item.get('league'), '').startswith('soccer/'):
         names = {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')}
         names.discard('')
         return wanted in names
     code = str((item.get('teams') or {}).get(side) or '').upper()
     code = CODE_ALIASES.get(item.get('league'), {}).get(code, code)
-    return bool(code and code == str(team.get('abbreviation') or '').upper())
+    if code and code == str(team.get('abbreviation') or '').upper():
+        return True
+    return bool(wanted and wanted in {name_key(team.get(k)) for k in ('displayName', 'shortDisplayName', 'name', 'location')})
 
 
 def match_event(item, events):
@@ -184,7 +186,8 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
             continue
         stats['items'] += 1
         old = before.get(item_key(item))
-        needs_logos = item.get('league') in ('ucl', 'uel', 'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'eredivisie', 'jupiler', 'primeira', 'scottish', 'j1', 'mls') and not all((old or {}).get('logos', {}).get(side) for side in ('home', 'away'))
+        known_logos = {**((old or {}).get('logos') or {}), **(item.get('logos') or {})}
+        needs_logos = not all(known_logos.get(side) for side in ('home', 'away')) and (checked_age(old) is None or checked_age(old) > REFRESH_SECONDS)
         if not needs_logos and keep_previous(item, old, REFRESH_SECONDS):
             stats['reused'] += 1
         else:
@@ -198,16 +201,22 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                         stats['scoreboardCalls'] += 1
                     event = match_event(item, boards[board_key])
                     event_id = event and str(event.get('id'))
+                if event:
+                    competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
+                    logos = {side: (next((c for c in competitors if c.get('homeAway') == side), {}).get('team') or {}).get('logo') for side in ('home', 'away')}
+                    item['logos'] = {**known_logos, **{side: logo for side, logo in logos.items() if logo}}
                 if not event_id:
                     stats['notFound'] += 1
                     keep_previous(item, old, KEEP_STALE_SECONDS)
+                elif old and checked_age(old) is not None and checked_age(old) <= REFRESH_SECONDS:
+                    current_logos = item.get('logos')
+                    keep_previous(item, old, REFRESH_SECONDS)
+                    item['logos'] = {**(item.get('logos') or {}), **(current_logos or {})}
+                    item['espnEventId'] = event_id
+                    stats['reused'] += 1
                 else:
                     summary = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event_id}')
                     stats['summaryCalls'] += 1
-                    if event:
-                        competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
-                        logos = {side: (next((c for c in competitors if c.get('homeAway') == side), {}).get('team') or {}).get('logo') for side in ('home', 'away')}
-                        item['logos'] = {**(item.get('logos') or {}), **{side: logo for side, logo in logos.items() if logo}}
                     sides = read_summary(summary, item['kickoff'])
                     item['espnEventId'] = event_id
                     item['formCheckedAt'] = datetime.fromtimestamp(now, timezone.utc).isoformat().replace('+00:00', 'Z')

@@ -1097,6 +1097,19 @@ def scrape_wkbl_official():
     return entries
 
 
+def restore_missing_lineups(entries, previous_entries):
+    old_games = {entry.get('event', {}).get('id'): entry for entry in previous_entries}
+    for entry in entries:
+        old = old_games.get(entry.get('event', {}).get('id'))
+        if not old or old.get('prediction', {}).get('names') != entry.get('prediction', {}).get('names'):
+            continue
+        current_lines = entry.get('prediction', {}).get('lineups', {})
+        old_lines = old.get('prediction', {}).get('lineups', {})
+        for side in ('home', 'away'):
+            if not current_lines.get(side) and old_lines.get(side):
+                current_lines[side] = old_lines[side]
+
+
 def main():
     path = ROOT / 'dist' / 'projections.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
@@ -1150,6 +1163,7 @@ def main():
             print(key + ' source unavailable:', error)
             payload['domestic'][key] = [entry for entry in previous.get('domestic', {}).get(key, []) if within_window(entry.get('event', {}), 'date')]
             source_status[key] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get(key, {}).get('checkedAt')}
+        restore_missing_lineups(payload['domestic'][key], previous.get('domestic', {}).get(key, []))
     if not any(status['fresh'] for status in source_status.values()):
         raise SystemExit('No lineup sources refreshed; keeping the current snapshot')
     enrich_injury_details(payload)

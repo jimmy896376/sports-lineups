@@ -357,7 +357,7 @@ def scrape_fotmob_kleague(league_id, key):
     """Use FotMob schedule and its lastStarting11 roster for K League projections."""
     from urllib.parse import urlencode
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    end = today.fromordinal(today.toordinal() + 2)
+    end = today.fromordinal(today.toordinal() + 3)
     query = urlencode({'id': league_id, 'ccode3': 'KOR', 'season': today.year})
     data = fetch_json('https://www.fotmob.com/api/data/leagues?' + query)
     events = []
@@ -829,7 +829,7 @@ def kbl_recent_and_records(detail):
 def scrape_kbl_statgg():
     """Use KBL schedule and season player minutes as a transparent starter projection."""
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    end = today.fromordinal(today.toordinal() + 2)
+    end = today.fromordinal(today.toordinal() + 3)
     schedule = fetch_text(f'https://statgg.com/ko/kbl/schedule?date={today.isoformat()}')
     links = re.findall(r'<a[^>]+href="(/ko/kbl/matches/[^\"]+)"[^>]*>(.*?)</a>', schedule, re.S)
     events = []
@@ -841,6 +841,9 @@ def scrape_kbl_statgg():
         names = re.findall(r'<span class="break-keep[^\"]*">([^<]+)</span>', card)
         time_match = re.search(r'<span class="stat-num text-fg-muted">(\d{1,2}:\d{2})</span>', card)
         if len(names) != 2 or not time_match or '예정' not in card:
+            continue
+        # StatGG's KBL route also lists EASL fixtures involving KBL clubs.
+        if any(name not in KBL_LOGO_CODES for name in names):
             continue
         card_index = schedule.find(f'href="{path}"')
         day_match = list(re.finditer(r'<span class="stat-num tabular-nums">(\d{4}\.\d{2}\.\d{2})', schedule[:card_index]))

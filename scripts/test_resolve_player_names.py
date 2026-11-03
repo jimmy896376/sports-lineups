@@ -103,7 +103,7 @@ class NameVerification(unittest.TestCase):
             with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
                 r.main()
             self.assertEqual(search.call_count,3)
-            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['googleUnavailable'])
+            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
     def test_namu_roster_rechecks_names_before_google_retry(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
@@ -138,16 +138,33 @@ class NameVerification(unittest.TestCase):
         self.assertIsNone(r.verify(self.row, proof))
     def test_search_excerpt_not_evidence(self):
         self.assertEqual(r.evidence(self.row, 'https://namu.moe/w/A', r.Page('<p>No player information</p>'), '모리츠 니콜라스', {'google'}, {}), [])
-    def test_only_google_attempted_with_failure(self):
+    def test_google_and_bing_attempted_with_failure(self):
         calls=[]
         def get(url):
             calls.append(url)
             raise ValueError('search-challenge')
         approved, report=r.resolve(self.row,get)
         self.assertIsNone(approved)
-        self.assertEqual(len(calls),1)
-        self.assertEqual(set(report['searches']),{'google'})
+        self.assertEqual(len(calls),2)
+        self.assertEqual(set(report['searches']),{'google','bing'})
         self.assertTrue(all(x['status']=='unavailable' for x in report['searches'].values()))
+    def test_bing_recovers_verified_name_when_google_unavailable(self):
+        sources=['https://namu.moe/w/Moritz','https://www.transfermarkt.co.kr/Moritz']
+        def tracked(url):
+            target='a1'+r.base64.urlsafe_b64encode(url.encode()).decode().rstrip('=')
+            return 'https://www.bing.com/ck/a?u='+target
+        def get(url):
+            if 'google.com/search' in url:
+                raise ValueError('search-challenge')
+            if 'bing.com/search' in url:
+                return r.Page(''.join(f'<a href="{tracked(source)}">모리츠 니콜라스</a>' for source in sources)
+                              + f'<a href="{tracked("https://ko.wikipedia.org/wiki/Moritz")}">Wikipedia</a>')
+            return self.page()
+        approved, report=r.resolve(self.row,get)
+        self.assertEqual(approved['korean'],'모리츠 니콜라스')
+        self.assertEqual(len(approved['sources']),2)
+        self.assertEqual(report['searches']['google']['status'],'unavailable')
+        self.assertEqual(report['searches']['bing']['status'],'results')
     def test_safe_links_and_html(self):
         page=r.Page('<script>fake player</script><a href="/url?q=https%3A%2F%2Fko.wikipedia.org%2Fwiki%2FA">모리츠 니콜라스</a><a href="http://127.0.0.1/private">bad</a>')
         self.assertNotIn('fake player',page.text)

@@ -1,4 +1,5 @@
 """Resolve names from public search pages; never transliterate or bypass search challenges."""
+import base64
 import datetime as dt
 import hashlib
 from html import unescape
@@ -21,8 +22,8 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
            'yna.co.kr', 'yonhapnews.co.kr', 'newsis.com', 'news1.kr', 'sportsseoul.com',
            'sportschosun.com', 'sportalkorea.com', 'osen.co.kr', 'xportsnews.com', 'spotvnews.co.kr',
            'mk.co.kr', 'hankyung.com', 'chosun.com', 'donga.com', 'khan.co.kr', 'kbs.co.kr', 'sbs.co.kr')
-SEARCH_HOSTS = ('www.google.com',)
-POLICY = 'precollect-names-v3'
+SEARCH_HOSTS = ('www.google.com', 'www.bing.com')
+POLICY = 'precollect-names-v4'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100
@@ -126,6 +127,12 @@ def search_links(page, engine):
         if engine == 'google' and url.startswith('/url?'):
             query = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
             url = (query.get('q') or query.get('url') or [''])[0]
+        if engine == 'bing' and urllib.parse.urlsplit(url).hostname == 'www.bing.com':
+            target = (urllib.parse.parse_qs(urllib.parse.urlsplit(url).query).get('u') or [''])[0]
+            try:
+                url = base64.urlsafe_b64decode(target[2:] + '===').decode() if target.startswith('a1') else ''
+            except (ValueError, UnicodeError, base64.binascii.Error):
+                url = ''
         if source_domain(url):
             url = urllib.parse.urldefrag(url)[0]
             if len(title) > len(links.get(url, '')):
@@ -238,7 +245,8 @@ def namu_team_roster(team, korean_team, rows, get=fetch_page):
 
 def resolve(row, get=fetch_page, team_dictionary=None):
     query = row['name'] + ' ' + (row.get('team') or '') + ' -site:wikipedia.org'
-    urls = {'google': 'https://www.google.com/search?' + urllib.parse.urlencode({'q': query, 'hl': 'ko'})}
+    urls = {'google': 'https://www.google.com/search?' + urllib.parse.urlencode({'q': query, 'hl': 'ko'}),
+            'bing': 'https://www.bing.com/search?' + urllib.parse.urlencode({'q': row['name'] + ' 한글 이름 -site:wikipedia.org', 'setlang': 'ko'})}
     found, searches, errors = {}, {}, []
     for engine, url in urls.items():
         try:
@@ -316,7 +324,7 @@ def main():
         record = state['players'].get(normalize(row['name']), {})
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
-    checked = added = namu_checked = namu_approved = google_unavailable = 0
+    checked = added = namu_checked = namu_approved = search_unavailable = 0
     namu_errors = []
     for team, rows in list(groups.items())[:MAX_NAMU_TEAMS]:
         if time.monotonic() >= deadline: break
@@ -359,15 +367,15 @@ def main():
         state['players'][key] = {**state['players'].get(key, {}), **report, 'policy': POLICY, 'checkedAt': now.isoformat(), 'nextCheckAt': (now + delay).isoformat()}
         write(approved_path, approved)
         write(state_path, state)
-        if report['searches'].get('google', {}).get('status') == 'unavailable':
-            google_unavailable += 1
-            if google_unavailable >= 3: break
+        if all(report['searches'].get(engine, {}).get('status', 'unavailable') == 'unavailable' for engine in ('google', 'bing')):
+            search_unavailable += 1
+            if search_unavailable >= 3: break
         else:
-            google_unavailable = 0
+            search_unavailable = 0
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'eligible': len(eligible), 'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
-               'searchChecked': checked, 'approved': added, 'googleUnavailable': google_unavailable >= 3,
+               'searchChecked': checked, 'approved': added, 'searchUnavailable': search_unavailable >= 3,
                'namuErrors': namu_errors,
                'collectionFailures': len(inventory.get('failures', [])), 'policy': 'Unverified names remain English'}
     write(ROOT / 'scripts/player-name-run-report.json', summary)

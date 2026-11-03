@@ -15,7 +15,7 @@ class TeamLogos(TestCase):
     def test_shakhtar_logo_is_in_legacy_projection(self):
         def team(side, code, name):
             players = ''.join(f'<li class="lineup__player"><a title="Player {i}"></a></li>' for i in range(11))
-            return (f'<a class="lineup__team is-{side}"><div class="lineup__abbr">{code}</div></a>'
+            return (f'<a class="lineup__team is-{side}">' + (f'<img class="lineup__logo" src="https://assets.rotowire.com/images/teamlogo/soccer/Sporting-CP.png?v=11">' if code == 'LIS' else '') + f'<div class="lineup__abbr">{code}</div></a>'
                     f'<div class="lineup__mteam is-{side}">{name}</div>'
                     f'<ul class="lineup__list is-{side}">{players}</ul>')
         page = ('<div class="lineup is-soccer"><div class="lineup__time">November 3 12:45 PM ET</div>'
@@ -24,6 +24,7 @@ class TeamLogos(TestCase):
         with patch('urllib.request.urlopen', return_value=response):
             row = projections.scrape_page('ucl', 'UCL', 'soccer')[0]
         self.assertEqual(row['logos']['home'], 'https://a.espncdn.com/i/teamlogos/soccer/500/493.png')
+        self.assertEqual(row['logos']['away'], 'https://assets.rotowire.com/images/teamlogo/soccer/Sporting-CP.png?v=11')
 
     def test_khl_uses_fixture_images(self):
         game = {'event': {'id': 1, 'type_id': 24, 'start_at': 1793635200000,

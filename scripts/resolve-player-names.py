@@ -1,5 +1,6 @@
 """Resolve names from public search pages; never transliterate or bypass search challenges."""
 import base64
+from collections import Counter
 import datetime as dt
 import hashlib
 from html import unescape
@@ -360,7 +361,7 @@ def main():
         record = state['players'].get(normalize(row['name']), {})
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
-    checked = added = namu_checked = namu_approved = search_unavailable = 0
+    checked = added = namu_checked = namu_approved = search_approved = search_unavailable = 0
     blocked = {'google': 0, 'bing': 0}
     disabled = set()
     namu_errors = []
@@ -401,6 +402,7 @@ def main():
             approved['entries'].append(entry)
             known.add(key)
             added += 1
+            search_approved += 1
         delay = dt.timedelta(hours=24) if any(s['status'] == 'results' for s in report['searches'].values()) else dt.timedelta(hours=6)
         state['players'][key] = {**state['players'].get(key, {}), **report, 'policy': POLICY, 'checkedAt': now.isoformat(), 'nextCheckAt': (now + delay).isoformat()}
         write(approved_path, approved)
@@ -417,8 +419,10 @@ def main():
             search_unavailable = 0
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
+               'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
                'eligible': len(eligible), 'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
-               'searchChecked': checked, 'approved': added, 'searchUnavailable': search_unavailable >= 3,
+               'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,
+               'searchUnavailable': search_unavailable >= 3,
                'namuErrors': namu_errors,
                'collectionFailures': len(inventory.get('failures', [])), 'policy': 'Unverified names remain English'}
     write(ROOT / 'scripts/player-name-run-report.json', summary)

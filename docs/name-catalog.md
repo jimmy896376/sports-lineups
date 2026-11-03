@@ -1,34 +1,28 @@
-# Reviewed names and full club names
+# Korean name catalog
 
-`dist/name-catalog.json` is the public name feed consumed on every site refresh. The browser falls back to its bundled catalog when GitHub is unavailable.
+`dist/name-catalog.json` is the public feed for reviewed team and player names. The standalone board refreshes it on page load and reload. NudeTV staging reads the same feed, but its renderer is maintained separately.
 
-Approve full team names and provider aliases in `scripts/team-name-review.json` and `dist/team-ko.json`. Add established player names to `dist/player-ko.js` or `scripts/player-name-review.json` (`userOverrides`). Keep club/player identity and source evidence in the review files. Do not infer identity from surnames. Identifiable Google results may be approved directly.
+## Sources and approval
 
-The name workflow independently builds and validates the approved catalog every 15 minutes and whenever review sources change. The existing lineup workflow collects new names across every league. It uploads unreviewed names with Google search links in `name-review-queue.json`. Search evidence is automatically assessed under the Google rules below; inconclusive names remain queued. Approved catalog updates reach the site without a new frontend deployment.
+- Add reviewed team aliases and full names to `scripts/team-name-review.json`.
+- Add reviewed player spellings to `scripts/player-name-review.json` (`userOverrides`), with identity evidence in `scripts/player-name-source-review.json`.
+- `scripts/resolve-player-names.py` checks current lineup, pitcher and injury names against exact bilingual team roster rows, identifiable Google results, Daum sports profiles, or two independent bilingual sports sources. It does not search Wikipedia or generate phonetic guesses. Previously approved legacy entries remain in `scripts/player-name-auto-review.json`.
+- The resolver must match the full original name and player identity. An ambiguous or unreadable result stays in the review queue and remains in its original script on the site.
 
-Run locally:
+## Automation and limits
+
+`.github/workflows/refresh-names.yml` runs every 15 minutes and on relevant changes. It collects names from every configured league, checks up to 24 team rosters and 100 individual searches per run, validates approved mappings, then publishes the catalog. A successful run means the pipeline completed; it does not mean every name was translated.
+
+`scripts/player-name-run-report.json` records pending names by league, roster approvals, search approvals and collection failures. The workflow also uploads `scripts/player-name-live-audit.json` and the current inventory as artifacts. Repeated zero search approvals require a source or matching-rule investigation; more scheduling alone cannot improve coverage. Google and Bing can return challenges or unreadable pages on GitHub runners. No API key is configured.
+
+The standalone board normalizes case, accents and punctuation before lookup. The catalog also publishes exact aliases for verified names as they appear in the latest collected inventory. This covers newly observed provider variants on NudeTV staging without inventing new Korean spellings. The NudeTV staging renderer must still apply the same normalization or use an approved stable player ID to handle a variant before the next scheduled catalog build.
+
+## Checks
 
 ```sh
+python3 scripts/test_resolve_player_names.py
 node scripts/build-name-catalog.mjs
 node scripts/check-player-names.mjs --inventory scripts/fixtures/player-name-inventory.json --require-reviewed
 ```
 
-
-## Automatic verification without API keys
-
-The name workflow runs every 15 minutes. It collects current lineup, starting-pitcher and injury names across every league (not only the major-games overview). Already translated names are skipped. The collector preloads seven days of games while the public site remains today/tomorrow only. Today/tomorrow starters and pitchers take priority over injuries and future games. Names are normalized to avoid repeated accent/punctuation lookups. Each run first checks up to 1,000 names through Wikipedia Korean language links in batches of 20. Approval requires an exact English page title, a sports biography, and a Korean language link to the same page; a nonexact title also requires the current club in its introduction. Existing manual spellings override these additions. It then attempts at most 30 unregistered names, with a ten-minute search budget, through public Google search pages. No search API secret or paid service is used.
-
-Google search results can now approve a name immediately, without fetching a second publisher. A Korean title with the exact bilingual name and team context, or an unambiguous Google knowledge-panel title with the exact English name and team context, is sufficient. Conflicting names and missing identity context stay unapproved. The evidence URL, content hash and method `google-search-result-v1` are saved. Old pending records become eligible under this new policy without waiting out their previous retry date.
-
-If no identifiable Google result is readable, fallback approval requires the same Korean full name paired with the exact English full name in two independently hosted source documents, plus the current club on at least one document. Only configured sports publishers, official sports sites and Wikipedia are fetched; at least one source must be outside Wikipedia. Different spellings, ambiguous team identities, missing club context and inaccessible pages remain unapproved. This deliberately favors avoiding wrong names over maximum coverage. Existing human-reviewed spellings take priority.
-
-The resolver does not bypass CAPTCHA, access blocks or JavaScript challenges. An unreadable Google result does not prevent two accessible independent documents from establishing the name. `scripts/player-name-search-state.json` distinguishes unreadable search responses from verified results and records retries (six hours when Google is unreadable; 24 hours after inconclusive readable results). It is **not** proof that a Korean name does not exist. Public search access is unreliable; a successful scheduled run can add zero names. Full rosters for clubs without upcoming games are not imported. The seven-day preload covers players supplied by the available lineup feeds. The run report records bulk approvals, search approvals and failures; a green workflow alone is not evidence of new translations.
-Wikipedia bulk checks and Google search retries use separate schedules. A new Wikipedia identity policy rechecks previously pending names without waiting for a search retry window.
-
-Approved evidence is kept in `scripts/player-name-auto-review.json`. The catalog builder merges those names beneath manual dictionaries and publishes `dist/name-catalog.json`, which the website reads on refresh. Source documents are not published in full and no source links are added to the website UI.
-
-Team display uses the reviewed Korean full name and optional `english` full name from `scripts/team-name-review.json`. Team names do not fall back to `shortDisplayName`. Long names may wrap rather than being abbreviated.
-
-Checks: `python3 scripts/test_resolve_player_names.py`, followed by the existing name/catalog rendering checks. Live search success must be inspected separately from offline tests.
-
-`player-name-run-report.json` and the GitHub job summary report each run. An unreadable Google result stops repeated search requests, but bulk language-link lookup remains independent.
+Check `scripts/player-name-run-report.json` after each run and inspect the public staging page for at least one newly approved name. Do not infer site success from a green GitHub Actions check.

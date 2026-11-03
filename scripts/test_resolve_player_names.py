@@ -124,6 +124,8 @@ class NameVerification(unittest.TestCase):
             self.assertEqual(search.call_count,2)
             report=json.loads((root/'scripts/player-name-run-report.json').read_text())
             self.assertEqual((report['searchChecked'],report['approved']),(2,1))
+            self.assertEqual(report['searchApproved'],1)
+            self.assertEqual(report['pendingByLeague'],{'unknown':2})
     def test_main_stops_repeated_google_rate_limit(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

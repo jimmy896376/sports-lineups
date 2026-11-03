@@ -186,10 +186,20 @@ if (process.argv.includes('--inventory')) {
   const exceptions = JSON.parse(fs.readFileSync(new URL('./player-name-exceptions.json', import.meta.url), 'utf8')).entries;
   const allowed = new Set(exceptions.map(row => row.name));
   const names = [...new Map(inventory.records.map(row => [row.name, row])).values()];
+  const catalogByNormalized = new Map();
+  for (const [name,korean] of Object.entries(approvedCatalog.players)) {
+    const key=run(`normalizePlayerName(${JSON.stringify(name)})`);
+    if (!catalogByNormalized.has(key)) catalogByNormalized.set(key,korean);
+    else if (catalogByNormalized.get(key)!==korean) catalogByNormalized.set(key,null);
+  }
   const pending = [], english = [];
   const needsKorean = name => [...name].some(char => /\p{L}/u.test(char) && !/\p{Script=Hangul}/u.test(char));
   assert.ok(needsKorean('Александр Овечкин') && needsKorean('山田 哲人') && !needsKorean('김민재'));
   for (const row of names) {
+    const matchingKorean=catalogByNormalized.get(run(`normalizePlayerName(${JSON.stringify(row.name)})`));
+    if (matchingKorean && !approvedCatalog.players[row.name]) {
+      assert.fail(`Observed provider spelling has no exact catalog alias: ${row.name}`);
+    }
     context.checkedPlayer = row;
     run(`language='ko'`);
     const korean = run('translated(checkedPlayer.name,checkedPlayer.short)');

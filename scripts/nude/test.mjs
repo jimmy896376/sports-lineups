@@ -7,7 +7,7 @@ const source=read('dist/projections.json'),catalog=read('dist/name-catalog.json'
 const feed=buildFeed(source,catalog,teams,config,'test'),validate=globalThis.NudeLineupContract.validate;
 assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);
 const kstDay=ms=>new Date(ms+32400000).toISOString().slice(0,10),sourceTime=Date.parse(source.asOf);
-assert.ok(feed.matches.every(m=>[kstDay(sourceTime),kstDay(sourceTime+86400000)].includes(kstDay(m.kickoff))));
+assert.ok(feed.matches.every(m=>[0,1,2].map(offset=>kstDay(sourceTime+offset*86400000)).includes(kstDay(m.kickoff))));
 assert.throws(()=>validate({...feed,schemaVersion:2}));
 assert.throws(()=>validate({...feed,asOf:'not-date'}));
 assert.throws(()=>validate({...feed,pollSeconds:0}));

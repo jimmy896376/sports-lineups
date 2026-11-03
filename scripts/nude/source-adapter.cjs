@@ -33,7 +33,8 @@
    const source=snapshot.sourceStatus?.[league]||{};
    matches.push({id:identity,eventId:text(String(row.event?.id||'')),league,sport:kind[0],leagueName:kind[1],kickoff,teams,logos:p.logos||{},recentForm:p.recentForm||{},records:p.records||{},checkedAt:text(source.checkedAt||snapshot.asOf),sourceFailed:source.fresh===false,note:text(p.note)});
   }
-  return {asOf:snapshot.asOf,matches:matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id)),rejected};
+  const today=day(Date.parse(snapshot.asOf)),tomorrow=day(Date.parse(snapshot.asOf)+86400000);
+  return {asOf:snapshot.asOf,matches:matches.filter(m=>[today,tomorrow].includes(day(m.kickoff))).sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id)),rejected};
  }
  function select(matches,{sport='전체',league='',date='today',now=Date.now()}={}){
   const target=day(now+(date==='tomorrow'?86400000:0));

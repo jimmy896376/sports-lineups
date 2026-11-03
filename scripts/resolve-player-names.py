@@ -342,7 +342,7 @@ def scorebase_nhl_names(rows, get=fetch_page):
             page = get(url)
         except (ValueError, OSError, urllib.error.URLError):
             continue
-        for player_path, card in re.findall(r'<a[^>]+href=["\'](/players/[0-9]+\?league=NHL)["\'][^>]*>(.*?)</a>', page.raw, re.S):
+        for player_path, card in re.findall(r'<a[^>]+href=["\'](/players/[0-9]+(?:\?league=NHL)?)["\'][^>]*>(.*?)</a>', page.raw, re.S):
             image = re.search(r'<img[^>]+alt=["\']([^"\']+)["\']', card)
             label = re.search(r'<div[^>]*class=["\'][^"\']*font-semibold[^"\']*["\'][^>]*>([^<]+)</div>', card)
             if not image or not label:

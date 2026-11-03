@@ -397,11 +397,11 @@ def scrape_fotmob_kleague(league_id, key):
 
 
 def scrape_khl():
-    """Import two-day KHL fixtures from the public KHL mobile API."""
+    """Import three-day KHL fixtures from the public KHL mobile API."""
     from urllib.parse import urlencode
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     start = datetime.combine(today, datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).timestamp()
-    end = start + 2 * 86400
+    end = start + 3 * 86400
     query = urlencode({'q[start_at_gt_time_from_unixtime]': int(start), 'q[start_at_lt_time_from_unixtime]': int(end), 'order_direction': 'asc', 'locale': 'en'}, safe='[]')
     raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + query)
     events = []
@@ -537,7 +537,7 @@ def reviewed_pitcher_fallback(event_id, kickoff, names, pitchers):
 
 
 def scrape_cpbl():
-    """Use CPBL public schedule and game detail API for two-day starter projections."""
+    """Use CPBL public schedule and game detail API for three-day starter projections."""
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     events = []
     recent_batters = {}
@@ -566,7 +566,7 @@ def scrape_cpbl():
                         recent_batters[team_name] = lineup[:9]
         except Exception:
             continue
-    for offset in range(2):
+    for offset in range(3):
         day = today.fromordinal(today.toordinal() + offset)
         games = fetch_json(f'https://stats.cpbl.com.tw/api/proxy/v1/games/schedule/{day.isoformat()}')
         rows = games.get('Data', {}).get('Games', [])
@@ -668,7 +668,7 @@ def scrape_npb():
                     if len(lineup) >= 9 and name not in recent_rosters: recent_rosters[name] = lineup[:9]
         except Exception:
             continue
-    for offset in range(2):
+    for offset in range(3):
         day = today.fromordinal(today.toordinal() + offset)
         raw = fetch_json(f'https://spaia.jp/baseball/npb/api/games_info_by_date?gameDate={day:%Y%m%d}')
         games = raw if isinstance(raw, list) else raw.get('data', raw.get('games', []))
@@ -727,7 +727,7 @@ def scrape_kbo_official():
         return f'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/emblem/regular/fixed/emblem_{code}.png' if code in logo_codes else ''
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     events = []
-    for offset in range(2):
+    for offset in range(3):
         day = today.fromordinal(today.toordinal() + offset).strftime('%Y%m%d')
         referer = f'https://www.koreabaseball.com/Schedule/GameCenter/Main.aspx?gameDate={day}'
         games = post_json('https://www.koreabaseball.com/ws/Main.asmx/GetKboGameList', {
@@ -914,7 +914,7 @@ def scrape_kovo_bkvolley():
             kickoff_local = datetime(year, month, day, hour, minute, tzinfo=ZoneInfo('Asia/Seoul'))
         except ValueError:
             continue
-        if not today <= kickoff_local.date() <= today.fromordinal(today.toordinal()+1):
+        if not today <= kickoff_local.date() <= today.fromordinal(today.toordinal()+2):
             continue
         home, away = [name.strip() for name in pair.groups()]
         kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
@@ -1010,7 +1010,7 @@ def parse_wkbl_schedule(page, year, month):
 
 def scrape_wkbl_official():
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    target_days = {today, today.fromordinal(today.toordinal() + 1)}
+    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(3)}
     months = {(day.year, day.month) for day in target_days}
     entries = []
     for year, month in months:
@@ -1037,10 +1037,10 @@ def main():
     path = ROOT / 'dist' / 'projections.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    tomorrow = today.fromordinal(today.toordinal() + 1)
+    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(3)}
     def within_window(entry, field):
         try:
-            return datetime.fromisoformat(entry[field].replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() in (today, tomorrow)
+            return datetime.fromisoformat(entry[field].replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() in target_days
         except (KeyError, TypeError, ValueError):
             return False
     all_results = []

@@ -354,9 +354,10 @@ def scorebase_nhl_names(rows, get=fetch_page):
             source = {'url': url, 'playerUrl': 'https://www.scorebase.kr' + player_path,
                       'domain': 'scorebase.kr', 'englishNameMatched': True, 'koreanNameMatched': True,
                       'contentHash': hashlib.sha256(page.raw.encode()).hexdigest()}
-            if key in found and found[key]['korean'] != korean:
-                found[key] = None
-            elif key not in found:
+            if key in found:
+                if found[key] and found[key]['korean'] != korean:
+                    found[key] = None
+            else:
                 row = pending[key]
                 found[key] = {'name': row['name'], 'korean': korean, 'team': row.get('team'),
                               'league': 'nhl', 'method': SCOREBASE_NHL_POLICY, 'sources': [source]}

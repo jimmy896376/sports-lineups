@@ -75,6 +75,8 @@ jobs:
         run: node scripts/check-player-names.mjs --audit
       - name: Collect names from live lineup and injury renderers
         run: node scripts/collect-player-names.mjs
+      - name: Add verified aliases for observed provider spellings
+        run: node scripts/build-name-catalog.mjs
       - name: Audit live player names
         run: node scripts/check-player-names.mjs --inventory scripts/player-name-live-inventory.json
       - name: Prepare unreviewed name search queue

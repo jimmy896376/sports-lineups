@@ -1,5 +1,8 @@
 import importlib.util
 from pathlib import Path
+from datetime import datetime
+from unittest.mock import patch
+from zoneinfo import ZoneInfo
 from unittest import TestCase, main
 
 spec = importlib.util.spec_from_file_location('projections_kbl', Path(__file__).with_name('update-projections.py'))
@@ -25,6 +28,23 @@ class KBLProjectedLineups(TestCase):
         self.assertEqual(parsed['recentForm'], {'home': ['W', 'L'], 'away': ['L']})
         self.assertEqual(parsed['records']['home'][0]['summary'], '2-1')
         self.assertEqual(parsed['records']['away'][0]['summary'], '3-5')
+
+    def test_schedule_uses_official_team_logos(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 4, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        schedule = ('<span class="stat-num tabular-nums">2026.11.04</span>'
+                    '<a href="/ko/kbl/matches/S49G01N53">예정'
+                    '<span class="stat-num text-fg-muted">19:00</span>'
+                    '<span class="break-keep text-lg">서울 SK</span>'
+                    '<span class="break-keep text-lg">대구 한국가스공사</span></a>')
+        comparison = {'recentForm': {}, 'records': {}}
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', side_effect=[schedule, '']), patch.object(module, 'kbl_projected_lineups', return_value={}), patch.object(module, 'kbl_recent_and_records', return_value=comparison):
+            row = module.scrape_kbl_statgg()[0]
+        self.assertEqual(row['prediction']['logos']['home'], 'https://www.kbl.or.kr/assets/img/ico/logo/ic-sk.svg')
+        self.assertEqual(row['prediction']['logos']['away'], 'https://www.kbl.or.kr/assets/img/ico/logo/ic-pega.svg')
+        self.assertEqual(row['event']['competitions'][0]['competitors'][0]['team']['logo'], row['prediction']['logos']['home'])
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parent.parent
-DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com',
+DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com', 'scorebase.kr',
            'premierleague.com', 'bundesliga.com', 'uefa.com', 'fifa.com', 'nba.com', 'mlb.com', 'nhl.com',
            'liverpoolfc.com', 'mancity.com', 'manutd.com', 'tottenhamhotspur.com', 'arsenal.com',
            'fcbayern.com', 'bvb.de', 'borussia.de', 'vfb.de', 'realmadrid.com', 'fcbarcelona.com',
@@ -26,6 +26,7 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
 SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
 POLICY = 'precollect-names-v5'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
+SCOREBASE_NHL_POLICY = 'scorebase-nhl-roster-v1'
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100
 GOOGLE_METHOD = 'google-search-result-v1'
@@ -328,6 +329,40 @@ def priority(row, state, now):
             state['players'].get(normalize(row['name']), {}).get('checkedAt', ''), hours, normalize(row['name']))
 
 
+def scorebase_nhl_names(rows, get=fetch_page):
+    pending = {normalize(row['name']): row for row in rows if row.get('league') == 'nhl'}
+    if not pending:
+        return []
+    league = get('https://www.scorebase.kr/leagues/NHL')
+    team_paths = list(dict.fromkeys(re.findall(r'href=["\'](/teams/[0-9]+)["\']', league.raw)))[:40]
+    found = {}
+    for path in team_paths:
+        url = 'https://www.scorebase.kr' + path
+        try:
+            page = get(url)
+        except (ValueError, OSError, urllib.error.URLError):
+            continue
+        for player_path, card in re.findall(r'<a[^>]+href=["\'](/players/[0-9]+\?league=NHL)["\'][^>]*>(.*?)</a>', page.raw, re.S):
+            image = re.search(r'<img[^>]+alt=["\']([^"\']+)["\']', card)
+            label = re.search(r'<div[^>]*class=["\'][^"\']*font-semibold[^"\']*["\'][^>]*>([^<]+)</div>', card)
+            if not image or not label:
+                continue
+            english, korean = unescape(image.group(1)).strip(), unescape(label.group(1)).strip()
+            key = normalize(english)
+            if key not in pending or not re.search(r'[가-힣]', korean):
+                continue
+            source = {'url': url, 'playerUrl': 'https://www.scorebase.kr' + player_path,
+                      'domain': 'scorebase.kr', 'englishNameMatched': True, 'koreanNameMatched': True,
+                      'contentHash': hashlib.sha256(page.raw.encode()).hexdigest()}
+            if key in found and found[key]['korean'] != korean:
+                found[key] = None
+            elif key not in found:
+                row = pending[key]
+                found[key] = {'name': row['name'], 'korean': korean, 'team': row.get('team'),
+                              'league': 'nhl', 'method': SCOREBASE_NHL_POLICY, 'sources': [source]}
+    return [entry for entry in found.values() if entry]
+
+
 def main():
     now = dt.datetime.now(dt.timezone.utc)
     inventory = read(ROOT / 'scripts/player-name-live-inventory.json', {})
@@ -354,6 +389,19 @@ def main():
                 or state['players'].get(normalize(row['name']), {}).get('nextCheckAt', '') <= now.isoformat()]
     eligible.sort(key=lambda row: priority(row, state, now))
     teams = read(ROOT / 'dist/team-ko.json', {})
+    scorebase_approved = 0
+    try:
+        for entry in scorebase_nhl_names(candidates_for_review):
+            key = normalize(entry['name'])
+            if key in known:
+                continue
+            entry['verifiedAt'] = now.isoformat()
+            approved['entries'].append(entry)
+            known.add(key)
+            scorebase_approved += 1
+        write(approved_path, approved)
+    except (ValueError, OSError, urllib.error.URLError) as exc:
+        print('Scorebase NHL roster unavailable:', type(exc).__name__)
     deadline = time.monotonic() + 600
     groups = {}
     for row in candidates_for_review:
@@ -361,7 +409,8 @@ def main():
         record = state['players'].get(normalize(row['name']), {})
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
-    checked = added = namu_checked = namu_approved = search_approved = search_unavailable = 0
+    checked = namu_checked = namu_approved = search_approved = search_unavailable = 0
+    added = scorebase_approved
     blocked = {'google': 0, 'bing': 0}
     disabled = set()
     namu_errors = []
@@ -420,7 +469,8 @@ def main():
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
-               'eligible': len(eligible), 'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
+               'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_approved,
+               'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
                'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,
                'searchUnavailable': search_unavailable >= 3,
                'namuErrors': namu_errors,

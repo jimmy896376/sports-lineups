@@ -36,6 +36,19 @@ class TeamLogos(TestCase):
         teams = row['event']['competitions'][0]['competitors']
         self.assertEqual([team['team']['logo'] for team in teams], [logos['home'], logos['away']])
 
+    def test_nhl_uses_scoreboard_team_logos(self):
+        def team(side, code, logo):
+            return {'homeAway': side, 'team': {'displayName': f'{code} Club', 'abbreviation': code, 'logo': logo}}
+        event = {'id': '1', 'date': '2026-11-04T00:00:00Z', 'competitions': [{'competitors': [
+            team('home', 'HOM', 'https://example.com/home.png'),
+            team('away', 'AWY', 'https://example.com/away.png')]}]}
+        page = ''.join(f'<span id="{section}">' + ''.join(
+            f'<a href="/players/news/{i}">{section} {i}</a>' for i in range(count)) + '</span>'
+            for section, count in [('forwards', 3), ('defense', 2), ('goalies', 1)])
+        with patch.object(projections, 'fetch_json', return_value={'events': [event]}), patch.object(projections, 'fetch_text', return_value=page):
+            row = projections.scrape_nhl_dailyfaceoff()[0]
+        self.assertEqual(row['logos'], {'home': 'https://example.com/home.png', 'away': 'https://example.com/away.png'})
+
     def test_kovo_uses_official_emblems(self):
         class Clock(datetime):
             @classmethod

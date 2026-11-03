@@ -1008,11 +1008,66 @@ def parse_wkbl_schedule(page, year, month):
     return games
 
 
+def wkbl_projected_lineups(detail, names):
+    """Estimate starters from current-roster minutes, then prior head-to-head minutes."""
+    title = re.search(r'<h1[^>]*>(.*?)</h1>', detail, re.S)
+    if not title or not all(name in html.unescape(re.sub(r'<[^>]+>', ' ', title.group(1))) for name in names.values()):
+        raise ValueError('WKBL match detail teams do not match the official schedule')
+    lineups = {}
+    for index, side in enumerate(('home', 'away')):
+        current = re.search(r'<div role="tabpanel" id="wkbl-pregame-' + str(index) + r'-season-panel".*?</table>', detail, re.S)
+        previous = re.search(r'<div role="tabpanel" id="wkbl-pregame-' + str(index) + r'-vs-panel".*?</table>', detail, re.S)
+        if not current:
+            raise ValueError('WKBL current roster table missing')
+        def rows(table):
+            if not table:
+                return {}
+            headings = [html.unescape(re.sub(r'<[^>]+>', '', cell)).strip() for cell in re.findall(r'<th\b[^>]*>(.*?)</th>', table.group(0), re.S)]
+            minute_col = headings.index('출장') if '출장' in headings else -1
+            result = {}
+            for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', table.group(0), re.S):
+                cells = re.findall(r'<td\b[^>]*>(.*?)</td>', row, re.S)
+                name = re.search(r'<span[^>]*font-medium[^>]*>([^<]+)</span>', cells[0]) if cells else None
+                position = re.search(r'text-3xs[^>]*>([GFC])</span>', cells[0]) if cells else None
+                if not name:
+                    continue
+                try:
+                    minutes = float(re.sub(r'<[^>]+>', '', cells[minute_col]).strip()) if 0 <= minute_col < len(cells) else 0
+                except ValueError:
+                    continue
+                result[html.unescape(name.group(1)).strip()] = (minutes, position.group(1) if position else '')
+            return result
+        season, matchup = rows(current), rows(previous)
+        if len(season) < 5:
+            raise ValueError('WKBL current roster has fewer than five scored players')
+        # A new season can have no games yet. Only names on the current roster qualify.
+        scores = [(minutes if minutes > 0 else matchup.get(name, (0,))[0], name, position)
+                  for name, (minutes, position) in season.items()]
+        selected = sorted(scores, reverse=True)[:5]
+        if selected[-1][0] <= 0:
+            raise ValueError('WKBL minutes evidence is insufficient for five players')
+        lineups[side] = [{'name': name, 'position': position, 'flag': ''} for _, name, position in selected]
+    return lineups
+
+
 def scrape_wkbl_official():
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(3)}
     months = {(day.year, day.month) for day in target_days}
     entries = []
+    try:
+        schedule = fetch_text(f'https://statgg.com/ko/wkbl/schedule?date={today.isoformat()}')
+    except OSError as error:
+        print('wkbl lineup schedule unavailable:', error)
+        schedule = ''
+    detail_paths = {}
+    for path, card in re.findall(r'<a[^>]+href="(/ko/wkbl/matches/[^"]+)"[^>]*>(.*?)</a>', schedule, re.S):
+        teams = re.findall(r'<span class="break-keep[^"]*">([^<]+)</span>', card)
+        time = re.search(r'<span class="stat-num text-fg-muted">(\d{1,2}:\d{2})</span>', card)
+        heading = list(re.finditer(r'<span class="stat-num tabular-nums">(\d{4}\.\d{2}\.\d{2})', schedule[:schedule.find(f'href="{path}"')]))
+        if len(teams) == 2 and time and heading:
+            day = heading[-1].group(1).replace('.', '-')
+            detail_paths[(day, time.group(1), *map(html.unescape, teams))] = path
     for year, month in months:
         page = fetch_text(f'https://www.wkbl.or.kr/m/game/schedule.asp?sch_ym={year}{month:02}')
         for game in parse_wkbl_schedule(page, year, month):
@@ -1020,12 +1075,21 @@ def scrape_wkbl_official():
             if datetime.fromisoformat(kickoff.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days:
                 continue
             names = {'home': game['home'], 'away': game['away']}
+            local = datetime.fromisoformat(kickoff.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul'))
+            path = detail_paths.get((local.date().isoformat(), local.strftime('%H:%M'), names['home'], names['away']))
+            lineups = {'home': [], 'away': []}
+            if path:
+                try:
+                    lineups = wkbl_projected_lineups(fetch_text('https://statgg.com' + path), names)
+                except (OSError, ValueError) as error:
+                    print('wkbl lineup unavailable:', error)
             logos = {side: basketball_logo('wkbl', name) for side, name in names.items()}
             competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side],
-                            'shortDisplayName': names[side], 'abbreviation': names[side]}} for side in ('home', 'away')]
+                            'shortDisplayName': names[side], 'abbreviation': names[side], 'logo': logos[side]}} for side in ('home', 'away')]
             prediction = {'league': 'wkbl', 'kickoff': kickoff, 'names': names, 'teams': names,
-                          'logos': logos, 'lineups': {'home': [], 'away': []}, 'injuries': {},
+                          'logos': logos, 'lineups': lineups, 'injuries': {},
                           'statuses': {'home': 'predicted', 'away': 'predicted'},
+                          'note': '현재 등록 선수의 시즌 또는 최근 맞대결 출전시간 기준 예상 선발',
                           'source': 'https://www.wkbl.or.kr/m/game/schedule.asp'}
             entries.append({'event': {'id': f"wkbl-{kickoff[:10]}-{names['home']}-{names['away']}",
                                       'date': kickoff, 'competitions': [{'timeValid': True, 'competitors': competitors}]},

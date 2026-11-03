@@ -17,6 +17,21 @@ SOURCES = {
     'nba': ('', 'nba'), 'mlb': ('', 'mlb'),
 }
 
+KBL_LOGO_CODES = {'원주 DB': 'db', '서울 삼성': 'ss', '고양 소노': 'sono',
+                  '서울 SK': 'sk', '창원 LG': 'lg', '안양 정관장': 'kgc',
+                  '부산 KCC': 'kcc', '수원 KT': 'kt', '대구 한국가스공사': 'pega',
+                  '울산 현대모비스': 'hd'}
+WKBL_LOGO_CODES = {'KB스타즈': '01', '삼성생명': '03', '우리은행': '05',
+                   '신한은행': '07', '하나은행': '09', 'BNK 썸': '11'}
+
+
+def basketball_logo(league, name):
+    if league == 'kbl':
+        code = KBL_LOGO_CODES.get(name)
+        return f'https://www.kbl.or.kr/assets/img/ico/logo/ic-{code}.svg' if code else ''
+    code = WKBL_LOGO_CODES.get(name)
+    return f'https://www.wkbl.or.kr/static/images/team/teamlogo_{code}.png' if code else ''
+
 
 def source_url(league, code, kind):
     if kind == 'soccer':
@@ -583,7 +598,7 @@ def scrape_cpbl():
                 continue
             if len(home_players) < 9: home_players = recent_batters.get(names['home'], home_players)
             if len(away_players) < 9: away_players = recent_batters.get(names['away'], away_players)
-            competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side], 'shortDisplayName': names[side], 'abbreviation': names[side]}} for side in ('home', 'away')]
+            competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side], 'shortDisplayName': names[side], 'abbreviation': names[side], 'logo': logos[side]}} for side in ('home', 'away')]
             confirmed = len(hitters(home)) >= 9 and len(hitters(visiting)) >= 9
             pitchers = {}
             for row in announced_games:
@@ -838,11 +853,12 @@ def scrape_kbl_statgg():
         lineups = kbl_projected_lineups(detail, names)
         comparison = kbl_recent_and_records(detail)
         event_id = path.rsplit('/', 1)[-1]
+        logos = {'home': basketball_logo('kbl', names[0]), 'away': basketball_logo('kbl', names[1])}
         competitors = [
-            {'homeAway': 'home', 'team': {'id': names[0], 'displayName': names[0], 'shortDisplayName': names[0], 'abbreviation': names[0]}, 'records': comparison['records'].get('home', [])},
-            {'homeAway': 'away', 'team': {'id': names[1], 'displayName': names[1], 'shortDisplayName': names[1], 'abbreviation': names[1]}, 'records': comparison['records'].get('away', [])}
+            {'homeAway': 'home', 'team': {'id': names[0], 'displayName': names[0], 'shortDisplayName': names[0], 'abbreviation': names[0], 'logo': logos['home']}, 'records': comparison['records'].get('home', [])},
+            {'homeAway': 'away', 'team': {'id': names[1], 'displayName': names[1], 'shortDisplayName': names[1], 'abbreviation': names[1], 'logo': logos['away']}, 'records': comparison['records'].get('away', [])}
         ]
-        events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
+        events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'logos': logos, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
     return events
 
 
@@ -1001,10 +1017,11 @@ def scrape_wkbl_official():
             if datetime.fromisoformat(kickoff.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days:
                 continue
             names = {'home': game['home'], 'away': game['away']}
+            logos = {side: basketball_logo('wkbl', name) for side, name in names.items()}
             competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side],
                             'shortDisplayName': names[side], 'abbreviation': names[side]}} for side in ('home', 'away')]
             prediction = {'league': 'wkbl', 'kickoff': kickoff, 'names': names, 'teams': names,
-                          'lineups': {'home': [], 'away': []}, 'injuries': {},
+                          'logos': logos, 'lineups': {'home': [], 'away': []}, 'injuries': {},
                           'statuses': {'home': 'predicted', 'away': 'predicted'},
                           'source': 'https://www.wkbl.or.kr/m/game/schedule.asp'}
             entries.append({'event': {'id': f"wkbl-{kickoff[:10]}-{names['home']}-{names['away']}",

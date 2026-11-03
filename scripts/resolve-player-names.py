@@ -270,13 +270,16 @@ def namu_team_roster(team, korean_team, rows, get=fetch_page):
             for key, names in matches.items() if len(names) == 1}
 
 
-def resolve(row, get=fetch_page, team_dictionary=None):
+def resolve(row, get=fetch_page, team_dictionary=None, enabled_engines=None):
     query = row['name'] + ' ' + (row.get('team') or '') + ' -site:wikipedia.org'
     urls = {'google': 'https://www.google.com/search?' + urllib.parse.urlencode({'q': query, 'hl': 'ko'}),
             'daum': 'https://search.daum.net/search?' + urllib.parse.urlencode({'w': 'tot', 'q': row['name']}),
             'bing': 'https://www.bing.com/search?' + urllib.parse.urlencode({'q': row['name'] + ' 한글 이름 -site:wikipedia.org', 'setlang': 'ko'})}
     found, searches, errors = {}, {}, []
     for engine, url in urls.items():
+        if enabled_engines is not None and engine not in enabled_engines:
+            searches[engine] = {'url': url, 'status': 'disabled-after-block'}
+            continue
         try:
             page = get(url)
             if engine == 'google':
@@ -358,6 +361,8 @@ def main():
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
     checked = added = namu_checked = namu_approved = search_unavailable = 0
+    blocked = {'google': 0, 'bing': 0}
+    disabled = set()
     namu_errors = []
     for team, rows in list(groups.items())[:MAX_NAMU_TEAMS]:
         if time.monotonic() >= deadline: break
@@ -389,7 +394,7 @@ def main():
         if checked >= MAX_INDIVIDUAL_SEARCHES or time.monotonic() >= deadline: break
         key = normalize(row['name'])
         if key in known: continue
-        entry, report = resolve(row, team_dictionary=teams)
+        entry, report = resolve(row, team_dictionary=teams, enabled_engines={'google', 'daum', 'bing'} - disabled)
         checked += 1
         if entry:
             entry['verifiedAt'] = now.isoformat()
@@ -401,12 +406,13 @@ def main():
         write(approved_path, approved)
         write(state_path, state)
         statuses = {engine: report['searches'].get(engine, {}).get('status', 'unavailable') for engine in ('google', 'daum', 'bing')}
-        if all(status == 'unavailable' for status in statuses.values()):
+        for engine in blocked:
+            blocked[engine] = blocked[engine] + 1 if statuses[engine] == 'unavailable' else 0
+            if blocked[engine] >= 3:
+                disabled.add(engine)
+        if all(status in ('unavailable', 'disabled-after-block') for status in statuses.values()):
             search_unavailable += 1
             if search_unavailable >= 3: break
-        elif statuses['google'] == 'unavailable' and all(status == 'no-readable-trusted-results' for status in (statuses['daum'], statuses['bing'])):
-            search_unavailable += 1
-            if search_unavailable >= 5: break
         else:
             search_unavailable = 0
         time.sleep(2)

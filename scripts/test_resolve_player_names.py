@@ -137,7 +137,7 @@ class NameVerification(unittest.TestCase):
                 r.main()
             self.assertEqual(search.call_count,3)
             self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
-    def test_main_stops_when_bing_has_no_readable_sources(self):
+    def test_main_keeps_checking_daum_after_other_engines_stall(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
             now=r.dt.datetime.now(r.dt.timezone.utc).isoformat()
@@ -148,8 +148,8 @@ class NameVerification(unittest.TestCase):
             report={'searches':{'google':{'status':'unavailable'},'daum':{'status':'no-readable-trusted-results'},'bing':{'status':'no-readable-trusted-results'}},'status':'needs-verification'}
             with patch.object(r,'ROOT',root),patch.object(r,'resolve',return_value=(None,report)) as search,patch.object(r.time,'sleep'):
                 r.main()
-            self.assertEqual(search.call_count,5)
-            self.assertTrue(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
+            self.assertEqual(search.call_count,8)
+            self.assertFalse(json.loads((root/'scripts/player-name-run-report.json').read_text())['searchUnavailable'])
     def test_namu_roster_rechecks_names_before_google_retry(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
@@ -194,6 +194,16 @@ class NameVerification(unittest.TestCase):
         self.assertEqual(len(calls),3)
         self.assertEqual(set(report['searches']),{'google','daum','bing'})
         self.assertTrue(all(x['status']=='unavailable' for x in report['searches'].values()))
+    def test_blocked_engines_are_skipped_while_daum_remains_available(self):
+        calls=[]
+        def get(url):
+            calls.append(url)
+            return r.Page('<main id="daumContent">검색 결과가 없습니다</main>')
+        approved, report=r.resolve(self.row,get,enabled_engines={'daum'})
+        self.assertIsNone(approved)
+        self.assertEqual(len(calls),1)
+        self.assertIn('daum.net',calls[0])
+        self.assertEqual(report['searches']['google']['status'],'disabled-after-block')
     def test_bing_recovers_verified_name_when_google_unavailable(self):
         sources=['https://namu.moe/w/Moritz','https://www.transfermarkt.co.kr/Moritz']
         def tracked(url):

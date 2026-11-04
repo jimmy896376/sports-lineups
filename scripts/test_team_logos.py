@@ -12,6 +12,29 @@ spec.loader.exec_module(projections)
 
 
 class TeamLogos(TestCase):
+    def test_kleague_uses_last_starters_and_header_logos(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 5, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        home = {'id': '133898', 'name': 'Jeju SK'}
+        away = {'id': '245905', 'name': 'Gwangju FC'}
+        match = {'id': '6503951', 'home': home, 'away': away,
+                 'status': {'utcTime': '2026-11-07T05:00:00Z', 'finished': False}}
+        detail = {'content': {'lineup': {'lineupType': 'lastStarting11',
+                  'homeTeam': {'starters': [{'name': f'Home {i}'} for i in range(11)]},
+                  'awayTeam': {'starters': [{'name': f'Away {i}'} for i in range(11)]}}},
+                  'header': {'teams': [{'id': 133898, 'imageUrl': 'https://example.com/jeju.png'},
+                                       {'id': 245905, 'imageUrl': 'https://example.com/gwangju.png'}]}}
+        with patch.object(projections, 'datetime', Clock), patch.object(
+                projections, 'fetch_json', side_effect=[{'fixtures': {'allMatches': [match]}}, detail]):
+            row = projections.scrape_fotmob_kleague(9080, 'kleague1')[0]
+        self.assertEqual([len(row['prediction']['lineups'][side]) for side in ('home', 'away')], [11, 11])
+        self.assertEqual(row['prediction']['logos'], {'home': 'https://example.com/jeju.png',
+                                                      'away': 'https://example.com/gwangju.png'})
+        self.assertEqual([team['team']['logo'] for team in row['event']['competitions'][0]['competitors']],
+                         ['https://example.com/jeju.png', 'https://example.com/gwangju.png'])
+
     def test_shakhtar_logo_is_in_legacy_projection(self):
         def team(side, code, name):
             players = ''.join(f'<li class="lineup__player"><a title="Player {i}"></a></li>' for i in range(11))

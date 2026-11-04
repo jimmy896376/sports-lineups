@@ -333,10 +333,11 @@ def write(path, data):
     temporary.replace(path)
 
 
-def priority(row, state, now):
+def priority(row, state, now, visible=frozenset()):
     try: hours = (dt.datetime.fromisoformat(row.get('eventDate', '').replace('Z', '+00:00')) - now).total_seconds()/3600
     except (ValueError, TypeError): hours = 9999
-    return (0 if -3 <= hours < 48 else 1, 0 if row.get('kind') in ('lineup', 'starting-pitcher') else 1,
+    return (0 if normalize(row['name']) in visible else 1, 0 if -3 <= hours < 48 else 1,
+            0 if row.get('kind') in ('lineup', 'starting-pitcher') else 1,
             state['players'].get(normalize(row['name']), {}).get('checkedAt', ''), hours, normalize(row['name']))
 
 
@@ -416,6 +417,9 @@ def main():
     state_path = ROOT / 'scripts/player-name-search-state.json'
     approved = read(approved_path, {'schemaVersion': 1, 'entries': []})
     state = read(state_path, {'schemaVersion': 1, 'players': {}})
+    feed = read(ROOT / 'dist/nude-feed.json', {'matches': []})
+    visible = {normalize(player['name']) for match in feed.get('matches', []) for team in match.get('teams', [])
+               for player in team.get('players', []) if isinstance(player.get('name'), str)}
     known = {normalize(r['name']) for r in approved['entries']}
     # Normalize persisted keys so accents and punctuation do not consume duplicate searches.
     state['players'] = {normalize(k): v for k, v in state['players'].items()}
@@ -425,13 +429,13 @@ def main():
         key = normalize(row['name'])
         if row.get('team'): contexts.setdefault(key, set()).add(normalize(row['team']))
         if any(char.isalpha() and not ('가' <= char <= '힣') for char in row['name']) and key == normalize(row.get('korean', row['name'])) and key not in known:
-            if key not in pending or priority(row, state, now) < priority(pending[key], state, now): pending[key] = row
+            if key not in pending or priority(row, state, now, visible) < priority(pending[key], state, now, visible): pending[key] = row
     candidates_for_review = [row for key, row in pending.items() if len(contexts.get(key, set())) == 1]
-    candidates_for_review.sort(key=lambda row: priority(row, state, now))
+    candidates_for_review.sort(key=lambda row: priority(row, state, now, visible))
     eligible = [row for row in candidates_for_review if
                 state['players'].get(normalize(row['name']), {}).get('policy') != POLICY
                 or state['players'].get(normalize(row['name']), {}).get('nextCheckAt', '') <= now.isoformat()]
-    eligible.sort(key=lambda row: priority(row, state, now))
+    eligible.sort(key=lambda row: priority(row, state, now, visible))
     teams = read(ROOT / 'dist/team-ko.json', {})
     scorebase_approved = 0
     scorebase_by_league = dict.fromkeys(SCOREBASE_LEAGUES, 0)

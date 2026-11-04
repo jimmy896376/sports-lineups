@@ -9,6 +9,13 @@ r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 class NameVerification(unittest.TestCase):
+    def test_current_feed_names_take_search_priority(self):
+        now=r.dt.datetime(2026,11,5,tzinfo=r.dt.timezone.utc)
+        state={'players':{}}
+        visible={'james justin'}
+        current={'name':'James Justin','eventDate':'2026-11-07T00:00:00Z','kind':'lineup'}
+        older={'name':'Other Player','eventDate':'2026-11-05T01:00:00Z','kind':'lineup'}
+        self.assertLess(r.priority(current,state,now,visible),r.priority(older,state,now,visible))
     def test_kleague_official_roster_requires_team_and_unique_jersey(self):
         rows=[{'name':'Dong-Jun Kim','team':'Jeju SK','league':'kleague1','number':'1'},
               {'name':'Other Player','team':'Jeju SK','league':'kleague1','number':'2'},

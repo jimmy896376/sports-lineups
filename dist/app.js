@@ -146,7 +146,7 @@ const $ = id => document.getElementById(id);
 const label = (en,ko) => ko;
 const categoryForSport = value => categories.find(category => category.sports.includes(value));
 const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let teamKo = {}, teamKoNormalized = {}, teamEnglish = {};
+let teamKo = {}, teamKoNormalized = {}, teamEnglish = {}, playerTeamNames = {};
 let nameReview = null;
 function applyTeamNames(dictionary) {
   if (!dictionary || Array.isArray(dictionary) || typeof dictionary !== 'object' || !Object.keys(dictionary).length || Object.entries(dictionary).some(([name,korean])=>!name || typeof korean !== 'string' || korean.length>160 || !/\p{Script=Hangul}/u.test(korean))) throw new Error('Invalid team name dictionary');
@@ -177,9 +177,11 @@ async function refreshTeamNames(current) {
     const english = catalog.teamEnglish || {};
     if (Array.isArray(english) || typeof english !== 'object' || Object.entries(english).some(([name,full])=>!name || typeof full !== 'string' || !full || full.length>160)) throw new Error('Invalid full team name catalog');
     if (!catalog.players || Array.isArray(catalog.players) || typeof catalog.players !== 'object' || Object.entries(catalog.players).some(([name,korean])=>!name || typeof korean !== 'string' || korean.length>160 || !/\p{Script=Hangul}/u.test(korean))) throw new Error('Invalid player name catalog');
+    if (catalog.playerTeamNames && (Array.isArray(catalog.playerTeamNames) || typeof catalog.playerTeamNames !== 'object' || Object.values(catalog.playerTeamNames).some(korean=>typeof korean !== 'string' || !/\p{Script=Hangul}/u.test(korean)))) throw new Error('Invalid team-scoped player names');
     if (current !== requestId) return;
     applyTeamNames(dictionary);
     teamEnglish = Object.fromEntries(Object.entries(english).map(([name,full])=>[normalizePlayerName(name),full]));
+    playerTeamNames = catalog.playerTeamNames || {};
     Object.assign(naverKo,catalog.players);
     Object.assign(naverKoNormalized,Object.fromEntries(Object.entries(catalog.players).map(([name,korean])=>[normalizePlayerName(name),korean])));
     nameReview.dictionaryStatus = 'fresh';
@@ -198,7 +200,9 @@ function teamDisplayName(team) {
   if (language === 'en') return teamEnglish[normalizePlayerName(name)] || name;
   return korean || translated(name);
 }
-function playerDisplayName(name,shortName,lastName) {
+function playerDisplayName(name,shortName,lastName,teamName) {
+  const scoped = playerTeamNames[JSON.stringify([sport==='football'?league:sport,teamName,name])];
+  if (language === 'ko' && scoped) { auditName('player',name,scoped,true); return scoped; }
   const korean = naverKo[name] || naverKoNormalized[normalizePlayerName(name)] || chinesePlayerKo[name] || naverKo[shortName] || naverKoNormalized[normalizePlayerName(shortName)];
   auditName('player',name,korean||name,Boolean(korean)||/\p{Script=Hangul}/u.test(name));
   return translated(name,shortName,lastName);
@@ -313,7 +317,7 @@ function injuryPanel(prediction,event) {
         if (!Number.isNaN(date.getTime())) details.push(label(`Est. return ${new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(date)}`,`복귀 예상 ${new Intl.DateTimeFormat('ko-KR',{month:'long',day:'numeric',timeZone:'Asia/Seoul'}).format(date)}`));
       }
       if (language==='en'&&record.comment) details.push(record.comment);
-      return `<li><strong>${safe(playerDisplayName(name))}</strong>${details.length?`<span>${safe(details.join(' · '))}</span>`:''}</li>`;
+      return `<li><strong>${safe(playerDisplayName(name,undefined,undefined,team?.team?.displayName))}</strong>${details.length?`<span>${safe(details.join(' · '))}</span>`:''}</li>`;
     }).filter(Boolean).join('');
     if (rows) groups.push(`<section><h4>${safe(teamDisplayName(team?.team))}</h4><ul>${rows}</ul></section>`);
   }
@@ -495,19 +499,19 @@ function summaryPitchers(summary,event) {
   }
   return result;
 }
-function pitcherMarkup(pitcher) {
+function pitcherMarkup(pitcher,teamName) {
   if(pitcher===undefined)return '';
   if(!pitcher)return '<div class="starting-pitcher pending"><span>선발투수 예고 전</span></div>';
-  return `<div class="starting-pitcher"><span>선발투수</span><strong>${safe(playerDisplayName(pitcher.name,pitcher.short,pitcher.last))}</strong><small>${pitcher.status==='confirmed'?'확정':'예고'}</small>${isKoreanPlayer(pitcher)?'<small class="korean-player">🇰🇷 한국</small>':''}</div>`;
+  return `<div class="starting-pitcher"><span>선발투수</span><strong>${safe(playerDisplayName(pitcher.name,pitcher.short,pitcher.last,teamName))}</strong><small>${pitcher.status==='confirmed'?'확정':'예고'}</small>${isKoreanPlayer(pitcher)?'<small class="korean-player">🇰🇷 한국</small>':''}</div>`;
 }
 function teamCard(team, players, pitcher) {
   const title = safe(teamDisplayName(team.team));
   const logo = teamLogo(team);
   const list = players?.length
-    ? `<ol>${players.map(player => `<li>${safe(playerDisplayName(player.name,player.short,player.last))}${player.flag ? ` <small>${safe(availability(player.flag))}</small>` : ''}${isKoreanPlayer(player) ? ' <small class="korean-player" aria-label="대한민국 선수">🇰🇷 한국</small>' : ''}</li>`).join('')}</ol>`
+    ? `<ol>${players.map(player => `<li>${safe(playerDisplayName(player.name,player.short,player.last,team.team.displayName))}${player.flag ? ` <small>${safe(availability(player.flag))}</small>` : ''}${isKoreanPlayer(player) ? ' <small class="korean-player" aria-label="대한민국 선수">🇰🇷 한국</small>' : ''}</li>`).join('')}</ol>`
     : '';
   const heading = team.homeAway === 'home' ? `<span>${title}</span>${logo}` : `${logo}<span>${title}</span>`;
-  return `<div class="team"><h3 class="team-title">${heading}</h3>${pitcherMarkup(pitcher)}${list}</div>`;
+  return `<div class="team"><h3 class="team-title">${heading}</h3>${pitcherMarkup(pitcher,team.team.displayName)}${list}</div>`;
 }
 function recentResults(team, event, events, side, prediction) {
   const supplied = event.recentForm?.[side] || prediction?.recentForm?.[side];

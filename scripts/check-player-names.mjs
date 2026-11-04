@@ -86,8 +86,13 @@ for (const [name, korean] of run('Object.entries(playerKo)')) {
   assert.ok(run(`injuryPanel({injuryDetails:{home:[checkedPlayer]}},{}).includes(safe(translated(checkedPlayer.name)))`), `Injury: ${name}`);
 }
 assert.match(run(`teamCard({team:{displayName:'Liverpool'},homeAway:'home'},[{name:'Alisson Becker'}])`), /알리송 베커/);
+run(`playerTeamNames={'["kleague2","Gyeongnam FC","Lucão"]':'루컹'}`);
+run("sport='football';league='kleague2'");
+assert.match(run(`teamCard({team:{displayName:'Gyeongnam FC'},homeAway:'home'},[{name:'Lucão'}])`), /루컹/);
+assert.match(run(`teamCard({team:{displayName:'Other FC'},homeAway:'home'},[{name:'Lucão'}])`), /Lucão/);
 assert.match(run(`injuryPanel({injuryDetails:{home:[{name:'Alisson Becker',status:'out'}]}},{})`), /알리송 베커/);
 run(`language='en'`);
+assert.match(run(`teamCard({team:{displayName:'Gyeongnam FC'},homeAway:'home'},[{name:'Lucão'}])`), /Lucao/);
 assert.equal(run(`translated('Alisson Becker')`), 'Alisson Becker');
 assert.match(run(`teamCard({team:{displayName:'Liverpool'},homeAway:'home'},[{name:'Alisson Becker'}])`), /Alisson Becker/);
 run(`language='ko'`);

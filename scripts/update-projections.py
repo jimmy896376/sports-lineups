@@ -374,7 +374,7 @@ def scrape_fotmob_kleague(league_id, key):
         if not home.get('id') or not away.get('id'):
             continue
         detail = fetch_json('https://www.fotmob.com/api/data/matchDetails?' + urlencode({'matchId': match['id']}))
-        lineup = detail.get('lineup', {})
+        lineup = detail.get('content', {}).get('lineup') or detail.get('lineup') or {}
         def players(team):
             result = []
             for row in team.get('starters', []):
@@ -384,13 +384,16 @@ def scrape_fotmob_kleague(league_id, key):
             return result[:11]
         rosters = {'home': players(lineup.get('homeTeam', {})), 'away': players(lineup.get('awayTeam', {}))}
         names = {'home': home.get('name', ''), 'away': away.get('name', '')}
+        logos = {side: next((team.get('imageUrl', '') for team in detail.get('header', {}).get('teams', [])
+                             if str(team.get('id')) == str(club['id']) and team.get('imageUrl', '').startswith('https://')), '')
+                 for side, club in (('home', home), ('away', away))}
         utc = kickoff.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
         competitors = [
-            {'homeAway': 'home', 'team': {'id': home['id'], 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': str(home['id'])}},
-            {'homeAway': 'away', 'team': {'id': away['id'], 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id'])}}
+            {'homeAway': 'home', 'team': {'id': home['id'], 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': str(home['id']), 'logo': logos['home']}},
+            {'homeAway': 'away', 'team': {'id': away['id'], 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id']), 'logo': logos['away']}}
         ]
         prediction = {'league': key, 'kickoff': utc, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])},
-            'lineups': rosters, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
+            'logos': logos, 'lineups': rosters, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'FotMob 최근 선발 11명 기준 예상', 'source': 'https://www.fotmob.com'}
         events.append({'event': {'id': str(match['id']), 'date': utc, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
     return events

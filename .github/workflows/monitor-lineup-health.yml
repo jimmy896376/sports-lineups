@@ -1,0 +1,30 @@
+name: Monitor lineup feed health
+
+on:
+  schedule:
+    - cron: '10,25,40,55 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test monitor rules
+        run: node scripts/nude/health.test.mjs
+      - name: Check current feed
+        id: health
+        run: node scripts/nude/health.mjs
+      - name: Retry collection after a failed check
+        if: failure() && steps.health.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run refresh-lineups.yml --repo "$GITHUB_REPOSITORY" --ref main

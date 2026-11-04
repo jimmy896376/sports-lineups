@@ -33,10 +33,20 @@ class NameVerification(unittest.TestCase):
                       '<div class="font-semibold text-sm truncate">다른 선수</div></a>')
         def get(url):
             return league if url.endswith('/leagues/NHL') else roster
-        entries=r.scorebase_nhl_names(rows,get)
+        entries=r.scorebase_roster_names(rows,'nhl',get)
         self.assertEqual([(e['name'],e['korean']) for e in entries],[('Matthew Knies','매튜 나이스')])
-        self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720')
-        self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nba'}],get),[])
+        self.assertEqual(entries[0]['sources'][0]['playerUrl'],'https://www.scorebase.kr/players/8482720?league=NHL')
+        self.assertEqual(r.scorebase_roster_names([{'name':'Matthew Knies','league':'nba'}],'nhl',get),[])
+
+    def test_scorebase_nba_roster_adds_verified_korean_name(self):
+        league=r.Page('<a href="/teams/527">샬럿 호네츠</a>')
+        roster=r.Page('<a href="/players/123?league=NBA"><img alt="Coby White">'
+                      '<div class="font-semibold text-sm">코비 화이트</div></a>')
+        def get(url):
+            return league if url.endswith('/leagues/NBA') else roster
+        entries=r.scorebase_roster_names([{'name':'Coby White','league':'nba','team':'Charlotte Hornets'}],'nba',get)
+        self.assertEqual([(e['name'],e['korean'],e['method']) for e in entries],
+                         [('Coby White','코비 화이트','scorebase-nba-roster-v1')])
 
     def test_scorebase_nhl_conflicting_names_stay_unverified(self):
         league=r.Page('<a href="/teams/1">A</a><a href="/teams/2">B</a><a href="/teams/3">C</a>')
@@ -46,7 +56,7 @@ class NameVerification(unittest.TestCase):
                 return league
             name=names[url.rsplit('/',1)[-1]]
             return r.Page(f'<a href="/players/1?league=NHL"><img alt="Matthew Knies"><div class="font-semibold">{name}</div></a>')
-        self.assertEqual(r.scorebase_nhl_names([{'name':'Matthew Knies','league':'nhl'}],get),[])
+        self.assertEqual(r.scorebase_roster_names([{'name':'Matthew Knies','league':'nhl'}],'nhl',get),[])
 
     row = {'name': 'Moritz Nicolas', 'team': 'Borussia Monchengladbach', 'league': 'bundesliga'}
     def page(self, korean='모리츠 니콜라스', english='Moritz Nicolas', team='Borussia Monchengladbach'):

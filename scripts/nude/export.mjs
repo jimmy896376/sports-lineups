@@ -7,6 +7,11 @@ import './source-adapter.cjs';
 import './contract.cjs';
 
 export function buildFeed(snapshot,catalog,teams,config,revision){
+ for(const rows of Object.values(snapshot.domestic||{}))if(Array.isArray(rows))for(const row of rows){
+  const event=Date.parse(row.event?.date),prediction=Date.parse(row.prediction?.kickoff);
+  if(Number.isFinite(event)&&Number.isFinite(prediction)&&Math.abs(event-prediction)>60000)
+   throw Error(`Schedule/lineup kickoff mismatch: ${row.prediction?.league||'domestic'} ${row.event?.id||''}`);
+ }
  const model=globalThis.NudeLineupData.normalize(snapshot,catalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
  if(!model.matches.length&&!config.allowEmptyFeed)throw Error('Empty feed blocked. Review collection or deliberately set allowEmptyFeed.');

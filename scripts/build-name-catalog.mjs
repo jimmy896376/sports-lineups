@@ -23,6 +23,7 @@ if (process.argv.includes('--queue')) {
   const context = vm.createContext({});
   vm.runInContext(fs.readFileSync(new URL('dist/player-ko.js',root),'utf8'),context);
   const autoPath = new URL('scripts/player-name-auto-review.json',root);
+  const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
   const automatic = {};
   if(fs.existsSync(autoPath)) for(const row of read('scripts/player-name-auto-review.json').entries) {
     if(row.method==='korean-wikipedia-search-v1') {
@@ -53,13 +54,13 @@ if (process.argv.includes('--queue')) {
           && url.searchParams.get('teamId')===s.clubCode && /^K[0-9]{2}$/.test(s.clubCode)
           && s.domain==='kleague.com' && s.teamMatched && s.jerseyMatched && s.contentHash;
       }),'K League roster needs official club and unique jersey evidence');
-    } else if(row.method==='scorebase-nhl-roster-v1') {
-      assert.ok(row.league==='nhl' && row.sources.length===1 && row.sources.every(s=>{
+    } else if(['scorebase-nhl-roster-v1','scorebase-nba-roster-v1','scorebase-khl-roster-v1'].includes(row.method)) {
+      assert.ok(row.method===`scorebase-${row.league}-roster-v1` && row.sources.length===1 && row.sources.every(s=>{
         const team=new URL(s.url),player=new URL(s.playerUrl);
         return team.protocol==='https:' && team.hostname==='www.scorebase.kr' && /^\/teams\/[0-9]+$/.test(team.pathname)
           && player.protocol==='https:' && player.hostname==='www.scorebase.kr' && /^\/players\/[0-9]+$/.test(player.pathname)
-          && player.searchParams.get('league')==='NHL' && s.englishNameMatched && s.koreanNameMatched && s.contentHash;
-      }),'Scorebase NHL roster needs bilingual player link and team identity');
+          && player.searchParams.get('league')===row.league.toUpperCase() && s.englishNameMatched && s.koreanNameMatched && s.contentHash;
+      }),'Scorebase roster needs bilingual player link and team identity');
     } else if(row.method==='google-search-result-v1') {
       assert.ok(row.sources.length>=1 && row.sources.every(s=>{
         const url=new URL(s.url);
@@ -86,13 +87,13 @@ if (process.argv.includes('--queue')) {
   Object.assign(context,{fetch(){},atob,TextDecoder,Uint8Array});
   vm.runInContext(fs.readFileSync(new URL('dist/win-probability.js',root),'utf8'),context);
   vm.runInContext(fs.readFileSync(new URL('dist/app.js',root),'utf8').replace(/loadGames\(\);\s*$/,''),context);
-  const previous = fs.existsSync(new URL('dist/name-catalog.json',root)) ? read('dist/name-catalog.json') : {};
   const appNames={...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context)};
   for(const name of Object.keys(appNames)) if(previous.players?.[name]) appNames[name]=previous.players[name];
   const manual={...vm.runInContext('footballKo',context),...appNames,...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
   const normalized=name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
   const manualKeys=new Set(Object.keys(manual).map(normalized));
-  const players = {...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};
+  // shortcut: published aliases persist; add explicit revocation when a spelling must be withdrawn.
+  const players = {...previous.players,...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};
   const playerTeamNames={};
   for(const row of read('scripts/player-name-team-review.json').entries){
     const source=new URL(row.source);

@@ -26,7 +26,7 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
 SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
 POLICY = 'precollect-names-v5'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
-SCOREBASE_NHL_POLICY = 'scorebase-nhl-roster-v1'
+SCOREBASE_LEAGUES = ('nhl', 'nba', 'khl')
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
     'Jeju SK': ('kleague1', 'K04'), 'Gwangju FC': ('kleague1', 'K22'),
@@ -370,11 +370,12 @@ def kleague_official_names(rows, get=fetch_page):
     return found
 
 
-def scorebase_nhl_names(rows, get=fetch_page):
-    pending = {normalize(row['name']): row for row in rows if row.get('league') == 'nhl'}
+def scorebase_roster_names(rows, league_code, get=fetch_page):
+    pending = {normalize(row['name']): row for row in rows if row.get('league') == league_code}
     if not pending:
         return []
-    league = get('https://www.scorebase.kr/leagues/NHL')
+    code = league_code.upper()
+    league = get(f'https://www.scorebase.kr/leagues/{code}')
     team_paths = list(dict.fromkeys(re.findall(r'href=["\'](/teams/[0-9]+)["\']', league.raw)))[:40]
     found = {}
     for path in team_paths:
@@ -383,7 +384,7 @@ def scorebase_nhl_names(rows, get=fetch_page):
             page = get(url)
         except (ValueError, OSError, urllib.error.URLError):
             continue
-        for player_path, card in re.findall(r'<a[^>]+href=["\'](/players/[0-9]+(?:\?league=NHL)?)["\'][^>]*>(.*?)</a>', page.raw, re.S):
+        for player_path, card in re.findall(r'<a[^>]+href=["\'](/players/[0-9]+(?:\?league=' + code + r')?)["\'][^>]*>(.*?)</a>', page.raw, re.S):
             image = re.search(r'<img[^>]+alt=["\']([^"\']+)["\']', card)
             label = re.search(r'<div[^>]*class=["\'][^"\']*font-semibold[^"\']*["\'][^>]*>([^<]+)</div>', card)
             if not image or not label:
@@ -392,7 +393,7 @@ def scorebase_nhl_names(rows, get=fetch_page):
             key = normalize(english)
             if key not in pending or not re.search(r'[가-힣]', korean):
                 continue
-            source = {'url': url, 'playerUrl': 'https://www.scorebase.kr' + player_path,
+            source = {'url': url, 'playerUrl': 'https://www.scorebase.kr' + player_path + ('' if '?' in player_path else '?league=' + code),
                       'domain': 'scorebase.kr', 'englishNameMatched': True, 'koreanNameMatched': True,
                       'contentHash': hashlib.sha256(page.raw.encode()).hexdigest()}
             if key in found:
@@ -401,7 +402,7 @@ def scorebase_nhl_names(rows, get=fetch_page):
             else:
                 row = pending[key]
                 found[key] = {'name': row['name'], 'korean': korean, 'team': row.get('team'),
-                              'league': 'nhl', 'method': SCOREBASE_NHL_POLICY, 'sources': [source]}
+                              'league': league_code, 'method': f'scorebase-{league_code}-roster-v1', 'sources': [source]}
     return [entry for entry in found.values() if entry]
 
 
@@ -432,18 +433,21 @@ def main():
     eligible.sort(key=lambda row: priority(row, state, now))
     teams = read(ROOT / 'dist/team-ko.json', {})
     scorebase_approved = 0
-    try:
-        for entry in scorebase_nhl_names(candidates_for_review):
-            key = normalize(entry['name'])
-            if key in known:
-                continue
-            entry['verifiedAt'] = now.isoformat()
-            approved['entries'].append(entry)
-            known.add(key)
-            scorebase_approved += 1
-        write(approved_path, approved)
-    except (ValueError, OSError, urllib.error.URLError) as exc:
-        print('Scorebase NHL roster unavailable:', type(exc).__name__)
+    scorebase_by_league = dict.fromkeys(SCOREBASE_LEAGUES, 0)
+    for league_code in SCOREBASE_LEAGUES:
+        try:
+            for entry in scorebase_roster_names(candidates_for_review, league_code):
+                key = normalize(entry['name'])
+                if key in known:
+                    continue
+                entry['verifiedAt'] = now.isoformat()
+                approved['entries'].append(entry)
+                known.add(key)
+                scorebase_approved += 1
+                scorebase_by_league[league_code] += 1
+            write(approved_path, approved)
+        except (ValueError, OSError, urllib.error.URLError) as exc:
+            print('Scorebase', league_code.upper(), 'roster unavailable:', type(exc).__name__)
     kleague_approved = 0
     for entry in kleague_official_names(candidates_for_review):
         key = normalize(entry['name'])
@@ -521,7 +525,8 @@ def main():
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
-               'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_approved, 'kleagueOfficialApproved': kleague_approved,
+               'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_by_league['nhl'],
+               'scorebaseRosterApproved': scorebase_approved, 'kleagueOfficialApproved': kleague_approved,
                'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
                'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,
                'searchUnavailable': search_unavailable >= 3,

@@ -93,7 +93,16 @@ if (process.argv.includes('--queue')) {
   const normalized=name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
   const manualKeys=new Set(Object.keys(manual).map(normalized));
   const players = {...Object.fromEntries(Object.entries(automatic).filter(([name])=>!manualKeys.has(normalized(name)))),...manual};
-  for (const dictionary of [teams,players]) {
+  const playerTeamNames={};
+  for(const row of read('scripts/player-name-team-review.json').entries){
+    const source=new URL(row.source);
+    assert.ok(['kleague1','kleague2'].includes(row.league) && row.team && row.name && /^\d+$/.test(row.number)
+      && source.protocol==='https:' && source.hostname==='www.kleague.com' && source.pathname==='/club/club.do'
+      && /^K\d{2}$/.test(source.searchParams.get('teamId')||'') && /\p{Script=Hangul}/u.test(row.korean),
+      `Invalid team-scoped player name: ${row.name}`);
+    playerTeamNames[JSON.stringify([row.league,row.team,row.name])]=row.korean;
+  }
+  for (const dictionary of [teams,players,playerTeamNames]) {
     const aliases=new Map();
     for (const [name,korean] of Object.entries(dictionary)) {
       const plain=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC');
@@ -131,8 +140,8 @@ if (process.argv.includes('--queue')) {
   addObservedAliases(players,observed);
   addObservedAliases(teams,observedTeams);
   const teamEnglish=Object.fromEntries(review.entries.filter(row=>row.english).map(row=>[row.name,row.english]));
-  const unchanged = ['teams','teamEnglish','players'].every(key=>JSON.stringify(previous[key])===JSON.stringify({teams,teamEnglish,players}[key]));
-  const catalog = {schemaVersion:1,generatedAt:unchanged && previous.generatedAt ? previous.generatedAt : new Date().toISOString(),teams,teamEnglish,players};
+  const unchanged = ['teams','teamEnglish','players','playerTeamNames'].every(key=>JSON.stringify(previous[key])===JSON.stringify({teams,teamEnglish,players,playerTeamNames}[key]));
+  const catalog = {schemaVersion:1,generatedAt:unchanged && previous.generatedAt ? previous.generatedAt : new Date().toISOString(),teams,teamEnglish,players,playerTeamNames};
   write('dist/team-ko.json',teams);
   write('dist/name-catalog.json',catalog);
   console.log(`Approved name catalog: ${Object.keys(teams).length} team aliases, ${Object.keys(players).length} player aliases.`);

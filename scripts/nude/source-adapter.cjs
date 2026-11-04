@@ -20,11 +20,12 @@
     const aliases={UTA:'UTAH',GSW:'GS',NOP:'NO',NYK:'NY',SAS:'SA',SJS:'SJ',NJD:'NJ',LAK:'LA',TBL:'TB',WAS:'WSH'};
     const teamFull=v=>catalog.teamCodes?.[league]?.[aliases[v]||v]||v;
     const name=text(p.names?.[side]||eventTeam?.displayName||teamFull(code));
-    const players=(Array.isArray(p.lineups?.[side])?p.lineups[side]:[]).filter(x=>text(x?.name)).map(x=>({name:translated(x.name,catalog.players),originalName:text(x.name),position:text(x.position),number:text(String(x.number??x.jersey??'')),flag:text(x.flag)}));
+    const playerName=value=>text(catalog.playerTeamNames?.[JSON.stringify([league,name,value])])||translated(value,catalog.players);
+    const players=(Array.isArray(p.lineups?.[side])?p.lineups[side]:[]).filter(x=>text(x?.name)).map(x=>({name:playerName(x.name),originalName:text(x.name),position:text(x.position),number:text(String(x.number??x.jersey??'')),flag:text(x.flag)}));
     const detailed=Array.isArray(p.injuryDetails?.[side])?p.injuryDetails[side]:[];
     const injuries=detailed.length?detailed:(Array.isArray(p.injuries?.[side])?p.injuries[side].map(name=>({name})):[]);
     const pitcher=p.startingPitchers?.[side];
-    return {side,id:text(String(p.teams?.[side]||eventTeam?.id||name)),name:translated(teamFull(name),{...catalog.teams,...teamNames}),logo:text(p.logos?.[side]||eventTeam?.logo),players,status:players.length?(p.statuses?.[side]==='confirmed'?'confirmed':'predicted'):'pending',injuries:injuries.filter(x=>text(x?.name)).map(x=>({name:translated(x.name,catalog.players),status:text(x.status),detail:text(x.detail||x.description||x.injury)})),pitcher:typeof pitcher==='string'?translated(pitcher,catalog.players):pitcher?.name?{...pitcher,name:translated(pitcher.name,catalog.players)}:null};
+    return {side,id:text(String(p.teams?.[side]||eventTeam?.id||name)),name:translated(teamFull(name),{...catalog.teams,...teamNames}),logo:text(p.logos?.[side]||eventTeam?.logo),players,status:players.length?(p.statuses?.[side]==='confirmed'?'confirmed':'predicted'):'pending',injuries:injuries.filter(x=>text(x?.name)).map(x=>({name:playerName(x.name),status:text(x.status),detail:text(x.detail||x.description||x.injury)})),pitcher:typeof pitcher==='string'?playerName(pitcher):pitcher?.name?{...pitcher,name:playerName(pitcher.name)}:null};
    });
    if(teams.some(t=>!t.name)){rejected++;continue;}
    // Names/translation changes do not change the identity; home and away remain ordered.

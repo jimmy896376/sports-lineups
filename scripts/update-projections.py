@@ -1178,6 +1178,12 @@ def main():
         recent_form = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(recent_form)
         print('recent form', recent_form.enrich_recent_form(payload, previous, fetch_json))
+        print('KBO recent form', recent_form.enrich_kbo_form(
+            payload, previous,
+            lambda day: post_json('https://www.koreabaseball.com/ws/Main.asmx/GetKboGameList',
+                                  {'leId': 1, 'srId': '0,1,3,4,5,6,7,8,9', 'date': day},
+                                  f'https://www.koreabaseball.com/Schedule/GameCenter/Main.aspx?gameDate={day}').get('game', []),
+            fetch_text))
     except Exception as error:
         print('recent form unavailable:', error)
     if previous.get('items') == payload.get('items') and previous.get('domestic') == payload.get('domestic') and previous.get('sourceStatus') == payload.get('sourceStatus'):

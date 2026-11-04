@@ -8,6 +8,11 @@ const feed=buildFeed(source,catalog,teams,config,'test'),validate=globalThis.Nud
 assert.equal(catalog.players['Nathan MacKinnon'],'네이선 매키넌');
 const nameCheck={asOf:'2026-11-04T00:00:00Z',items:[{league:'nhl',kickoff:'2026-11-04T00:00:00Z',names:{home:'Colorado Avalanche',away:'Columbus Blue Jackets'},lineups:{home:[{name:'Nathan MacKinnon'}],away:[]}}],domestic:{}};
 assert.equal(buildFeed(nameCheck,catalog,teams,config,'test').matches[0].teams[0].players[0].name,'네이선 매키넌');
+const scoped={...catalog,playerTeamNames:{'["kleague2","Gyeongnam FC","Lucão"]':'루컹'}};
+const scopedGame={asOf:'2026-11-04T00:00:00Z',items:[],domestic:{kleague2:[{event:{id:'1',date:'2026-11-04T00:00:00Z'},prediction:{league:'kleague2',kickoff:'2026-11-04T00:00:00Z',names:{home:'Gyeongnam FC',away:'Other FC'},lineups:{home:[{name:'Lucão'}],away:[{name:'Lucão'}]}}}]}};
+const scopedTeams=buildFeed(scopedGame,scoped,teams,config,'test').matches[0].teams;
+assert.equal(scopedTeams[0].players[0].name,'루컹');
+assert.equal(scopedTeams[1].players[0].name,'Lucão');
 assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);
 const kstDay=ms=>new Date(ms+32400000).toISOString().slice(0,10),sourceTime=Date.parse(source.asOf);
 assert.ok(feed.matches.every(m=>[0,1,2].map(offset=>kstDay(sourceTime+offset*86400000)).includes(kstDay(m.kickoff))));

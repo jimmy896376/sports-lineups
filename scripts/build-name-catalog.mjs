@@ -46,6 +46,13 @@ if (process.argv.includes('--queue')) {
         const hosts=row.method==='namuwiki-team-roster-v2' ? ['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'] : ['namu.moe'];
         return url.protocol==='https:' && hosts.includes(url.hostname) && url.pathname.startsWith('/w/') && s.domain==='namu.moe' && s.teamMatched && s.englishNameMatched && s.rowMatched && s.contentHash;
       }),'NamuWiki roster needs exact team and bilingual player row');
+    } else if(row.method==='kleague-official-roster-v1') {
+      assert.ok(['kleague1','kleague2'].includes(row.league) && row.sources.length===1 && row.sources.every(s=>{
+        const url=new URL(s.url);
+        return url.protocol==='https:' && url.hostname==='www.kleague.com' && url.pathname==='/club/club.do'
+          && url.searchParams.get('teamId')===s.clubCode && /^K[0-9]{2}$/.test(s.clubCode)
+          && s.domain==='kleague.com' && s.teamMatched && s.jerseyMatched && s.contentHash;
+      }),'K League roster needs official club and unique jersey evidence');
     } else if(row.method==='scorebase-nhl-roster-v1') {
       assert.ok(row.league==='nhl' && row.sources.length===1 && row.sources.every(s=>{
         const team=new URL(s.url),player=new URL(s.playerUrl);

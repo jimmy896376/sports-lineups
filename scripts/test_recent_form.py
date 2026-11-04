@@ -187,6 +187,35 @@ class RecentForm(TestCase):
         stats = module.enrich_recent_form(payload, {}, fake_espn(urls), pause=0)
         self.assertEqual((stats['items'], urls), (0, []))
 
+    def test_kbo_official_results_and_records(self):
+        fixture = {'event': {'id': 'next'}, 'prediction': {'kickoff': '2026-11-06T09:30:00Z',
+            'teams': {'home': 'SS', 'away': 'KT'}, 'names': {'home': '삼성', 'away': 'KT'}}}
+        payload = {'domestic': {'kbo': [fixture]}}
+        games = {}
+        for index, day in enumerate(('20261105', '20261104', '20261103', '20261102', '20261101')):
+            games[day] = [{'G_ID': str(index), 'GAME_STATE_SC': '3', 'CANCEL_SC_ID': '0',
+                           'HOME_ID': 'SS', 'AWAY_ID': 'KT',
+                           'B_SCORE_CN': '5' if index % 2 == 0 else '1', 'T_SCORE_CN': '2'}]
+        html = '<table><tr><td>1</td><td>KT</td><td>144</td><td>90</td><td>49</td><td>5</td><td></td><td></td><td></td><td></td><td>45-2-24</td><td>45-3-25</td></tr>' \
+               '<tr><td>2</td><td>삼성</td><td>144</td><td>83</td><td>58</td><td>3</td><td></td><td></td><td></td><td></td><td>43-1-29</td><td>40-2-29</td></tr></table>'
+        checked = []
+        result = module.enrich_kbo_form(payload, {}, lambda day: (checked.append(day), games.get(day, []))[1], lambda _: html)
+        self.assertEqual(result, {'matches': 1, 'withForm': 1, 'withRecords': 1})
+        self.assertEqual(checked, list(games))
+        self.assertEqual(fixture['prediction']['recentForm']['home'], ['W', 'L', 'W', 'L', 'W'])
+        self.assertEqual(fixture['prediction']['recentForm']['away'], ['L', 'W', 'L', 'W', 'L'])
+        self.assertEqual(fixture['prediction']['records']['home'], {'record': '83-58', 'sideRecord': '43-29'})
+        self.assertEqual(fixture['prediction']['records']['away'], {'record': '90-49', 'sideRecord': '45-25'})
+
+    def test_kbo_unavailable_results_retain_verified_previous(self):
+        old = {'event': {'id': 'next'}, 'prediction': {'recentForm': {'home': ['W']}, 'records': {'home': {'record': '83-58'}}}}
+        fixture = {'event': {'id': 'next'}, 'prediction': {'kickoff': '2026-11-06T09:30:00Z',
+            'teams': {'home': 'SS', 'away': 'KT'}, 'names': {'home': '삼성', 'away': 'KT'}}}
+        module.enrich_kbo_form({'domestic': {'kbo': [fixture]}}, {'domestic': {'kbo': [old]}},
+                               lambda _: [], lambda _: '', log=lambda *args: None)
+        self.assertEqual(fixture['prediction']['recentForm'], {'home': ['W']})
+        self.assertEqual(fixture['prediction']['records'], {'home': {'record': '83-58'}})
+
 
 if __name__ == '__main__':
     main()

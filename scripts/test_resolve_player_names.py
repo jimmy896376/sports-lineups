@@ -9,6 +9,20 @@ r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 class NameVerification(unittest.TestCase):
+    def test_kleague_official_roster_requires_team_and_unique_jersey(self):
+        rows=[{'name':'Dong-Jun Kim','team':'Jeju SK','league':'kleague1','number':'1'},
+              {'name':'Other Player','team':'Jeju SK','league':'kleague1','number':'2'},
+              {'name':'Wrong Club','team':'Gwangju FC','league':'kleague1','number':'1'}]
+        page=r.Page('<span class="name">김동준<span class="small">제주</span></span><span class="num campton">No.1</span>'
+                    '<span class="name">선수 갑<span class="small">제주</span></span><span class="num campton">No.2</span>'
+                    '<span class="name">선수 을<span class="small">제주</span></span><span class="num campton">No.2</span>')
+        def get(url):
+            if 'teamId=K22' in url: raise ValueError('club unavailable')
+            return page
+        approved=r.kleague_official_names(rows,get)
+        self.assertEqual([(x['name'],x['korean']) for x in approved],[('Dong-Jun Kim','김동준')])
+        self.assertEqual(approved[0]['sources'][0]['clubCode'],'K04')
+
     def test_scorebase_nhl_roster_pairs_english_and_korean_in_same_player_card(self):
         rows=[{'name':'Matthew Knies','team':'Columbus Blue Jackets','league':'nhl'},
               {'name':'Unknown Player','team':'Columbus Blue Jackets','league':'nhl'}]

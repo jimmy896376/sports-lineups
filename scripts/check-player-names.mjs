@@ -105,7 +105,7 @@ const teamReview = JSON.parse(fs.readFileSync(new URL('./team-name-review.json',
 const reviewedTeamHosts = new Set(['cdn.kovo.co.kr','iffhs.com','news.coupang.com','readonly.wiki',
   'sports.daum.net','toricori.com','www.ford.co.kr','www.hankyung.com','www.ktwiz.co.kr',
   'www.liveman.co.kr','www.newyorkredbulls.com','www.nike.com','www.flashscore.co.kr',
-  'www.allfootballapp.com','www.korean.go.kr','www.scorebase.kr']);
+  'www.allfootballapp.com','www.korean.go.kr','www.scorebase.kr','www.kleague.com']);
 for (const row of teamReview.entries) {
   context.teamToReview = {displayName:row.name};
   assert.equal(run('teamDisplayName(teamToReview)'),row.korean,row.name);

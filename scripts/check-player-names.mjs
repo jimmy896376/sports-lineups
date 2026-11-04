@@ -62,7 +62,7 @@ for (const [name, expected] of [
   ['Yehor Nazaryna', '예호르 나자리나'],
   ['Brayden Burries', '브레이든 버리스'],
   ['Baylor Scheierman', '베일러 샤이어맨'],
-  ['Unknown Player', 'Unknown Player'], ['Alisson Santos', 'Alisson Santos'],
+  ['Unknown Player', 'Unknown Player'], ['Alisson Santos', '알리송 산투스'],
   ['Becker', 'Becker']
 ]) assert.equal(run(`translated(${JSON.stringify(name)})`), expected, name);
 run("sport='football'");

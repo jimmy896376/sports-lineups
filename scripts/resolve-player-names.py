@@ -16,7 +16,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parent.parent
-DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com', 'scorebase.kr',
+DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com', 'scorebase.kr', 'kleague.com',
            'premierleague.com', 'bundesliga.com', 'uefa.com', 'fifa.com', 'nba.com', 'mlb.com', 'nhl.com',
            'liverpoolfc.com', 'mancity.com', 'manutd.com', 'tottenhamhotspur.com', 'arsenal.com',
            'fcbayern.com', 'bvb.de', 'borussia.de', 'vfb.de', 'realmadrid.com', 'fcbarcelona.com',
@@ -27,6 +27,16 @@ SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
 POLICY = 'precollect-names-v5'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 SCOREBASE_NHL_POLICY = 'scorebase-nhl-roster-v1'
+KLEAGUE_POLICY = 'kleague-official-roster-v1'
+KLEAGUE_TEAM_IDS = {
+    'Jeju SK': ('kleague1', 'K04'), 'Gwangju FC': ('kleague1', 'K22'),
+    'Gimcheon Sangmu': ('kleague1', 'K35'), 'FC Anyang': ('kleague1', 'K27'),
+    'Seongnam FC': ('kleague2', 'K08'), 'Daegu FC': ('kleague2', 'K17'),
+    'Suwon FC': ('kleague2', 'K29'), 'Gyeongnam FC': ('kleague2', 'K20'),
+    'Gimhae FC 2008': ('kleague2', 'K41'), 'Hwaseong FC': ('kleague2', 'K39'),
+    'Gimpo FC': ('kleague2', 'K36'), 'Ansan Greeners': ('kleague2', 'K32'),
+    'Seoul E-Land FC': ('kleague2', 'K31'), 'Jeonnam Dragons': ('kleague2', 'K07'),
+}
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100
 GOOGLE_METHOD = 'google-search-result-v1'
@@ -329,6 +339,37 @@ def priority(row, state, now):
             state['players'].get(normalize(row['name']), {}).get('checkedAt', ''), hours, normalize(row['name']))
 
 
+def kleague_official_names(rows, get=fetch_page):
+    """Use the official current club roster when a team and jersey number match uniquely."""
+    grouped = {}
+    for row in rows:
+        club = KLEAGUE_TEAM_IDS.get(row.get('team'))
+        number = str(row.get('number') or '').strip()
+        if club and club[0] == row.get('league') and number.isdecimal():
+            grouped.setdefault((row['team'], *club), []).append(row)
+    found = []
+    for (team, league, code), pending in grouped.items():
+        url = 'https://www.kleague.com/club/club.do?' + urllib.parse.urlencode({'teamId': code})
+        try:
+            page = get(url)
+        except (ValueError, OSError, urllib.error.URLError):
+            continue
+        names = {}
+        for korean, number in re.findall(r'<span class="name">\s*([^<]+)<span class="small">[^<]*</span>\s*</span>\s*<span class="num campton">No\.([0-9]+)</span>', page.raw):
+            if re.search(r'[가-힣]', korean):
+                names.setdefault(number, set()).add(unescape(korean).strip())
+        digest = hashlib.sha256(page.raw.encode()).hexdigest()
+        for row in pending:
+            choices = names.get(str(row['number']).strip(), set())
+            if len(choices) != 1:
+                continue
+            found.append({'name': row['name'], 'korean': next(iter(choices)), 'team': team,
+                          'league': league, 'method': KLEAGUE_POLICY,
+                          'sources': [{'url': url, 'domain': 'kleague.com', 'clubCode': code,
+                                       'teamMatched': True, 'jerseyMatched': True, 'contentHash': digest}]})
+    return found
+
+
 def scorebase_nhl_names(rows, get=fetch_page):
     pending = {normalize(row['name']): row for row in rows if row.get('league') == 'nhl'}
     if not pending:
@@ -403,6 +444,16 @@ def main():
         write(approved_path, approved)
     except (ValueError, OSError, urllib.error.URLError) as exc:
         print('Scorebase NHL roster unavailable:', type(exc).__name__)
+    kleague_approved = 0
+    for entry in kleague_official_names(candidates_for_review):
+        key = normalize(entry['name'])
+        if key in known:
+            continue
+        entry['verifiedAt'] = now.isoformat()
+        approved['entries'].append(entry)
+        known.add(key)
+        kleague_approved += 1
+    write(approved_path, approved)
     deadline = time.monotonic() + 600
     groups = {}
     for row in candidates_for_review:
@@ -411,7 +462,7 @@ def main():
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
     checked = namu_checked = namu_approved = search_approved = search_unavailable = 0
-    added = scorebase_approved
+    added = scorebase_approved + kleague_approved
     blocked = {'google': 0, 'bing': 0}
     disabled = set()
     namu_errors = []
@@ -470,7 +521,7 @@ def main():
         time.sleep(2)
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
-               'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_approved,
+               'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_approved, 'kleagueOfficialApproved': kleague_approved,
                'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
                'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,
                'searchUnavailable': search_unavailable >= 3,

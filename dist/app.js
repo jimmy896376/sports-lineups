@@ -531,8 +531,14 @@ function recentResults(team, event, events, side, prediction) {
       return score > otherScore ? 'W' : score < otherScore ? 'L' : 'D';
     }).filter(Boolean).slice(-5);
 }
-function seasonRecordMarkup(team, side) {
+function seasonRecordMarkup(team, side, prediction) {
   const records = team.records || team.team?.records || [];
+  const supplied = prediction?.records?.[side];
+  if ((!Array.isArray(records) || !records.length) && supplied) {
+    const overall = /^\d+-\d+(?:-\d+)?$/.test(supplied.record || '') ? `<span>시즌 ${safe(supplied.record)}</span>` : '';
+    const venue = /^\d+-\d+(?:-\d+)?$/.test(supplied.sideRecord || '') ? `<span>${side === 'home' ? '홈' : '원정'} ${safe(supplied.sideRecord)}</span>` : '';
+    return overall || venue ? `<span class="season-record">${overall}${venue}</span>` : '';
+  }
   if (!Array.isArray(records)) return '';
   const summary = record => String(record?.summary || record?.displayValue || '');
   const valid = value => /^\d+\s*[-–]\s*\d+(?:\s*[-–]\s*\d+)?$/.test(value);
@@ -549,7 +555,7 @@ function formMarkup(team, event, events, side, prediction) {
   const name = safe(teamDisplayName(team.team));
   const text = results.length ? results.map(result => `<span class="form-result ${result.toLowerCase()}" aria-label="${result === 'W' ? '승' : result === 'L' ? '패' : '무'}">${result === 'W' ? '승' : result === 'L' ? '패' : '무'}</span>`).join('') : '<span class="form-empty">결과 기록 없음</span>';
   const sportSupportsRecord = ['mlb','kbo','npb','cpbl','nba','wnba','ncaam','kbl','wkbl'].includes(sport);
-  const record = sportSupportsRecord ? seasonRecordMarkup(team,side) : '';
+  const record = sportSupportsRecord ? seasonRecordMarkup(team,side,prediction) : '';
   const logo = teamLogo(team,'matchup-logo');
   const location = `<small class="venue-tag ${side}">${side === 'home' ? '홈' : '원정'}</small>`;
   const heading = side === 'away' ? `${logo}<span>${name}</span>${location}` : `${location}<span>${name}</span>${logo}`;

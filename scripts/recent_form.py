@@ -20,7 +20,9 @@ previous snapshot are reused in between, so a 15-minute schedule does not re-rea
 import re
 import time
 import unicodedata
+from html.parser import HTMLParser
 from datetime import datetime, timezone
+from datetime import timedelta
 from zoneinfo import ZoneInfo
 
 ESPN_PATHS = {
@@ -35,6 +37,118 @@ REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 h
 KEEP_STALE_SECONDS = 12 * 3600  # if ESPN fails, previous values younger than this are kept (they were read, not guessed)
 MAX_CALLS = 80                  # per run — a ceiling so a bad day never hammers ESPN
 RESULT = {'W': 'W', 'L': 'L', 'D': 'D', 'T': 'D'}
+
+
+class _KboRows(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.rows, self.row, self.cell, self.inside = [], None, None, False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'tr':
+            self.row = []
+        elif tag in ('td', 'th') and self.row is not None:
+            self.cell, self.inside = [], True
+
+    def handle_data(self, data):
+        if self.inside:
+            self.cell.append(data)
+
+    def handle_endtag(self, tag):
+        if tag in ('td', 'th') and self.inside:
+            self.row.append(''.join(self.cell).strip())
+            self.inside = False
+        elif tag == 'tr' and self.row is not None:
+            self.rows.append(self.row)
+            self.row = None
+
+
+def kbo_standings(html):
+    """Read regular-season W-L and home/away W-L from KBO's daily team ranking."""
+    parser = _KboRows()
+    parser.feed(html)
+    records = {}
+    for row in parser.rows:
+        if len(row) < 12 or not row[0].isdigit() or not row[3].isdigit() or not row[4].isdigit():
+            continue
+        if not re.fullmatch(r'\d+-\d+-\d+', row[10]) or not re.fullmatch(r'\d+-\d+-\d+', row[11]):
+            continue
+        records[row[1]] = {'record': f'{row[3]}-{row[4]}',
+                           'home': '-'.join((row[10].split('-')[0], row[10].split('-')[2])),
+                           'away': '-'.join((row[11].split('-')[0], row[11].split('-')[2]))}
+    return records
+
+
+def enrich_kbo_form(payload, previous, fetch_schedule, fetch_standings, now=None, log=print):
+    """Use official KBO final scores for last five and official regular-season standings."""
+    fixtures = payload.get('domestic', {}).get('kbo', [])
+    if not fixtures:
+        return {'matches': 0, 'withForm': 0, 'withRecords': 0}
+    now = now or datetime.now(timezone.utc)
+    previous_by_id = {str(row.get('event', {}).get('id')): row for row in (previous or {}).get('domestic', {}).get('kbo', [])}
+    try:
+        standings = kbo_standings(fetch_standings('https://www.koreabaseball.com/Record/TeamRank/TeamRankDaily.aspx'))
+    except Exception as error:
+        log('KBO standings unavailable:', error)
+        standings = {}
+    boards = {}
+    for fixture in fixtures:
+        prediction = fixture.get('prediction', {})
+        teams = prediction.get('teams', {})
+        names = prediction.get('names', {})
+        kickoff = datetime.fromisoformat(prediction['kickoff'].replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul'))
+        previous_row = previous_by_id.get(str(fixture.get('event', {}).get('id')), {})
+        prior = previous_row.get('prediction', {})
+        checked = prior.get('formCheckedAt')
+        age = None
+        if checked:
+            try:
+                age = (now - datetime.fromisoformat(checked.replace('Z', '+00:00'))).total_seconds()
+            except ValueError:
+                pass
+        if age is not None and 0 <= age < REFRESH_SECONDS and prior.get('recentForm'):
+            prediction['recentForm'] = prior['recentForm']
+            prediction['formCheckedAt'] = checked
+        else:
+            forms = {'home': [], 'away': []}
+            for days_back in range(1, 61):
+                if all(len(form) >= 5 for form in forms.values()):
+                    break
+                day = (kickoff.date() - timedelta(days=days_back)).strftime('%Y%m%d')
+                if day not in boards:
+                    try:
+                        boards[day] = fetch_schedule(day)
+                    except Exception as error:
+                        log('KBO result unavailable:', day, error)
+                        boards[day] = []
+                for game in reversed(boards[day]):
+                    if str(game.get('GAME_STATE_SC')) != '3' or str(game.get('CANCEL_SC_ID')) not in ('0', 'None'):
+                        continue
+                    try:
+                        home, away = int(game['B_SCORE_CN']), int(game['T_SCORE_CN'])
+                    except (KeyError, TypeError, ValueError):
+                        continue
+                    for side, code, score, other in (('home', game.get('HOME_ID'), home, away), ('away', game.get('AWAY_ID'), away, home)):
+                        if code == teams.get(side) and len(forms[side]) < 5:
+                            forms[side].append('W' if score > other else 'L' if score < other else 'D')
+            found = {side: list(reversed(form)) for side, form in forms.items() if form}
+            if found:
+                prediction['recentForm'] = found
+                prediction['formCheckedAt'] = now.isoformat().replace('+00:00', 'Z')
+            elif prior.get('recentForm'):
+                prediction['recentForm'] = prior['recentForm']
+                prediction['formCheckedAt'] = checked
+        records = {}
+        for side in ('home', 'away'):
+            standing = standings.get(names.get(side))
+            if standing:
+                records[side] = {'record': standing['record'], 'sideRecord': standing[side]}
+        if records:
+            prediction['records'] = records
+        elif prior.get('records'):
+            prediction['records'] = prior['records']
+    return {'matches': len(fixtures), 'withForm': sum(bool(f['prediction'].get('recentForm')) for f in fixtures),
+            'withRecords': sum(bool(f['prediction'].get('records')) for f in fixtures)}
 # Lineup-source codes that ESPN spells differently (checked against ESPN scoreboards 2026-11-03)
 CODE_ALIASES = {
     'nba': {'GSW': 'GS', 'NYK': 'NY', 'NOP': 'NO', 'SAS': 'SA', 'UTA': 'UTAH', 'WAS': 'WSH', 'PHO': 'PHX', 'BRK': 'BKN'},

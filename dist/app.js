@@ -342,7 +342,7 @@ function kstDayRange() {
   const parts = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
   const get = type => Number(parts.find(part => part.type === type).value);
   const start = Date.UTC(get('year'),get('month')-1,get('day')) - 9*3600000;
-  return [start,start+2*24*3600000];
+  return [start,start+3*24*3600000];
 }
 async function getJson(url) {
   const response = await fetch(url,{cache:'no-store'});
@@ -642,10 +642,10 @@ function renderTeamSearch() {
   results.hidden=!query;
   if(!query){results.innerHTML='';return;}
   const rows=findTeamGames(query);
-  results.innerHTML=rows.length ? `<p class="search-summary">오늘·내일 경기 ${rows.length}개</p>`+rows.slice(0,20).map(row=>{
+  results.innerHTML=rows.length ? `<p class="search-summary">오늘부터 3일간 경기 ${rows.length}개</p>`+rows.slice(0,20).map(row=>{
     const index=teamSearchRows.indexOf(row);
     return `<button type="button" class="team-search-result" data-search-game="${index}"><strong>${safe(searchTeamName(row.away))} <span class="search-vs">VS</span> ${safe(searchTeamName(row.home))}</strong><span>${safe(dropdownLeagueNames[row.league])} · ${safe(kst(row.date))}</span></button>`;
-  }).join('') : `<p class="search-summary">${teamSearchRows.length ? '오늘·내일 조회된 경기에서 일치하는 팀이 없습니다.' : '경기 자료를 불러온 뒤 다시 검색해 주세요.'}</p>`;
+  }).join('') : `<p class="search-summary">${teamSearchRows.length ? '오늘부터 3일간 조회된 경기에서 일치하는 팀이 없습니다.' : '경기 자료를 불러온 뒤 다시 검색해 주세요.'}</p>`;
 }
 async function openTeamSearchGame(index) {
   const row=teamSearchRows[index];
@@ -776,7 +776,7 @@ async function loadMajorGames(current,preferFresh=false) {
       return card.replace('tabindex="-1">',`tabindex="-1"><div class="overview-league">${safe(dropdownLeagueNames[row.key]||sources[row.key].label[1])}</div>`);
     });
     if(current===requestId){
-      $('games').innerHTML=cards.length?`<div class="major-heading"><h2>오늘·내일 주요 경기</h2><p>결승·포스트시즌, 인기 리그·주요 팀 중심으로 선정 · 최대 12경기</p></div>`+cards.join(''):`<div class="empty">${scores.some(r=>r.status==='fulfilled')?'오늘·내일 선정 기준에 맞는 주요 경기가 없습니다. 전체 경기는 종목 메뉴에서 확인하세요.':'주요 경기 일정을 불러오지 못했습니다. 새로고침해 주세요.'}</div>`;
+      $('games').innerHTML=cards.length?`<div class="major-heading"><h2>오늘부터 3일간 주요 경기</h2><p>결승·포스트시즌, 인기 리그·주요 팀 중심으로 선정 · 최대 12경기</p></div>`+cards.join(''):`<div class="empty">${scores.some(r=>r.status==='fulfilled')?'오늘부터 3일간 선정 기준에 맞는 주요 경기가 없습니다. 전체 경기는 종목 메뉴에서 확인하세요.':'주요 경기 일정을 불러오지 못했습니다. 새로고침해 주세요.'}</div>`;
     }
   } finally {sport=previousSport;league=previousLeague;}
 }
@@ -802,7 +802,7 @@ async function loadGames(preferFresh=true) {
       if (current !== requestId) return;
       $('games').innerHTML = events.length
         ? events.map(entry => { const confirmed = entry.prediction.statuses?.home === 'confirmed' && entry.prediction.statuses?.away === 'confirmed'; return gameCard(entry.event,confirmed ? entry.prediction.lineups || {} : {},entry.prediction,[]); }).join('')
-        : `<div class="empty">${label('No scheduled games in this two-day period.','당일과 다음 날 예정된 경기가 없습니다.')}</div>`;
+        : `<div class="empty">${label('No scheduled games in this three-day period.','오늘부터 3일간 예정된 경기가 없습니다.')}</div>`;
     } catch {
       if (current === requestId) nameReview.failed = true;
       if (current === requestId) $('games').innerHTML = `<div class="empty">${label('Schedule source could not be refreshed.','일정 자료원을 새로고침하지 못했습니다.')}</div>`;
@@ -825,7 +825,7 @@ async function loadGames(preferFresh=true) {
     const events = allEvents.filter(event => !event.status?.type?.completed && event.competitions?.[0]?.timeValid !== false && Date.parse(event.date) >= dayStart && Date.parse(event.date) < dayEnd).sort((a,b) => Date.parse(a.date)-Date.parse(b.date));
     indexTeamSearch({domestic:{[sport==='football'?league:sport]:events.map(event=>({event}))}},true);
     if (!events.length) {
-      $('games').innerHTML = `<div class="empty">${label('No scheduled games in this two-day period.','당일과 다음 날 예정된 경기가 없습니다.')}</div>`;
+      $('games').innerHTML = `<div class="empty">${label('No scheduled games in this three-day period.','오늘부터 3일간 예정된 경기가 없습니다.')}</div>`;
       return;
     }
     const kind = sport;

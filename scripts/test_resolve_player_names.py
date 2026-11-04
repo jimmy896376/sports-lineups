@@ -117,6 +117,12 @@ class NameVerification(unittest.TestCase):
         self.assertEqual(approved['method'],r.DAUM_METHOD)
         for invalid in (html.replace('Moritz Nicolas','Other Player'),html.replace('축구선수','배우'),html.replace('보루시아 묀헨글라트바흐','다른 팀')):
             self.assertIsNone(r.daum_result(self.row,url,r.Page(invalid),team))
+    def test_daum_custom_profile_card_is_read(self):
+        html=('<c-title slot="title" data-href="?w=profile2&amp;DA=PRF&amp;coll=person-main&amp;spId=123">모리츠 니콜라스</c-title>'
+              '<p>축구선수 Moritz Nicolas</p><p>소속팀 보루시아 묀헨글라트바흐</p>')
+        team={'Borussia Mönchengladbach':'보루시아 묀헨글라트바흐'}
+        approved=r.daum_result(self.row,'https://search.daum.net/search?w=tot&q=Moritz+Nicolas',r.Page(html),team)
+        self.assertEqual(approved['korean'],'모리츠 니콜라스')
     def test_daum_profile_recovers_when_google_is_blocked(self):
         html='<a href="?w=profile2&coll=person-main&spId=123">모리츠 니콜라스</a><p>축구선수 Moritz Nicolas</p><a>보루시아 묀헨글라트바흐</a>'
         def get(url):

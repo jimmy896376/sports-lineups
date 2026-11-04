@@ -219,8 +219,9 @@ def google_result(row, url, page, team_dictionary):
 def daum_result(row, url, page, team_dictionary):
     """Use only Daum's sports person card with exact original name and club."""
     profiles = []
-    for href, title in page.links:
-        query = urllib.parse.parse_qs(urllib.parse.urlsplit(href).query)
+    card_titles = re.findall(r'<c-title\b[^>]*data-href=["\']([^"\']+)["\'][^>]*>([^<]+)</c-title>', page.raw, re.I)
+    for href, title in page.links + card_titles:
+        query = urllib.parse.parse_qs(urllib.parse.urlsplit(unescape(href)).query)
         if query.get('w') == ['profile2'] and query.get('coll') == ['person-main']:
             profiles.extend(candidates([title]))
     if len(set(profiles)) != 1:

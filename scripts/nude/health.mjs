@@ -9,6 +9,9 @@ export function inspect(feed,snapshot,now=Date.now()){
  const age=(now-Date.parse(feed.asOf))/60000;
  if(age>45||age< -5)issues.push(`feed age ${Math.round(age)} minutes`);
  if(!Number.isFinite(Date.parse(snapshot.asOf))||Math.abs(Date.parse(snapshot.asOf)-Date.parse(feed.asOf))>20*60000)issues.push('feed/source snapshot mismatch');
+ for(const [league,status] of Object.entries(snapshot.sourceStatus||{}))
+  if(status?.fresh!==true||!Number.isFinite(Date.parse(status.checkedAt))||now-Date.parse(status.checkedAt)>60*60000)
+   issues.push(`source unavailable or stale: ${league}`);
  if(!checked.matches.length)issues.push('empty feed');
  const day=ms=>new Date(ms+9*3600000).toISOString().slice(0,10);
  const allowed=new Set([0,1,2].map(offset=>day(now+offset*86400000)));

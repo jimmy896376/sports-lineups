@@ -9,4 +9,5 @@ assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).issues,[]);
 assert.match(inspect(feed,{asOf:feed.asOf},now+46*60000).issues.join(' '),/feed age/);
 assert.match(inspect({...feed,matches:[{...match,teams:[{...team('home'),logo:''},team('away')]}]},{asOf:feed.asOf},now).issues.join(' '),/logo/);
 assert.match(inspect({...feed,matches:[{...match,recentForm:{},records:{}}]},{asOf:feed.asOf},now).issues.join(' '),/KBO recent form/);
-console.log('PASS feed freshness, logo, and KBO record checks');
+assert.match(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:false,checkedAt:feed.asOf}}},now).issues.join(' '),/source unavailable or stale: kbo/);
+console.log('PASS feed freshness, source status, logo, and KBO record checks');

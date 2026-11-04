@@ -380,7 +380,7 @@ def scrape_fotmob_kleague(league_id, key):
             for row in team.get('starters', []):
                 player = row.get('player', row)
                 if player.get('name'):
-                    result.append({'name': player['name'], 'position': row.get('position', ''), 'flag': ''})
+                    result.append({'name': player['name'], 'number': player.get('shirtNumber', ''), 'position': row.get('position', ''), 'flag': ''})
             return result[:11]
         rosters = {'home': players(lineup.get('homeTeam', {})), 'away': players(lineup.get('awayTeam', {}))}
         names = {'home': home.get('name', ''), 'away': away.get('name', '')}

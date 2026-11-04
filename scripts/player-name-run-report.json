@@ -1,7 +1,7 @@
 {
-  "at": "2026-11-04T19:44:15.027107+00:00",
-  "inventoryRecords": 6545,
-  "pending": 1683,
+  "at": "2026-11-04T20:36:58.416463+00:00",
+  "inventoryRecords": 6510,
+  "pending": 1682,
   "pendingByLeague": {
     "bundesliga": 74,
     "championship": 215,
@@ -13,15 +13,15 @@
     "laliga": 72,
     "ligue1": 93,
     "mls": 239,
-    "nba": 46,
+    "nba": 45,
     "nhl": 15,
     "primeira": 154,
     "scottish": 110,
-    "seriea": 13,
-    "ucl": 18,
+    "seriea": 14,
+    "ucl": 17,
     "uel": 228
   },
-  "eligible": 942,
+  "eligible": 943,
   "scorebaseNhlApproved": 0,
   "namuTeamsChecked": 24,
   "namuApproved": 1,
@@ -29,7 +29,11 @@
   "searchApproved": 0,
   "approved": 1,
   "searchUnavailable": false,
-  "namuErrors": [],
+  "namuErrors": [
+    "Crystal Palace: HTTPError",
+    "Montreal Canadiens: HTTPError",
+    "Gil Vicente: HTTPError"
+  ],
   "collectionFailures": 0,
   "policy": "Unverified names remain English"
 }

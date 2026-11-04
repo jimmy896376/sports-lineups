@@ -1,7 +1,7 @@
 {
-  "at": "2026-11-03T23:05:13.990923+00:00",
+  "at": "2026-11-04T00:31:59.230241+00:00",
   "inventoryRecords": 6616,
-  "pending": 1706,
+  "pending": 1590,
   "pendingByLeague": {
     "bundesliga": 73,
     "championship": 203,
@@ -9,27 +9,30 @@
     "eredivisie": 140,
     "j1": 18,
     "jupiler": 143,
-    "khl": 59,
     "laliga": 72,
     "ligue1": 88,
     "mls": 239,
     "nba": 10,
-    "nhl": 27,
+    "nhl": 19,
     "primeira": 153,
     "scottish": 110,
     "seriea": 12,
-    "ucl": 56,
+    "ucl": 7,
     "uel": 241
   },
-  "eligible": 394,
+  "eligible": 291,
   "scorebaseNhlApproved": 0,
-  "namuTeamsChecked": 0,
+  "namuTeamsChecked": 3,
   "namuApproved": 0,
   "searchChecked": 100,
   "searchApproved": 0,
   "approved": 0,
   "searchUnavailable": false,
-  "namuErrors": [],
+  "namuErrors": [
+    "Crystal Palace: HTTPError",
+    "Montreal Canadiens: HTTPError",
+    "D.C. United: HTTPError"
+  ],
   "collectionFailures": 0,
   "policy": "Unverified names remain English"
 }

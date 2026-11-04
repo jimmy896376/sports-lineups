@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-04T22:40:12.091295+00:00",
-  "inventoryRecords": 6492,
+  "at": "2026-11-04T22:53:39.783359+00:00",
+  "inventoryRecords": 6491,
   "pending": 1663,
   "pendingByLeague": {
     "bundesliga": 74,
@@ -22,16 +22,19 @@
     "ucl": 12,
     "uel": 228
   },
-  "eligible": 526,
+  "eligible": 527,
   "scorebaseNhlApproved": 0,
   "kleagueOfficialApproved": 0,
-  "namuTeamsChecked": 0,
+  "namuTeamsChecked": 2,
   "namuApproved": 0,
   "searchChecked": 100,
   "searchApproved": 0,
   "approved": 0,
   "searchUnavailable": false,
-  "namuErrors": [],
-  "collectionFailures": 27,
+  "namuErrors": [
+    "Avtomobilist: HTTPError",
+    "Sibir: HTTPError"
+  ],
+  "collectionFailures": 0,
   "policy": "Unverified names remain English"
 }

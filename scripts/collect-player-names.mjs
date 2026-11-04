@@ -27,10 +27,12 @@ for(const item of leagues){currentLeague=item.league;vm.runInContext(`majorView=
 // The NudeTV feed can contain projected players that the original site does not render.
 const projections=JSON.parse(fs.readFileSync(root+'/dist/projections.json','utf8'));
 const projectionRows=[...(projections.items||[]),...Object.entries(projections.domestic||{}).flatMap(([league,rows])=>rows.map(row=>({...row.prediction,league})))];
+const reviewedTeams=JSON.parse(fs.readFileSync(root+'/dist/team-ko.json','utf8'));
 const seen=new Set(records.map(row=>[row.league,row.team,row.kind,row.name].join('\0')));
 for(const p of projectionRows)for(const side of ['home','away']){
  const team=p.names?.[side]||p.teams?.[side];
  if(!team)continue;
+ if(!teams.has(p.league+':'+team))teams.set(p.league+':'+team,{name:team,short:team,league:p.league,korean:reviewedTeams[team]||team});
  const add=(player,kind)=>{
   const name=typeof player==='string'?player:player?.name||player?.player;
   if(!name)return;

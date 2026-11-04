@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-04T12:37:06.124573+00:00",
+  "at": "2026-11-04T13:50:56.151917+00:00",
   "inventoryRecords": 6464,
   "pending": 1622,
   "pendingByLeague": {
@@ -20,15 +20,22 @@
     "ucl": 4,
     "uel": 241
   },
-  "eligible": 966,
+  "eligible": 965,
   "scorebaseNhlApproved": 0,
-  "namuTeamsChecked": 0,
+  "namuTeamsChecked": 6,
   "namuApproved": 0,
   "searchChecked": 100,
   "searchApproved": 0,
   "approved": 0,
   "searchUnavailable": false,
-  "namuErrors": [],
+  "namuErrors": [
+    "Crystal Palace: HTTPError",
+    "Montreal Canadiens: HTTPError",
+    "D.C. United: HTTPError",
+    "Gil Vicente: HTTPError",
+    "Vitória de Guimaraes: HTTPError",
+    "Deportivo: HTTPError"
+  ],
   "collectionFailures": 0,
   "policy": "Unverified names remain English"
 }

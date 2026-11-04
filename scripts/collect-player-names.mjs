@@ -18,7 +18,7 @@ const cachedFetch=async url=>{
 const document={documentElement:{dataset:{}},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},querySelector(){return element()},addEventListener(){}};
 const ctx=vm.createContext({document,localStorage:{getItem(){return null}},window:{setInterval(){}},fetch:cachedFetch,atob,TextDecoder,Uint8Array,console});
 for(const file of ['football-ko.js','player-ko.js','win-probability.js','app.js'])vm.runInContext(fs.readFileSync(root+'/dist/'+file,'utf8').replace(/loadGames\(\);\s*$/,''),ctx);
-ctx.record=(player,kind,team)=>{const name=typeof player==='string'?player:player.name;if(name)records.push({name,eventDate:currentEvent?.date,eventId:currentEvent?.id,team:team?.team?.displayName,short:player.short,league:currentLeague,kind,korean:vm.runInContext(`translated(${JSON.stringify(name)},${JSON.stringify(player.short)})`,ctx)});};
+ctx.record=(player,kind,team)=>{const name=typeof player==='string'?player:player.name;if(name)records.push({name,eventDate:currentEvent?.date,eventId:currentEvent?.id,team:team?.team?.displayName,short:player.short,number:player?.number||player?.shirtNumber,league:currentLeague,kind,korean:vm.runInContext(`translated(${JSON.stringify(name)},${JSON.stringify(player.short)})`,ctx)});};
 ctx.setEvent=event=>{currentEvent=event};
 ctx.recordTeam=team=>{const name=team.team.displayName;teams.set(currentLeague+':'+name,{name,short:team.team.shortDisplayName,league:currentLeague,korean:vm.runInContext(`teamDisplayName(${JSON.stringify(team.team)})`,ctx)});};
 vm.runInContext(`const originalGameCard=gameCard;gameCard=function(event,...args){setEvent(event);return originalGameCard(event,...args)};const originalRange=kstDayRange;kstDayRange=function(){const [start]=originalRange();return [start,start+7*86400000]};const originalTeamCard=teamCard;teamCard=function(team,players,pitcher){recordTeam(team);for(const p of players||[])record(p,'lineup',team);if(pitcher?.name)record(pitcher,'starting-pitcher',team);return originalTeamCard(team,players,pitcher)};const originalInjuryPanel=injuryPanel;injuryPanel=function(prediction,event){for(const side of ['home','away']){const team=event?.competitions?.[0]?.competitors?.find(t=>t.homeAway===side);for(const p of [...(prediction?.injuryDetails?.[side]||[]),...(prediction?.injuries?.[side]||[])])record(typeof p==='string'?p:{...p,name:p.name||p.player},'injury',team);}return originalInjuryPanel(prediction,event)};`,ctx);
@@ -39,7 +39,7 @@ for(const p of projectionRows)for(const side of ['home','away']){
   const key=[p.league,team,kind,name].join('\0');
   if(seen.has(key))return;
   seen.add(key);
-  records.push({name,eventDate:p.kickoff,team,league:p.league,kind,korean:vm.runInContext(`translated(${JSON.stringify(name)})`,ctx)});
+  records.push({name,eventDate:p.kickoff,team,number:player?.number||player?.shirtNumber,league:p.league,kind,korean:vm.runInContext(`translated(${JSON.stringify(name)})`,ctx)});
  };
  for(const player of p.lineups?.[side]||[])add(player,'lineup');
  for(const player of [...(p.injuryDetails?.[side]||[]),...(p.injuries?.[side]||[])])add(player,'injury');

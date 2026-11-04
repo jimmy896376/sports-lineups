@@ -23,7 +23,7 @@ enriched.items[0].logos={home:'https://example.com/home.png',away:'https://examp
 enriched.items[0].recentForm={home:['W','L','W','W','D']};
 enriched.items[0].records={home:{record:'4-1'}};
 enriched.items[0].startingPitchers={home:'Unknown Pitcher'};
-const first=buildFeed(enriched,catalog,teams,config,'test').matches.find(m=>m.league===enriched.items[0].league&&m.kickoff===Date.parse(enriched.items[0].kickoff));
+const first=buildFeed({...enriched,items:[enriched.items[0]],domestic:{}},catalog,teams,config,'test').matches[0];
 assert.deepEqual(first.logos,enriched.items[0].logos);
 assert.equal(first.teams[0].logo,'https://example.com/home.png');
 assert.equal(first.teams[1].logo,'https://example.com/away.png');

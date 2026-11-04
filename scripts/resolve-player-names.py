@@ -24,7 +24,7 @@ DOMAINS = ('namu.moe', 'transfermarkt.co.kr', 'flashscore.co.kr', 'sofascore.com
            'sportschosun.com', 'sportalkorea.com', 'osen.co.kr', 'xportsnews.com', 'spotvnews.co.kr',
            'mk.co.kr', 'hankyung.com', 'chosun.com', 'donga.com', 'khan.co.kr', 'kbs.co.kr', 'sbs.co.kr')
 SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
-POLICY = 'precollect-names-v5'
+POLICY = 'precollect-names-v6'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 SCOREBASE_LEAGUES = ('nhl', 'nba', 'khl')
 KLEAGUE_POLICY = 'kleague-official-roster-v1'

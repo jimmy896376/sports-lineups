@@ -99,6 +99,20 @@ if (process.argv.includes('--queue')) {
     }
     automatic[row.name]=row.korean;
   }
+  for (const row of read('scripts/scorebase-name-candidates.json').entries) {
+    if (row.method!=='scorebase-bilingual-candidate-v1') continue;
+    assert.ok(row.name && row.team && /\p{Script=Hangul}/u.test(row.korean) && row.sources.length===2,
+      `Invalid Scorebase bilingual name: ${row.name}`);
+    const [ko,en]=row.sources.map(source=>new URL(source.url));
+    assert.ok(ko.protocol==='https:' && en.protocol==='https:'
+      && ko.hostname==='www.scorebase.kr' && en.hostname==='www.scorebase.kr'
+      && /^\/transfers\/[a-z0-9]+$/.test(ko.pathname) && en.pathname===`/en${ko.pathname}`
+      && row.sources[0].koreanNameMatched && row.sources[0].teamMatched
+      && row.sources[1].englishNameMatched && row.sources[1].teamMatched
+      && row.sources.every(source=>source.contentHash),
+    `Scorebase bilingual name needs matching player ID and both club identities: ${row.name}`);
+    if (!(row.name in automatic)) automatic[row.name]=row.korean;
+  }
   // Human-reviewed spellings always take precedence over automated additions.
   vm.runInContext(fs.readFileSync(new URL('dist/football-ko.js',root),'utf8'),context);
   const element=()=>({innerHTML:'',textContent:'',dataset:{},addEventListener(){},setAttribute(){}});

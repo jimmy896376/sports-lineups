@@ -252,7 +252,7 @@ class NameVerification(unittest.TestCase):
             saved=json.loads((root/'scripts/player-name-auto-review.json').read_text())
             self.assertEqual(len(saved['entries']),2)
             self.assertEqual(json.loads((root/'scripts/player-name-run-report.json').read_text())['approved'],2)
-    def test_main_queues_scorebase_only_spelling_without_publishing_it(self):
+    def test_main_queues_scorebase_bilingual_spelling_for_catalog(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
             now=r.dt.datetime.now(r.dt.timezone.utc).isoformat()
@@ -268,7 +268,7 @@ class NameVerification(unittest.TestCase):
                  patch.object(r.time,'sleep'):
                 r.main()
             queued=json.loads((root/'scripts/scorebase-name-candidates.json').read_text())['entries'][0]
-            self.assertEqual((queued['name'],queued['status']),('Sean Steur','needs-independent-source'))
+            self.assertEqual((queued['name'],queued['status']),('Sean Steur','scorebase-bilingual-verified'))
             self.assertEqual(json.loads((root/'scripts/player-name-auto-review.json').read_text())['entries'],[])
     def test_main_continues_after_unreadable_google_result(self):
         with tempfile.TemporaryDirectory() as folder:

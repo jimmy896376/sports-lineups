@@ -594,6 +594,9 @@ def main():
     state_path = ROOT / 'scripts/player-name-search-state.json'
     approved = read(approved_path, {'schemaVersion': 1, 'entries': []})
     scorebase_queue = read(scorebase_queue_path, {'schemaVersion': 1, 'entries': []})
+    for entry in scorebase_queue['entries']:
+        if entry.get('method') == SCOREBASE_FOOTBALL_POLICY:
+            entry['status'] = 'scorebase-bilingual-verified'
     state = read(state_path, {'schemaVersion': 1, 'players': {}})
     feed = read(ROOT / 'dist/nude-feed.json', {'matches': []})
     visible = {normalize(player['name']) for match in feed.get('matches', []) for team in match.get('teams', [])
@@ -665,7 +668,7 @@ def main():
         if key in known:
             continue
         if entry['method'] == SCOREBASE_FOOTBALL_POLICY:
-            entry['status'] = 'needs-independent-source'
+            entry['status'] = 'scorebase-bilingual-verified'
             entry['checkedAt'] = now.isoformat()
             scorebase_queue['entries'] = [old for old in scorebase_queue['entries'] if normalize(old['name']) != key]
             scorebase_queue['entries'].append(entry)

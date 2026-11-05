@@ -65,6 +65,50 @@ class NameVerification(unittest.TestCase):
             return r.Page(f'<a href="/players/1?league=NHL"><img alt="Matthew Knies"><div class="font-semibold">{name}</div></a>')
         self.assertEqual(r.scorebase_roster_names([{'name':'Matthew Knies','league':'nhl'}],'nhl',get),[])
 
+    def test_scorebase_khl_profile_matches_reversed_english_and_korean(self):
+        league=r.Page('<a href="/teams/612934">토르페도</a>')
+        team=r.Page('<a href="/players/abc123?league=KHL">선수</a>')
+        player=r.Page('<meta name="description" content="KHL 드미트리 슈가예프(Dmitry Shugayev) 프로필 — 기록"/>')
+        def get(url):
+            return league if '/leagues/' in url else team if '/teams/' in url else player
+        rows=[{'name':'Shugayev Dmitry','league':'khl','team':'Torpedo'},
+              {'name':'Other Player','league':'khl','team':'Torpedo'}]
+        cache={}
+        found,checked=r.scorebase_khl_profiles(rows,cache,get)
+        self.assertEqual((checked,[(x['name'],x['korean']) for x in found]),(1,[('Shugayev Dmitry','드미트리 슈가예프')]))
+        self.assertEqual(r.scorebase_khl_profiles(rows,cache,get)[1],0)
+        self.assertEqual(r.scorebase_khl_profiles([{'name':'Dmitry Shugayev','league':'nhl'}],cache,get),([],0))
+
+    def test_scorebase_khl_profile_failure_does_not_block_next_batch(self):
+        league=r.Page('<a href="/teams/1">팀</a>')
+        team=r.Page('<a href="/players/first?league=KHL">첫 선수</a>'
+                    '<a href="/players/second?league=KHL">둘째 선수</a>')
+        player=r.Page('<meta name="description" content="KHL 데니스 코스틴(Denis Kostin) 프로필"/>')
+        def get(url):
+            if '/leagues/' in url:return league
+            if '/teams/' in url:return team
+            if '/first?' in url:raise ValueError('temporarily unavailable')
+            return player
+        found,checked=r.scorebase_khl_profiles([{'name':'Kostin Denis','league':'khl'}],{},get)
+        self.assertEqual((checked,found[0]['korean']),(2,'데니스 코스틴'))
+
+    def test_scorebase_khl_variant_requires_same_club(self):
+        league=r.Page('<a href="/teams/1">아드미랄</a><a href="/teams/2">아방가르드</a>')
+        clubs={'1':r.Page('<title>아드미랄 블라디보스토크 하키 팀</title>'
+                          '<a href="/players/one?league=KHL">알렉산드르</a>'),
+               '2':r.Page('<title>아방가르드 옴스크 하키 팀</title>'
+                          '<a href="/players/two?league=KHL">알렉산드르</a>')}
+        profiles={'one':r.Page('<meta name="description" content="KHL 알렉산드르 볼코프(Alexander Volkov) 프로필"/>'),
+                  'two':r.Page('<meta name="description" content="KHL 다른 볼코프(Alexander Volkov) 프로필"/>')}
+        def get(url):
+            if '/leagues/' in url:return league
+            if '/teams/' in url:return clubs[url.rsplit('/',1)[-1]]
+            return profiles[url.split('/players/')[1].split('?')[0]]
+        row={'name':'Volkov Alexander S.','team':'Admiral','league':'khl'}
+        found,_=r.scorebase_khl_profiles([row],{},get,{'Admiral':'아드미랄 블라디보스토크'})
+        self.assertEqual([(x['korean'],x['method']) for x in found],
+                         [('알렉산드르 볼코프','scorebase-khl-roster-variant-v1')])
+
     row = {'name': 'Moritz Nicolas', 'team': 'Borussia Monchengladbach', 'league': 'bundesliga'}
     def page(self, korean='모리츠 니콜라스', english='Moritz Nicolas', team='Borussia Monchengladbach'):
         return r.Page(f'<title>{korean} - 선수 프로필</title><h1>{korean}</h1><p>{korean} ({english}) {team}</p>')

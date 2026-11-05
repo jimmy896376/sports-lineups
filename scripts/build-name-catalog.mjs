@@ -61,6 +61,18 @@ if (process.argv.includes('--queue')) {
           && player.protocol==='https:' && player.hostname==='www.scorebase.kr' && /^\/players\/[0-9]+$/.test(player.pathname)
           && player.searchParams.get('league')===row.league.toUpperCase() && s.englishNameMatched && s.koreanNameMatched && s.contentHash;
       }),'Scorebase roster needs bilingual player link and team identity');
+    } else if(row.method==='scorebase-khl-profile-v1' || row.method==='scorebase-khl-roster-variant-v1') {
+      assert.ok(row.league==='khl' && row.sources.length===1 && row.sources.every(s=>{
+        const url=new URL(s.url);
+        return url.protocol==='https:' && url.hostname==='www.scorebase.kr'
+          && /^\/players\/[a-z0-9]+$/.test(url.pathname) && url.searchParams.get('league')==='KHL'
+          && s.domain==='scorebase.kr' && s.englishNameMatched && s.koreanNameMatched
+          && s.leagueMatched && s.contentHash && (row.method==='scorebase-khl-profile-v1' || (()=>{
+            const team=new URL(s.teamUrl);
+            return team.protocol==='https:' && team.hostname==='www.scorebase.kr'
+              && /^\/teams\/[0-9]+$/.test(team.pathname) && s.teamMatched && s.providerNameVariantMatched;
+          })());
+      }),'Scorebase KHL profile needs paired full names and league identity');
     } else if(row.method==='google-search-result-v1') {
       assert.ok(row.sources.length>=1 && row.sources.every(s=>{
         const url=new URL(s.url);

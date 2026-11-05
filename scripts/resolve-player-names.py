@@ -2,6 +2,7 @@
 import base64
 from collections import Counter
 import datetime as dt
+import difflib
 import hashlib
 from html import unescape
 from html.parser import HTMLParser
@@ -27,6 +28,7 @@ SEARCH_HOSTS = ('www.google.com', 'www.bing.com', 'search.daum.net')
 POLICY = 'precollect-names-v6'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 SCOREBASE_LEAGUES = ('nhl', 'nba', 'khl')
+SCOREBASE_PROFILE_LIMIT = 60
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
     'Jeju SK': ('kleague1', 'K04'), 'Gwangju FC': ('kleague1', 'K22'),
@@ -408,6 +410,90 @@ def scorebase_roster_names(rows, league_code, get=fetch_page):
     return [entry for entry in found.values() if entry]
 
 
+def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
+    """Review KHL player profiles in bounded batches; each profile prints both names."""
+    pending = {normalize(row['name']): row for row in rows if row.get('league') == 'khl'}
+    if not pending:
+        return [], 0
+    league = get('https://www.scorebase.kr/leagues/KHL')
+    team_paths = list(dict.fromkeys(re.findall(r'href=["\'](/teams/[0-9]+)["\']', league.raw)))[:40]
+    profiles = {}
+    for path in team_paths:
+        try:
+            page = get('https://www.scorebase.kr' + path)
+        except (ValueError, OSError, urllib.error.URLError):
+            continue
+        title = re.search(r'<title>([^<]+) 하키 팀', page.raw)
+        team_name = unescape(title.group(1)).strip() if title else ''
+        for player_path in re.findall(r'href=["\'](/players/[a-z0-9]+\?league=KHL)["\']', page.raw):
+            profiles.setdefault('https://www.scorebase.kr' + player_path, []).append((path, team_name))
+    checked = 0
+    found = {}
+    now = dt.datetime.now(dt.timezone.utc)
+    for url in profiles:
+        item = cache.get(url, {})
+        if (url not in cache or item.get('retryAt', '9999') <= now.isoformat()) and checked < SCOREBASE_PROFILE_LIMIT:
+            checked += 1
+            try:
+                page = get(url)
+                description = re.search(r'<meta name=["\']description["\'] content=["\']KHL\s+([^<(]+)\(([^)]+)\)\s+프로필', page.raw)
+                cache[url] = {'korean': unescape(description.group(1)).strip(),
+                              'english': unescape(description.group(2)).strip(),
+                              'contentHash': hashlib.sha256(page.raw.encode()).hexdigest()} if description else {
+                                  'retryAt': (now + dt.timedelta(days=1)).isoformat()}
+            except (ValueError, OSError, urllib.error.URLError):
+                cache[url] = {'retryAt': (now + dt.timedelta(hours=6)).isoformat()}
+                continue
+        item = cache.get(url, {})
+        english, korean = item.get('english', ''), item.get('korean', '')
+        if candidates([korean]) != {korean}:
+            continue
+        forms = {normalize(english)}
+        parts = english.split()
+        if len(parts) == 2:
+            forms.add(normalize(' '.join(reversed(parts))))
+        matches = forms & pending.keys()
+        # Provider initials and Russian romanization vary; require the same club for near matches.
+        if not matches and korean:
+            for key, row in pending.items():
+                original = row['name'].split()
+                if len(original) == 3 and original[-1].endswith('.'):
+                    original = original[:-1]
+                if len(original) != 2 or len(parts) != 2:
+                    continue
+                team_aliases = [row.get('team', ''), (team_dictionary or {}).get(row.get('team', ''), '')]
+                team_match = next(((path, title) for path, title in profiles[url] if title and
+                                   any(len(alias) >= 4 and difflib.SequenceMatcher(None, normalize(alias), normalize(title)).ratio() >= .9
+                                       for alias in team_aliases)), None)
+                if not team_match:
+                    continue
+                surname = difflib.SequenceMatcher(None, normalize(original[0]), normalize(parts[-1])).ratio()
+                given = difflib.SequenceMatcher(None, normalize(original[1]), normalize(parts[0])).ratio()
+                if surname >= .85 and given >= .7 and (surname + given) / 2 >= .8:
+                    matches.add(key)
+        for key in matches:
+            row = pending[key]
+            variant = key not in forms
+            team_match = next(((path, title) for path, title in profiles[url] if title and
+                               any(len(alias) >= 4 and difflib.SequenceMatcher(None, normalize(alias), normalize(title)).ratio() >= .9
+                                   for alias in (row.get('team', ''), (team_dictionary or {}).get(row.get('team', ''), '')))), None)
+            if variant and not team_match:
+                continue
+            proof = {'url': url, 'domain': 'scorebase.kr', 'englishNameMatched': True,
+                     'koreanNameMatched': True, 'leagueMatched': True, 'contentHash': item['contentHash']}
+            if variant:
+                proof.update({'teamUrl': 'https://www.scorebase.kr' + team_match[0],
+                              'teamMatched': True, 'providerNameVariantMatched': True})
+            entry = {'name': row['name'], 'korean': korean, 'team': row.get('team'),
+                     'league': 'khl', 'method': 'scorebase-khl-roster-variant-v1' if variant else 'scorebase-khl-profile-v1', 'sources': [proof]}
+            if key in found:
+                if found[key] is None or found[key]['korean'] != korean:
+                    found[key] = None
+            else:
+                found[key] = entry
+    return [entry for entry in found.values() if entry], checked
+
+
 def main():
     now = dt.datetime.now(dt.timezone.utc)
     inventory = read(ROOT / 'scripts/player-name-live-inventory.json', {})
@@ -453,6 +539,24 @@ def main():
             write(approved_path, approved)
         except (ValueError, OSError, urllib.error.URLError) as exc:
             print('Scorebase', league_code.upper(), 'roster unavailable:', type(exc).__name__)
+    profile_cache_path = ROOT / 'scripts/scorebase-khl-profile-cache.json'
+    profile_cache = read(profile_cache_path, {})
+    scorebase_profiles_checked = 0
+    try:
+        profile_entries, scorebase_profiles_checked = scorebase_khl_profiles(candidates_for_review, profile_cache, team_dictionary=teams)
+        for entry in profile_entries:
+            key = normalize(entry['name'])
+            if key in known:
+                continue
+            entry['verifiedAt'] = now.isoformat()
+            approved['entries'].append(entry)
+            known.add(key)
+            scorebase_approved += 1
+            scorebase_by_league['khl'] += 1
+        write(profile_cache_path, profile_cache)
+        write(approved_path, approved)
+    except (ValueError, OSError, urllib.error.URLError) as exc:
+        print('Scorebase KHL profiles unavailable:', type(exc).__name__)
     kleague_approved = 0
     for entry in kleague_official_names(candidates_for_review):
         key = normalize(entry['name'])
@@ -531,7 +635,8 @@ def main():
     summary = {'at': now.isoformat(), 'inventoryRecords': len(inventory['records']), 'pending': len(pending),
                'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
                'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_by_league['nhl'],
-               'scorebaseRosterApproved': scorebase_approved, 'kleagueOfficialApproved': kleague_approved,
+               'scorebaseRosterApproved': scorebase_approved, 'scorebaseProfilesChecked': scorebase_profiles_checked,
+               'kleagueOfficialApproved': kleague_approved,
                'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
                'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,
                'searchUnavailable': search_unavailable >= 3,

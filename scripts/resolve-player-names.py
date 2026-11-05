@@ -34,6 +34,10 @@ FOOTBALL_LEAGUES = {'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'li
                     'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'kleague1', 'kleague2', 'j1', 'mls'}
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
+    'FC Seoul': ('kleague1', 'K09'), 'Ulsan HD FC': ('kleague1', 'K01'),
+    'Daejeon Hana Citizen': ('kleague1', 'K10'), 'Incheon United': ('kleague1', 'K18'),
+    'Jeonbuk Hyundai Motors FC': ('kleague1', 'K05'), 'Gangwon FC': ('kleague1', 'K21'),
+    'Pohang Steelers': ('kleague1', 'K03'), 'Bucheon FC 1995': ('kleague1', 'K26'),
     'Jeju SK': ('kleague1', 'K04'), 'Gwangju FC': ('kleague1', 'K22'),
     'Gimcheon Sangmu': ('kleague1', 'K35'), 'FC Anyang': ('kleague1', 'K27'),
     'Seongnam FC': ('kleague2', 'K08'), 'Daegu FC': ('kleague2', 'K17'),
@@ -41,6 +45,9 @@ KLEAGUE_TEAM_IDS = {
     'Gimhae FC 2008': ('kleague2', 'K41'), 'Hwaseong FC': ('kleague2', 'K39'),
     'Gimpo FC': ('kleague2', 'K36'), 'Ansan Greeners': ('kleague2', 'K32'),
     'Seoul E-Land FC': ('kleague2', 'K31'), 'Jeonnam Dragons': ('kleague2', 'K07'),
+    'Suwon Samsung Bluewings': ('kleague2', 'K02'), 'Busan I\'Park': ('kleague2', 'K06'),
+    'Chungnam Asan FC': ('kleague2', 'K34'), 'Paju Frontier': ('kleague2', 'K40'),
+    'Yongin FC': ('kleague2', 'K42'), 'Cheonan City': ('kleague2', 'K38'),
 }
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100

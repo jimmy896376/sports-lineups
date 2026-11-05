@@ -49,6 +49,17 @@ class NameVerification(unittest.TestCase):
         self.assertEqual([(x['name'],x['korean']) for x in approved],[('Dong-Jun Kim','김동준')])
         self.assertEqual(approved[0]['sources'][0]['clubCode'],'K04')
 
+    def test_kleague_new_clubs_use_their_own_current_rosters(self):
+        rows=[{'name':'Jun-Seop Im','team':'FC Seoul','league':'kleague1','number':'1'},
+              {'name':'Dae-Han Park','team':'Cheonan City','league':'kleague2','number':'21'}]
+        def get(url):
+            korean='임준섭' if 'teamId=K09' in url else '박대한' if 'teamId=K38' in url else None
+            self.assertIsNotNone(korean)
+            number='1' if 'teamId=K09' in url else '21'
+            return r.Page(f'<span class="name">{korean}<span class="small">구단</span></span><span class="num campton">No.{number}</span>')
+        self.assertEqual([(x['name'],x['korean']) for x in r.kleague_official_names(rows,get)],
+                         [('Jun-Seop Im','임준섭'),('Dae-Han Park','박대한')])
+
     def test_scorebase_nhl_roster_pairs_english_and_korean_in_same_player_card(self):
         rows=[{'name':'Matthew Knies','team':'Columbus Blue Jackets','league':'nhl'},
               {'name':'Unknown Player','team':'Columbus Blue Jackets','league':'nhl'}]

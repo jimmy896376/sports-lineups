@@ -29,6 +29,9 @@ POLICY = 'precollect-names-v6'
 NAMU_POLICY = 'namuwiki-team-roster-v2'
 SCOREBASE_LEAGUES = ('nhl', 'nba', 'khl')
 SCOREBASE_PROFILE_LIMIT = 60
+SCOREBASE_TRANSFER_LIMIT = 30
+FOOTBALL_LEAGUES = {'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'primeira',
+                    'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'kleague1', 'kleague2', 'j1', 'mls'}
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
     'Jeju SK': ('kleague1', 'K04'), 'Gwangju FC': ('kleague1', 'K22'),
@@ -283,6 +286,68 @@ def namu_team_roster(team, korean_team, rows, get=fetch_page):
                   'sources': [{'url': url, 'domain': 'namu.moe', 'teamMatched': True,
                                'englishNameMatched': True, 'rowMatched': True, 'contentHash': digest}]}
             for key, names in matches.items() if len(names) == 1}
+
+
+def scorebase_transfer_names(rows, team_dictionary, get=fetch_page):
+    """Accept Scorebase football spellings only when a Korean player profile confirms identity and club."""
+    approved = []
+    checked = 0
+    for row in rows:
+        if checked >= SCOREBASE_TRANSFER_LIMIT:
+            break
+        if row.get('league') not in FOOTBALL_LEAGUES or len(normalize(row['name']).split()) < 2:
+            continue
+        team = team_dictionary.get(row.get('team', ''), '')
+        club_words = [word for word in re.findall(r'[가-힣]{2,}', team) if word not in ('대한민국',)]
+        if not club_words:
+            continue
+        checked += 1
+        search_url = 'https://www.scorebase.kr/search?' + urllib.parse.urlencode({'q': row['name']})
+        try:
+            search = get(search_url)
+        except (ValueError, OSError, urllib.error.URLError):
+            continue
+        found = {}
+        for path, title in search.links:
+            if not re.fullmatch(r'/transfers/[a-z0-9]+', path):
+                continue
+            korean = re.sub(r'\s+몸값·커리어 상세$', '', title).strip()
+            if candidates([korean]) != {korean}:
+                continue
+            found[path] = korean
+        matched = []
+        for path, korean in list(found.items())[:5]:
+            profile_url = 'https://www.scorebase.kr' + path
+            try:
+                profile = get(profile_url)
+            except (ValueError, OSError, urllib.error.URLError):
+                continue
+            heading = normalize(profile.headings[0]) if profile.headings else ''
+            if not heading.startswith(normalize(korean) + ' 프로필') or not any(normalize(word) in heading for word in club_words):
+                continue
+            for host in ('namu.moe', 'd.namu.moe', 'm.namu.moe', 'www.namu.moe'):
+                namu_url = 'https://' + host + '/w/' + urllib.parse.quote(korean, safe='')
+                try:
+                    namu = get(namu_url)
+                except (ValueError, OSError, urllib.error.URLError):
+                    continue
+                text = normalize(namu.text)
+                if (namu.headings and normalize(namu.headings[0]) == normalize(korean)
+                        and re.search(r'(?<!\w)' + re.escape(normalize(row['name'])) + r'(?!\w)', text)
+                        and any(normalize(word) in text[:5000] for word in club_words)):
+                    matched.append({'name': row['name'], 'korean': korean, 'team': row['team'],
+                                    'league': row['league'], 'method': 'scorebase-namu-profile-v1',
+                                    'sources': [{'url': profile_url, 'domain': 'scorebase.kr',
+                                                 'koreanNameMatched': True, 'teamMatched': True,
+                                                 'contentHash': hashlib.sha256(profile.raw.encode()).hexdigest()},
+                                                {'url': namu_url, 'domain': 'namu.moe',
+                                                 'englishNameMatched': True, 'koreanNameMatched': True,
+                                                 'teamMatched': True,
+                                                 'contentHash': hashlib.sha256(namu.raw.encode()).hexdigest()}]})
+                    break
+        if len({item['korean'] for item in matched}) == 1 and matched:
+            approved.append(matched[0])
+    return approved, checked
 
 
 def resolve(row, get=fetch_page, team_dictionary=None, enabled_engines=None):
@@ -557,6 +622,27 @@ def main():
         write(approved_path, approved)
     except (ValueError, OSError, urllib.error.URLError) as exc:
         print('Scorebase KHL profiles unavailable:', type(exc).__name__)
+    transfer_approved = transfer_checked = 0
+    transfer_candidates = [row for row in candidates_for_review if row.get('league') in FOOTBALL_LEAGUES
+                           and len(normalize(row['name']).split()) >= 2
+                           and re.search(r'[가-힣]{2,}', teams.get(row.get('team', ''), ''))
+                           and (state['players'].get(normalize(row['name']), {}).get('scorebasePolicy') != 'scorebase-namu-profile-v1'
+                                or state['players'].get(normalize(row['name']), {}).get('nextScorebaseCheckAt', '') <= now.isoformat())]
+    transfer_entries, transfer_checked = scorebase_transfer_names(transfer_candidates, teams)
+    for row in transfer_candidates[:transfer_checked]:
+        state['players'].setdefault(normalize(row['name']), {}).update({
+            'scorebasePolicy': 'scorebase-namu-profile-v1',
+            'nextScorebaseCheckAt': (now + dt.timedelta(hours=24)).isoformat()})
+    for entry in transfer_entries:
+        key = normalize(entry['name'])
+        if key in known:
+            continue
+        entry['verifiedAt'] = now.isoformat()
+        approved['entries'].append(entry)
+        known.add(key)
+        transfer_approved += 1
+    write(approved_path, approved)
+    write(state_path, state)
     kleague_approved = 0
     for entry in kleague_official_names(candidates_for_review):
         key = normalize(entry['name'])
@@ -575,7 +661,7 @@ def main():
         if team in teams and (record.get('namuPolicy') != NAMU_POLICY or record.get('nextNamuCheckAt', '') <= now.isoformat()):
             groups.setdefault(team, []).append(row)
     checked = namu_checked = namu_approved = search_approved = search_unavailable = 0
-    added = scorebase_approved + kleague_approved
+    added = scorebase_approved + transfer_approved + kleague_approved
     blocked = {'google': 0, 'bing': 0}
     disabled = set()
     namu_errors = []
@@ -636,6 +722,7 @@ def main():
                'pendingByLeague': dict(sorted(Counter(row.get('league', 'unknown') for row in pending.values()).items())),
                'eligible': len(eligible), 'scorebaseNhlApproved': scorebase_by_league['nhl'],
                'scorebaseRosterApproved': scorebase_approved, 'scorebaseProfilesChecked': scorebase_profiles_checked,
+               'scorebaseFootballChecked': transfer_checked, 'scorebaseFootballApproved': transfer_approved,
                'kleagueOfficialApproved': kleague_approved,
                'namuTeamsChecked': namu_checked, 'namuApproved': namu_approved,
                'searchChecked': checked, 'searchApproved': search_approved, 'approved': added,

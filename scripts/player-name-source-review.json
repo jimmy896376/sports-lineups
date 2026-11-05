@@ -2,18 +2,78 @@
   "reviewedAt": "2026-11-05",
   "scope": "All previously untranslated names found by executing every current site league, lineup and injury renderer for today and tomorrow. Sources are internal review metadata, never rendered in the public UI.",
   "entries": [
-    {"name":"Kaan Kairinen","korean":"카안 카이리넨","source":"https://m.namu.moe/w/%EC%B9%B4%EC%95%88%20%EC%B9%B4%EC%9D%B4%EB%A6%AC%EB%84%A8","method":"Reviewed bilingual AEK player profile"},
-    {"name":"Robin Zentner","korean":"로빈 젠트너","source":"https://www.goal.com/kr/%EC%84%A0%EC%88%98/%E1%84%85%E1%85%A9%E1%84%87%E1%85%B5%E1%86%AB-%E1%84%8C%E1%85%A6%E1%86%AB%E1%84%90%E1%85%B3%E1%84%82%E1%85%A5/ci1nu5z8aiiikco8af0zk1lud","method":"Reviewed Korean football player profile"},
-    {"name":"Jayden Bogle","korean":"제이든 보글","source":"https://d.namu.moe/w/%EC%A0%9C%EC%9D%B4%EB%93%A0%20%EB%B3%B4%EA%B8%80","method":"Reviewed bilingual Leeds player profile"},
-    {"name":"James Justin","korean":"제임스 저스틴","source":"https://sports.daum.net/player/epl/1197357","method":"Reviewed Korean sports player profile and Leeds club"},
-    {"name":"Kervin Arriaga","korean":"케르빈 아리아가","source":"https://m.namu.moe/w/%EC%BC%80%EB%A5%B4%EB%B9%88%20%EC%95%84%EB%A6%AC%EC%95%84%EA%B0%80","method":"Reviewed bilingual Levante player profile"},
-    {"name":"Nelson Deossa","korean":"넬손 데오사","source":"https://www.fifa.com/ko/tournaments/mens/club-world-cup/usa-2025/articles/nelson-deossa-monterrey-ko","method":"Reviewed FIFA Korean article with full English identity"},
-    {"name":"Eder Militao","korean":"에데르 밀리탕","source":"https://www.goal.com/kr/%EB%89%B4%EC%8A%A4/%EB%B0%80%EB%A6%AC%ED%83%95-%EB%A0%88%EC%95%8C%EC%9D%80-%EB%93%9C%EB%A6%BC-%ED%81%B4%EB%9F%BD-%EB%84%88%EB%AC%B4-%ED%96%89%EB%B3%B5%ED%95%98%EB%8B%A4/i5arrtqgu4iv1ik91it0w5rxg","method":"Korean football article, exact player and club"},
-    {"name":"Coby White","korean":"코비 화이트","source":"https://namu.moe/w/%EC%BD%94%EB%B9%84%20%ED%99%94%EC%9D%B4%ED%8A%B8","method":"Korean roster, exact English identity"},
-    {"name":"Jaime Jaquez","korean":"하이메 하케스 주니어","source":"https://www.scorebase.kr/players/56677785?league=NBA","method":"Bilingual NBA player profile and club"},
-    {"name":"Andrew Robertson","korean":"앤디 로버트슨","source":"https://namu.moe/w/%EC%95%A4%EB%94%94%20%EB%A1%9C%EB%B2%84%ED%8A%B8%EC%8A%A8","method":"Korean club roster and full legal English name"},
-    {"name":"Darius Acuff","korean":"대리우스 애커프 주니어","source":"https://www.scorebase.kr/players/1091338860?league=NBA","method":"Bilingual NBA player profile and club"},
-    {"name":"Kon Knueppel","korean":"콘 크누펠","source":"https://www.scorebase.kr/teams/527","method":"Bilingual NBA team roster"},
+    {
+      "name": "Kaan Kairinen",
+      "korean": "카안 카이리넨",
+      "source": "https://m.namu.moe/w/%EC%B9%B4%EC%95%88%20%EC%B9%B4%EC%9D%B4%EB%A6%AC%EB%84%A8",
+      "method": "Reviewed bilingual AEK player profile"
+    },
+    {
+      "name": "Robin Zentner",
+      "korean": "로빈 젠트너",
+      "source": "https://www.goal.com/kr/%EC%84%A0%EC%88%98/%E1%84%85%E1%85%A9%E1%84%87%E1%85%B5%E1%86%AB-%E1%84%8C%E1%85%A6%E1%86%AB%E1%84%90%E1%85%B3%E1%84%82%E1%85%A5/ci1nu5z8aiiikco8af0zk1lud",
+      "method": "Reviewed Korean football player profile"
+    },
+    {
+      "name": "Jayden Bogle",
+      "korean": "제이든 보글",
+      "source": "https://d.namu.moe/w/%EC%A0%9C%EC%9D%B4%EB%93%A0%20%EB%B3%B4%EA%B8%80",
+      "method": "Reviewed bilingual Leeds player profile"
+    },
+    {
+      "name": "James Justin",
+      "korean": "제임스 저스틴",
+      "source": "https://sports.daum.net/player/epl/1197357",
+      "method": "Reviewed Korean sports player profile and Leeds club"
+    },
+    {
+      "name": "Kervin Arriaga",
+      "korean": "케르빈 아리아가",
+      "source": "https://m.namu.moe/w/%EC%BC%80%EB%A5%B4%EB%B9%88%20%EC%95%84%EB%A6%AC%EC%95%84%EA%B0%80",
+      "method": "Reviewed bilingual Levante player profile"
+    },
+    {
+      "name": "Nelson Deossa",
+      "korean": "넬손 데오사",
+      "source": "https://www.fifa.com/ko/tournaments/mens/club-world-cup/usa-2025/articles/nelson-deossa-monterrey-ko",
+      "method": "Reviewed FIFA Korean article with full English identity"
+    },
+    {
+      "name": "Eder Militao",
+      "korean": "에데르 밀리탕",
+      "source": "https://www.goal.com/kr/%EB%89%B4%EC%8A%A4/%EB%B0%80%EB%A6%AC%ED%83%95-%EB%A0%88%EC%95%8C%EC%9D%80-%EB%93%9C%EB%A6%BC-%ED%81%B4%EB%9F%BD-%EB%84%88%EB%AC%B4-%ED%96%89%EB%B3%B5%ED%95%98%EB%8B%A4/i5arrtqgu4iv1ik91it0w5rxg",
+      "method": "Korean football article, exact player and club"
+    },
+    {
+      "name": "Coby White",
+      "korean": "코비 화이트",
+      "source": "https://namu.moe/w/%EC%BD%94%EB%B9%84%20%ED%99%94%EC%9D%B4%ED%8A%B8",
+      "method": "Korean roster, exact English identity"
+    },
+    {
+      "name": "Jaime Jaquez",
+      "korean": "하이메 하케스 주니어",
+      "source": "https://www.scorebase.kr/players/56677785?league=NBA",
+      "method": "Bilingual NBA player profile and club"
+    },
+    {
+      "name": "Andrew Robertson",
+      "korean": "앤디 로버트슨",
+      "source": "https://namu.moe/w/%EC%95%A4%EB%94%94%20%EB%A1%9C%EB%B2%84%ED%8A%B8%EC%8A%A8",
+      "method": "Korean club roster and full legal English name"
+    },
+    {
+      "name": "Darius Acuff",
+      "korean": "대리우스 애커프 주니어",
+      "source": "https://www.scorebase.kr/players/1091338860?league=NBA",
+      "method": "Bilingual NBA player profile and club"
+    },
+    {
+      "name": "Kon Knueppel",
+      "korean": "콘 크누펠",
+      "source": "https://www.scorebase.kr/teams/527",
+      "method": "Bilingual NBA team roster"
+    },
     {
       "name": "Jun Ichimori",
       "korean": "이치모리 준",
@@ -3915,6 +3975,162 @@
       "korean": "김정현",
       "source": "https://www.kleague.com/record/playerDetail.do?playerId=20230040",
       "method": "Official K League player profile matched to club and jersey"
+    },
+    {
+      "name": "Martin Adeline",
+      "korean": "마르탱 아델린",
+      "source": "https://namu.moe/w/%EB%A7%88%EB%A5%B4%ED%83%B1%20%EC%95%84%EB%8D%B8%EB%A6%B0",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Nicolas Kristof",
+      "korean": "니콜라스 크리스토프",
+      "source": "https://namu.moe/w/%EB%8B%88%EC%BD%9C%EB%9D%BC%EC%8A%A4%20%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%86%A0%ED%94%84",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Lasse Gunther",
+      "korean": "라세 귄터",
+      "source": "https://namu.moe/w/%EB%9D%BC%EC%84%B8%20%EA%B7%84%ED%84%B0",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Lukas Pinckert",
+      "korean": "루카스 핑케르트",
+      "source": "https://namu.moe/w/%EB%A3%A8%EC%B9%B4%EC%8A%A4%20%ED%95%91%EC%BC%80%EB%A5%B4%ED%8A%B8",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Ismael Landry Doukoure",
+      "korean": "이스마엘 두쿠레",
+      "source": "https://namu.moe/w/%EC%9D%B4%EC%8A%A4%EB%A7%88%EC%97%98%20%EB%91%90%EC%BF%A0%EB%A0%88",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Maximilian Rohr",
+      "korean": "막시밀리안 로어",
+      "source": "https://namu.moe/w/%EB%A7%89%EC%8B%9C%EB%B0%80%EB%A6%AC%EC%95%88%20%EB%A1%9C%EC%96%B4",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "David Mokwa",
+      "korean": "다비드 모크와",
+      "source": "https://namu.moe/w/%EB%8B%A4%EB%B9%84%EB%93%9C%20%EB%AA%A8%ED%81%AC%EC%99%80",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Kacper Potulski",
+      "korean": "카츠페르 포툴스키",
+      "source": "https://namu.moe/w/%EC%B9%B4%EC%B8%A0%ED%8E%98%EB%A5%B4%20%ED%8F%AC%ED%88%B4%EC%8A%A4%ED%82%A4",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Silvan Widmer",
+      "korean": "질반 비드머",
+      "source": "https://namu.moe/w/%EC%A7%88%EB%B0%98%20%EB%B9%84%EB%93%9C%EB%A8%B8",
+      "method": "Reviewed exact bilingual player profile and current club; corrected Scorebase typo or filled missing Scorebase search"
+    },
+    {
+      "name": "Wendell Carter",
+      "korean": "웬델 카터 주니어",
+      "source": "https://d.namu.moe/w/%EC%9B%AC%EB%8D%B8%20%EC%B9%B4%ED%84%B0%20%EC%A3%BC%EB%8B%88%EC%96%B4",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Ismail Diallo",
+      "korean": "이스마엘 디알로",
+      "source": "https://www.namu.moe/w/%EC%9D%B4%EC%8A%A4%EB%A7%88%EC%97%98%20%EB%94%94%EC%95%8C%EB%A1%9C%282003%29",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Thomas Jorgensen",
+      "korean": "토마스 요르겐센",
+      "source": "https://namu.moe/w/%ED%86%A0%EB%A7%88%EC%8A%A4%20%EC%9A%94%EB%A5%B4%EA%B2%90%EC%84%BC",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Abdoul-Karim Coulibaly",
+      "korean": "압둘 카림 쿨리발리",
+      "source": "https://nrt.cx/p/sports/player/as-440147",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Thorir Helgason",
+      "korean": "토리르 요한 헬가손",
+      "source": "https://d.namu.moe/w/%ED%86%A0%EB%A6%AC%EB%A5%B4%20%EC%9A%94%ED%95%9C%20%ED%97%AC%EA%B0%80%EC%86%90",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Stephen Mfuni",
+      "korean": "스티븐 음푸니",
+      "source": "https://d.namu.moe/w/%EC%8A%A4%ED%8B%B0%EB%B8%90%20%EC%9D%8C%ED%91%B8%EB%8B%88",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Nahuel Tenaglia",
+      "korean": "나우엘 테나글리아",
+      "source": "https://sports.daum.net/player/primera/1670052",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Abderrahman Rebbach",
+      "korean": "압데라만 레바흐",
+      "source": "https://www.goal.com/kr/%EC%84%A0%EC%88%98/%E1%84%8B%E1%85%A1%E1%86%B8%E1%84%83%E1%85%A6%E1%84%85%E1%85%A1%E1%84%86%E1%85%A1%E1%86%AB-%E1%84%85%E1%85%A6%E1%84%87%E1%85%A1%E1%84%92%E1%85%B3/1ttc96b92xjfx1ta3vdwya0dm",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Angel Perez",
+      "korean": "앙헬 페레스",
+      "source": "https://d.namu.moe/w/%EC%95%99%ED%97%AC%20%ED%8E%98%EB%A0%88%EC%8A%A4",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Luca Sirch",
+      "korean": "루카 시르크",
+      "source": "https://nrt.cx/p/sports/player/34317385",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Felix Keidel",
+      "korean": "펠릭스 카이델",
+      "source": "https://namu.moe/w/%ED%8E%A0%EB%A6%AD%EC%8A%A4%20%EC%B9%B4%EC%9D%B4%EB%8D%B8",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Lukasz Poreba",
+      "korean": "우카시 포렝바",
+      "source": "https://m.namu.moe/w/%EC%9A%B0%EC%B9%B4%EC%8B%9C%20%ED%8F%AC%EB%A0%9D%EB%B0%94",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Maurice Krattenmacher",
+      "korean": "모리스 크라텐마허",
+      "source": "https://nrt.cx/p/sports/player/34295110",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Francis Onyeka",
+      "korean": "프랜시스 오니에카",
+      "source": "https://www.namu.moe/w/%ED%94%84%EB%9E%9C%EC%8B%9C%EC%8A%A4%20%EC%98%A4%EB%8B%88%EC%97%90%EC%B9%B4",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Lukas Petkov",
+      "korean": "루카스 페트코프",
+      "source": "https://namu.moe/w/%EB%A3%A8%EC%B9%B4%EC%8A%A4%20%ED%8E%98%ED%8A%B8%EC%BD%94%ED%94%84",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Phillip Tietz",
+      "korean": "필리프 티츠",
+      "source": "https://d.namu.moe/w/%ED%95%84%EB%A6%AC%ED%94%84%20%ED%8B%B0%EC%B8%A0",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
+    },
+    {
+      "name": "Noel Aseko-Nkili",
+      "korean": "노엘 아세코 은킬리",
+      "source": "https://d.namu.moe/w/%EB%85%B8%EC%97%98%20%EC%95%84%EC%84%B8%EC%BD%94%20%EC%9D%80%ED%82%AC%EB%A6%AC",
+      "method": "Reviewed Korean player profile against current league and club; Scorebase spelling compared when available"
     }
   ]
 }

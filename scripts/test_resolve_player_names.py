@@ -9,6 +9,25 @@ r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 class NameVerification(unittest.TestCase):
+    def test_scorebase_football_requires_independent_player_and_club_match(self):
+        row={'name':'Daniel Heuer Fernandes','team':'Hamburger SV','league':'bundesliga'}
+        search=r.Page('<a href="/transfers/abc123">다니엘 호이어 페르난드스 몸값·커리어 상세</a>')
+        profile=r.Page('<title>다니엘 호이어 페르난드스 프로필 — 함부르크 골키퍼 | Scorebase</title>')
+        namu=r.Page('<h1>다니엘 호이어 페르난드스</h1><p>함부르크 SV Daniel Heuer Fernandes 축구 선수</p>')
+        def get(url):
+            return search if '/search?' in url else profile if '/transfers/' in url else namu
+        found,checked=r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},get)
+        self.assertEqual((checked,found[0]['korean'],found[0]['method']),
+                         (1,'다니엘 호이어 페르난드스','scorebase-namu-profile-v1'))
+        def wrong_club(url):
+            page=get(url)
+            return r.Page(page.raw.replace('함부르크 SV Daniel','다른 구단 Daniel')) if '/w/' in url else page
+        self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_club)[0],[])
+        def wrong_player(url):
+            page=get(url)
+            return r.Page(page.raw.replace('Daniel Heuer Fernandes','Other Player')) if '/w/' in url else page
+        self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_player)[0],[])
+
     def test_current_feed_names_take_search_priority(self):
         now=r.dt.datetime(2026,11,5,tzinfo=r.dt.timezone.utc)
         state={'players':{}}

@@ -73,6 +73,15 @@ if (process.argv.includes('--queue')) {
               && /^\/teams\/[0-9]+$/.test(team.pathname) && s.teamMatched && s.providerNameVariantMatched;
           })());
       }),'Scorebase KHL profile needs paired full names and league identity');
+    } else if(row.method==='scorebase-namu-profile-v1') {
+      assert.ok(row.sources.length===2 && row.sources.every(s=>s.contentHash), 'Scorebase player needs two source hashes');
+      const scorebase=new URL(row.sources[0].url),namu=new URL(row.sources[1].url);
+      assert.ok(scorebase.protocol==='https:' && scorebase.hostname==='www.scorebase.kr' && /^\/transfers\/[a-z0-9]+$/.test(scorebase.pathname)
+        && row.sources[0].domain==='scorebase.kr' && row.sources[0].koreanNameMatched && row.sources[0].teamMatched
+        && namu.protocol==='https:' && ['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'].includes(namu.hostname)
+        && namu.pathname.startsWith('/w/') && row.sources[1].domain==='namu.moe' && row.sources[1].englishNameMatched
+        && row.sources[1].koreanNameMatched && row.sources[1].teamMatched,
+      'Scorebase football profile needs independent exact player and team identity');
     } else if(row.method==='google-search-result-v1') {
       assert.ok(row.sources.length>=1 && row.sources.every(s=>{
         const url=new URL(s.url);
@@ -109,9 +118,13 @@ if (process.argv.includes('--queue')) {
   const playerTeamNames={};
   for(const row of read('scripts/player-name-team-review.json').entries){
     const source=new URL(row.source);
-    assert.ok(['kleague1','kleague2'].includes(row.league) && row.team && row.name && /^\d+$/.test(row.number)
-      && source.protocol==='https:' && source.hostname==='www.kleague.com' && source.pathname==='/club/club.do'
-      && /^K\d{2}$/.test(source.searchParams.get('teamId')||'') && /\p{Script=Hangul}/u.test(row.korean),
+    const kleague=['kleague1','kleague2'].includes(row.league) && /^\d+$/.test(row.number)
+      && source.hostname==='www.kleague.com' && source.pathname==='/club/club.do'
+      && /^K\d{2}$/.test(source.searchParams.get('teamId')||'');
+    const football=row.league==='laliga' && ['Deportivo Alaves','Málaga'].includes(row.team)
+      && ['Jonny','Calero'].includes(row.name) && source.hostname==='www.scorebase.kr'
+      && /^\/transfers\/[a-z0-9]+$/.test(source.pathname);
+    assert.ok(row.team && row.name && source.protocol==='https:' && (kleague||football) && /\p{Script=Hangul}/u.test(row.korean),
       `Invalid team-scoped player name: ${row.name}`);
     playerTeamNames[JSON.stringify([row.league,row.team,row.name])]=row.korean;
   }

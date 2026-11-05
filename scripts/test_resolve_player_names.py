@@ -13,20 +13,29 @@ class NameVerification(unittest.TestCase):
         row={'name':'Daniel Heuer Fernandes','team':'Hamburger SV','league':'bundesliga'}
         search=r.Page('<a href="/transfers/abc123">다니엘 호이어 페르난드스 몸값·커리어 상세</a>')
         profile=r.Page('<title>다니엘 호이어 페르난드스 프로필 — 함부르크 골키퍼 | Scorebase</title>')
+        english=r.Page('<title>Daniel Heuer Fernandes — Hamburger SV Goalkeeper | Scorebase</title>')
         namu=r.Page('<h1>다니엘 호이어 페르난드스</h1><p>함부르크 SV Daniel Heuer Fernandes 축구 선수</p>')
         def get(url):
-            return search if '/search?' in url else profile if '/transfers/' in url else namu
+            return search if '/search?' in url else english if '/en/transfers/' in url else profile if '/transfers/' in url else namu
         found,checked=r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},get)
         self.assertEqual((checked,found[0]['korean'],found[0]['method']),
                          (1,'다니엘 호이어 페르난드스','scorebase-namu-profile-v1'))
         def wrong_club(url):
             page=get(url)
             return r.Page(page.raw.replace('함부르크 SV Daniel','다른 구단 Daniel')) if '/w/' in url else page
-        self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_club)[0],[])
+        fallback=r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_club)[0]
+        self.assertEqual((fallback[0]['korean'],fallback[0]['method']),
+                         ('다니엘 호이어 페르난드스','scorebase-bilingual-candidate-v1'))
         def wrong_player(url):
             page=get(url)
-            return r.Page(page.raw.replace('Daniel Heuer Fernandes','Other Player')) if '/w/' in url else page
+            if '/w/' in url or '/en/transfers/' in url:
+                return r.Page(page.raw.replace('Daniel Heuer Fernandes','Other Player'))
+            return page
         self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_player)[0],[])
+        def wrong_english_club(url):
+            page=wrong_club(url)
+            return r.Page(page.raw.replace('Hamburger SV Goalkeeper','Other Club Goalkeeper')) if '/en/transfers/' in url else page
+        self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_english_club)[0],[])
 
     def test_current_feed_names_take_search_priority(self):
         now=r.dt.datetime(2026,11,5,tzinfo=r.dt.timezone.utc)
@@ -243,6 +252,24 @@ class NameVerification(unittest.TestCase):
             saved=json.loads((root/'scripts/player-name-auto-review.json').read_text())
             self.assertEqual(len(saved['entries']),2)
             self.assertEqual(json.loads((root/'scripts/player-name-run-report.json').read_text())['approved'],2)
+    def test_main_queues_scorebase_only_spelling_without_publishing_it(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()
+            now=r.dt.datetime.now(r.dt.timezone.utc).isoformat()
+            row={'name':'Sean Steur','korean':'Sean Steur','team':'Newcastle United',
+                 'league':'epl','kind':'lineup','eventDate':now}
+            (root/'scripts/player-name-live-inventory.json').write_text(json.dumps({'at':now,'records':[row]}))
+            (root/'dist/team-ko.json').write_text(json.dumps({'Newcastle United':'뉴캐슬 유나이티드 FC'}))
+            candidate={'name':'Sean Steur','korean':'션 스튀르','method':r.SCOREBASE_FOOTBALL_POLICY,'sources':[]}
+            with patch.object(r,'ROOT',root),patch.object(r,'scorebase_transfer_names',return_value=([candidate],1)), \
+                 patch.object(r,'scorebase_khl_profiles',return_value=([],0)), \
+                 patch.object(r,'namu_team_roster',return_value={}), \
+                 patch.object(r,'resolve',return_value=(None,{'searches':{},'status':'needs-verification'})), \
+                 patch.object(r.time,'sleep'):
+                r.main()
+            queued=json.loads((root/'scripts/scorebase-name-candidates.json').read_text())['entries'][0]
+            self.assertEqual((queued['name'],queued['status']),('Sean Steur','needs-independent-source'))
+            self.assertEqual(json.loads((root/'scripts/player-name-auto-review.json').read_text())['entries'],[])
     def test_main_continues_after_unreadable_google_result(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);(root/'scripts').mkdir();(root/'dist').mkdir()

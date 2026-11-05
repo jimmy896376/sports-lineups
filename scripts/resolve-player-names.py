@@ -31,6 +31,7 @@ SCOREBASE_LEAGUES = ('nhl', 'nba', 'khl')
 SCOREBASE_PROFILE_LIMIT = 60
 SCOREBASE_TRANSFER_LIMIT = 30
 SCOREBASE_FOOTBALL_POLICY = 'scorebase-bilingual-candidate-v1'
+SCOREBASE_FOOTBALL_CHECK_POLICY = 'scorebase-club-punctuation-v2'
 FOOTBALL_LEAGUES = {'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'primeira',
                     'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'kleague1', 'kleague2', 'j1', 'mls'}
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
@@ -363,7 +364,7 @@ def scorebase_transfer_names(rows, team_dictionary, get=fetch_page):
                 continue
             english_heading = normalize(english.headings[0]) if english.headings else ''
             if not (english_heading.startswith(normalize(row['name']) + ' ')
-                    and normalize(row['team']) in english_heading):
+                    and normalize(row['team']).replace(' ', '') in english_heading.replace(' ', '')):
                 continue
             matched.append({'name': row['name'], 'korean': korean, 'team': row['team'],
                             'league': row['league'], 'method': SCOREBASE_FOOTBALL_POLICY,
@@ -656,12 +657,12 @@ def main():
     transfer_candidates = [row for row in candidates_for_review if row.get('league') in FOOTBALL_LEAGUES
                            and len(normalize(row['name']).split()) >= 2
                            and re.search(r'[가-힣]{2,}', teams.get(row.get('team', ''), ''))
-                           and (state['players'].get(normalize(row['name']), {}).get('scorebasePolicy') != SCOREBASE_FOOTBALL_POLICY
+                           and (state['players'].get(normalize(row['name']), {}).get('scorebasePolicy') != SCOREBASE_FOOTBALL_CHECK_POLICY
                                 or state['players'].get(normalize(row['name']), {}).get('nextScorebaseCheckAt', '') <= now.isoformat())]
     transfer_entries, transfer_checked = scorebase_transfer_names(transfer_candidates, teams)
     for row in transfer_candidates[:transfer_checked]:
         state['players'].setdefault(normalize(row['name']), {}).update({
-            'scorebasePolicy': SCOREBASE_FOOTBALL_POLICY,
+            'scorebasePolicy': SCOREBASE_FOOTBALL_CHECK_POLICY,
             'nextScorebaseCheckAt': (now + dt.timedelta(hours=24)).isoformat()})
     for entry in transfer_entries:
         key = normalize(entry['name'])

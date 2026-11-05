@@ -37,6 +37,20 @@ class NameVerification(unittest.TestCase):
             return r.Page(page.raw.replace('Hamburger SV Goalkeeper','Other Club Goalkeeper')) if '/en/transfers/' in url else page
         self.assertEqual(r.scorebase_transfer_names([row],{'Hamburger SV':'함부르크 SV'},wrong_english_club)[0],[])
 
+    def test_scorebase_football_accepts_club_punctuation_variant(self):
+        row={'name':'Sean Nealis','team':'D.C. United','league':'mls'}
+        def get(url):
+            if '/search?' in url:
+                return r.Page('<a href="/transfers/abc123">신 네알리스 몸값·커리어 상세</a>')
+            if '/en/transfers/' in url:
+                return r.Page('<title>Sean Nealis — DC United Defender | Scorebase</title>')
+            if '/transfers/' in url:
+                return r.Page('<title>신 네알리스 프로필 — DC 유나이티드 수비수 | Scorebase</title>')
+            return r.Page('')
+        found,checked=r.scorebase_transfer_names([row],{'D.C. United':'D.C. 유나이티드'},get)
+        self.assertEqual((checked,found[0]['korean'],found[0]['method']),
+                         (1,'신 네알리스',r.SCOREBASE_FOOTBALL_POLICY))
+
     def test_current_feed_names_take_search_priority(self):
         now=r.dt.datetime(2026,11,5,tzinfo=r.dt.timezone.utc)
         state={'players':{}}

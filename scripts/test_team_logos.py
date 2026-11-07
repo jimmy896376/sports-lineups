@@ -68,12 +68,22 @@ class TeamLogos(TestCase):
         game = {'event': {'id': 1, 'type_id': 24, 'start_at': 1793635200000,
                           'team_a': {'id': 40, 'name': 'Ak Bars', 'image': 'https://example.com/ak.png'},
                           'team_b': {'id': 44, 'name': 'SKA', 'image': 'https://example.com/ska.png'}}}
-        with patch.object(projections, 'fetch_json', side_effect=[{'events': [game]}, {'events': []}, [], {'team': {}}, {'team': {}}]):
+        past = {'event': {'id': 2, 'type_id': 24, 'start_at': 1793548800000, 'score': '3:2',
+                          'team_a': {'id': 40}, 'team_b': {'id': 44}}}
+        today = projections.datetime.now(ZoneInfo('Asia/Seoul')).date()
+        season = f'{today.year}/{today.year + 1}' if today.month >= 7 else f'{today.year - 1}/{today.year}'
+        table = [{'season': season, 'stages': [{'type': 'regular', 'regular': [
+            {'id': 40, 'w': '3', 'otw': '1', 'sow': '0', 'l': '2', 'otl': '1', 'sol': '0'},
+            {'id': 44, 'w': '2', 'otw': '0', 'sow': '0', 'l': '3', 'otl': '0', 'sol': '0'}]}]}]
+        responses = [{'events': [game]}, {'events': [past]}, table, {'event': {}}, {'team': {}}, {'team': {}}]
+        with patch.object(projections, 'fetch_json', side_effect=responses):
             row = projections.scrape_khl()[0]
         logos = row['prediction']['logos']
         self.assertEqual(logos, {'home': 'https://example.com/ak.png', 'away': 'https://example.com/ska.png'})
         teams = row['event']['competitions'][0]['competitors']
         self.assertEqual([team['team']['logo'] for team in teams], [logos['home'], logos['away']])
+        self.assertEqual(row['prediction']['recentForm'], {'home': ['W'], 'away': ['L']})
+        self.assertEqual(row['prediction']['records']['home']['record'], '4-3')
 
     def test_nhl_uses_scoreboard_team_logos(self):
         def team(side, code, logo):

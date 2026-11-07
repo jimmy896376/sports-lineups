@@ -288,17 +288,24 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Adam+Reach+Lincoln+City+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Adam+Reach",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Adam+Reach+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "checkedAt": "2026-11-02T22:11:30.288279+00:00",
-      "nextCheckAt": "2026-11-03T04:11:30.288279+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
-      "policy": "precollect-names-v3"
+      "policy": "precollect-names-v6"
     },
     "adam smith": {
       "searches": {
@@ -1152,8 +1159,8 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
       "policy": "precollect-names-v6"
@@ -1381,18 +1388,25 @@
     "alfie devine": {
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Alfie+Devine+Preston+North+End&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Alfie+Devine+Preston+North+End+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Alfie+Devine",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alfie+Devine+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "checkedAt": "2026-10-31T05:55:56.910368+00:00",
-      "nextCheckAt": "2026-10-31T11:55:56.910368+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
-      "policy": "precollect-names-v3"
+      "policy": "precollect-names-v6"
     },
     "alfonso trezza": {
       "searches": {
@@ -2542,18 +2556,27 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Jano+Horst+SC+Paderborn+07&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Jano+Horst+SC+Paderborn+07+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jano+Horst",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jano+Horst+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T13:57:12.892881+00:00",
-      "nextCheckAt": "2026-10-31T19:57:12.892881+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T04:43:15.667797+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00"
     },
     "jeong woo yeong": {
       "status": "verified",
@@ -3039,18 +3062,27 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Nahuel+Nicolas+Noll+SC+Paderborn+07&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Nahuel+Nicolas+Noll+SC+Paderborn+07+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Nahuel+Nicolas+Noll",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nahuel+Nicolas+Noll+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T13:57:12.892881+00:00",
-      "nextCheckAt": "2026-10-31T19:57:12.892881+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T04:43:15.667797+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00"
     },
     "niclas fullkrug": {
       "status": "verified",
@@ -3706,8 +3738,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "arthur vermeeren": {
       "status": "verified",
@@ -4056,15 +4088,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Boy+Kemper+Queens+Park+Rangers+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Boy+Kemper",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Boy+Kemper+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-03T00:23:40.331626+00:00",
-      "nextCheckAt": "2026-11-03T06:23:40.331626+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "brad lyons": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -4176,15 +4215,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Branimir+Mlacic+Watford+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Branimir+Mlacic",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Branimir+Mlacic+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T23:04:52.060560+00:00",
-      "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "brayann pereira": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -4574,16 +4620,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Cian+Ashford+Cardiff+City&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Cian+Ashford+Cardiff+City+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Cian+Ashford",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Cian+Ashford+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T08:28:31.821761+00:00",
-      "nextCheckAt": "2026-10-31T14:28:31.821761+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "connor ronan": {
       "nextBulkCheckAt": "2026-10-29T18:15:46.794318+00:00",
@@ -4605,16 +4658,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Conor+McGrandles+Lincoln+City&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Conor+McGrandles+Lincoln+City+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Conor+McGrandles",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Conor+McGrandles+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T05:55:56.910368+00:00",
-      "nextCheckAt": "2026-10-31T11:55:56.910368+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "daam foulon": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -4644,15 +4704,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Daniel+Bennie+Dundee+United&hl=ko",
+          "url": "https://www.google.com/search?q=Daniel+Bennie+Dundee+United+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Daniel+Bennie",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Daniel+Bennie+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
           "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v2",
-      "checkedAt": "2026-10-28T10:09:33.382394+00:00",
-      "nextCheckAt": "2026-10-28T16:09:33.382394+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "daniel finlayson": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -4827,8 +4895,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "djibril soumare": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -4859,15 +4927,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Dom+Jefferies+Lincoln+City+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Dom+Jefferies",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Dom+Jefferies+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T23:04:52.060560+00:00",
-      "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "dominic ballard": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -5844,8 +5919,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "jack rudoni": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -6406,8 +6481,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "joel colwill": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -6581,15 +6656,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Josh+Campbell+St+Johnstone&hl=ko",
+          "url": "https://www.google.com/search?q=Josh+Campbell+St+Johnstone+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Josh+Campbell",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Josh+Campbell+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
           "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v2",
-      "checkedAt": "2026-10-28T11:00:45.649477+00:00",
-      "nextCheckAt": "2026-10-28T17:00:45.649477+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "josh fowler": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -6951,10 +7034,11 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Kwame+Poku+Queens+Park+Rangers+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Kwame+Poku",
+          "status": "no-readable-trusted-results"
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Kwame+Poku+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
@@ -6963,9 +7047,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v4",
-      "checkedAt": "2026-11-03T18:15:23.114041+00:00",
-      "nextCheckAt": "2026-11-04T00:15:23.114041+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "kyle walker": {
       "status": "verified",
@@ -7029,8 +7113,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lawrence vigouroux": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7052,8 +7136,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "leo leroy": {
       "status": "verified",
@@ -7067,10 +7151,11 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=L%C3%A9o+Scienza+Southampton+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=L%C3%A9o+Scienza",
+          "status": "no-readable-trusted-results"
         },
         "bing": {
           "url": "https://www.bing.com/search?q=L%C3%A9o+Scienza+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
@@ -7079,9 +7164,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v4",
-      "checkedAt": "2026-11-03T18:15:23.114041+00:00",
-      "nextCheckAt": "2026-11-04T00:15:23.114041+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "leon mccann": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -7165,15 +7250,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Liam+Smith+St+Johnstone&hl=ko",
+          "url": "https://www.google.com/search?q=Liam+Smith+St+Johnstone+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Liam+Smith",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Liam+Smith+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
           "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v2",
-      "checkedAt": "2026-10-28T11:41:55.472507+00:00",
-      "nextCheckAt": "2026-10-28T17:41:55.472507+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lipsky daniil a": {
       "nextBulkCheckAt": "2026-11-01T15:51:34.463461+00:00",
@@ -7296,8 +7389,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "luis vazquez": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -7404,8 +7497,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "mads hermansen": {
       "status": "verified",
@@ -7548,8 +7641,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "matty james": {
       "status": "verified",
@@ -7593,8 +7686,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "max o leary": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7616,8 +7709,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "melker widell": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7678,8 +7771,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "michael schjonning larsen": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -7709,15 +7802,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Mikkel+Ladefoged+Lincoln+City+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mikkel+Ladefoged",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mikkel+Ladefoged+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T23:04:52.060560+00:00",
-      "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "milan van ewijk": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7759,9 +7859,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v5",
-      "checkedAt": "2026-11-04T14:48:57.222623+00:00",
-      "nextCheckAt": "2026-11-04T20:48:57.222623+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "mohamed kone": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7783,8 +7883,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "morato": {
       "nextBulkCheckAt": "2026-10-29T23:10:29.796977+00:00",
@@ -7865,8 +7965,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "nesta guinness walker": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -7917,8 +8017,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "oladapo afolayan": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7940,8 +8040,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "ollie tanner": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -7963,8 +8063,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "olwethu makhanya": {
       "status": "verified",
@@ -8023,23 +8123,31 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "owen bevan": {
       "nextBulkCheckAt": "2026-10-29T18:15:46.794318+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Owen+Bevan+Dundee&hl=ko",
+          "url": "https://www.google.com/search?q=Owen+Bevan+Dundee+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Owen+Bevan",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Owen+Bevan+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
           "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v2",
-      "checkedAt": "2026-10-28T11:41:55.472507+00:00",
-      "nextCheckAt": "2026-10-28T17:41:55.472507+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "owen eames": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -8090,8 +8198,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "paul smyth": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -8113,8 +8221,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "perry ng": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -8136,8 +8244,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "phil neumann": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -8159,8 +8267,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "pierce charles": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -8182,8 +8290,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "rafiki said": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -8214,15 +8322,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Recco+Hackett-Fairchild+Lincoln+City+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Recco+Hackett-Fairchild",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Recco+Hackett-Fairchild+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T23:04:52.060560+00:00",
-      "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "reece mcalear": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -8296,8 +8411,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "rio cardines": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -9091,7 +9206,28 @@
     },
     "cala": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
-      "bulkPolicy": "wikipedia-exact-sports-v4"
+      "bulkPolicy": "wikipedia-exact-sports-v4",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Cala+Espanyol+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Cala",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Cala+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "edu exposito": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -9272,10 +9408,15 @@
         }
       },
       "sourceErrors": [],
-      "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-29T06:15:09.528083+00:00",
-      "nextCheckAt": "2026-10-29T12:15:09.528083+00:00"
+      "status": "verified",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-10-29T12:15:09.528083+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "method": "namuwiki-team-roster-v2"
     },
     "quilindschy hartman": {
       "status": "verified",
@@ -13174,8 +13315,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lassine sinayoko": {
       "nextBulkCheckAt": "2026-11-02T00:04:05.002333+00:00",
@@ -13445,8 +13586,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "nuno tavares": {
       "status": "verified",
@@ -16450,8 +16591,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-07T18:59:54.090959+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -23414,8 +23555,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lukas hornicek": {
       "status": "verified",
@@ -23544,8 +23685,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "mathias jensen": {
       "status": "verified",
@@ -25084,8 +25225,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "manuel mendonca": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -25107,8 +25248,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "milan robin": {
       "nextBulkCheckAt": "2026-10-25T17:42:47.084380+00:00",
@@ -25134,8 +25275,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "rafik guitane": {
       "nextBulkCheckAt": "2026-11-01T20:36:37.715678+00:00",
@@ -25216,8 +25357,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "xavier sintes": {
       "nextBulkCheckAt": "2026-11-01T20:36:37.715678+00:00",
@@ -36089,7 +36230,10 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Lucas+Gourna-Douath+Hull+City+-site%3Awikipedia.org&hl=ko",
-          "status": "disabled-after-block"
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Lucas+Gourna-Douath",
@@ -36103,8 +36247,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-06T04:34:36.378061+00:00",
-      "nextCheckAt": "2026-11-06T10:34:36.378061+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-07T23:41:38.150882+00:00"
     },
@@ -36140,7 +36284,33 @@
     },
     "mohamed ali cho": {
       "nextBulkCheckAt": "2026-10-25T17:45:14.240613+00:00",
-      "bulkPolicy": "wikipedia-exact-sports-v4"
+      "bulkPolicy": "wikipedia-exact-sports-v4",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mohamed-Ali+Cho+Hull+City+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mohamed-Ali+Cho",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohamed-Ali+Cho+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "nobel mendy": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -39204,8 +39374,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-07T18:59:54.090959+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -40229,15 +40399,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Liam+Kitching+Sheffield+United+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Liam+Kitching",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Liam+Kitching+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T23:04:52.060560+00:00",
-      "nextCheckAt": "2026-11-03T05:04:52.060560+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "logan costa": {
       "status": "verified",
@@ -40265,8 +40442,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "oliver arblaster": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -40761,10 +40938,11 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Callum+Lang+Preston+North+End+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Callum+Lang",
+          "status": "no-readable-trusted-results"
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Callum+Lang+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
@@ -40773,9 +40951,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v4",
-      "checkedAt": "2026-11-03T18:15:23.114041+00:00",
-      "nextCheckAt": "2026-11-04T00:15:23.114041+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "daniel grimshaw": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -40940,7 +41118,26 @@
       "nextCheckAt": "2026-11-07T19:42:38.707848+00:00"
     },
     "liam lindsay": {
-      "nextBulkCheckAt": "2026-10-25T15:41:24.274931+00:00"
+      "nextBulkCheckAt": "2026-10-25T15:41:24.274931+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Liam+Lindsay+Preston+North+End+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Liam+Lindsay",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Liam+Lindsay+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "mathias kvistgaarden": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -44676,16 +44873,28 @@
         "google": {
           "url": "https://www.google.com/search?q=Jacob+Murphy+Newcastle+United+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jacob+Murphy",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jacob+Murphy+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T15:42:45.893093+00:00",
-      "nextCheckAt": "2026-11-02T21:42:45.893093+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T01:50:27.423905+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00"
     },
     "jake girdwood reich": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -44926,17 +45135,26 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=William+Osula+Newcastle+United+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=William+Osula",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=William+Osula+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T19:41:03.186185+00:00",
-      "nextCheckAt": "2026-11-03T01:41:03.186185+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T01:50:27.423905+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00"
     },
     "rogers mato": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -45312,8 +45530,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "akin famewo": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -45358,8 +45576,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "arthur okonkwo": {
       "status": "verified",
@@ -45488,8 +45706,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "camiel neghli": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46020,10 +46238,11 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jenson+Metcalfe+Millwall+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jenson+Metcalfe",
+          "status": "no-readable-trusted-results"
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Jenson+Metcalfe+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
@@ -46032,9 +46251,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v4",
-      "checkedAt": "2026-11-03T18:15:23.114041+00:00",
-      "nextCheckAt": "2026-11-04T00:15:23.114041+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "joe rankin costello": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46042,15 +46261,22 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Joe+Rankin-Costello+Charlton+Athletic+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Joe+Rankin-Costello",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Joe+Rankin-Costello+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-03T00:23:40.331626+00:00",
-      "nextCheckAt": "2026-11-03T06:23:40.331626+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "joe ward": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46214,8 +46440,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "leif davis": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46298,8 +46524,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lyndon dykes": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -46606,8 +46832,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "regan poole": {
       "status": "verified",
@@ -56760,8 +56986,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-07T22:18:08.702605+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -58479,10 +58705,15 @@
         }
       },
       "sourceErrors": [],
-      "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-30T09:23:34.764723+00:00",
-      "nextCheckAt": "2026-10-30T15:23:34.764723+00:00"
+      "status": "verified",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-10-30T15:23:34.764723+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "method": "namuwiki-team-roster-v2"
     },
     "urko gonzalez": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -63418,17 +63649,26 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Alejandro+Santiago+Vargas+Espanyol+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Alejandro+Santiago+Vargas",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alejandro+Santiago+Vargas+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-02T13:46:49.661156+00:00",
-      "nextCheckAt": "2026-11-02T19:46:49.661156+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T03:38:13.197207+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00"
     },
     "ben sheaf": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -64055,10 +64295,11 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Mart%C3%ADn+Payero+Watford+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mart%C3%ADn+Payero",
+          "status": "no-readable-trusted-results"
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Mart%C3%ADn+Payero+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
@@ -64067,9 +64308,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v4",
-      "checkedAt": "2026-11-03T18:15:23.114041+00:00",
-      "nextCheckAt": "2026-11-04T00:15:23.114041+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "robert bozenik": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -64395,8 +64636,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "christian forino joseph": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -64913,8 +65154,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T07:40:20.254006+00:00",
-      "nextCheckAt": "2026-11-07T13:40:20.254006+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "ross stewart": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -70683,8 +70924,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T06:26:22.654404+00:00",
-      "nextCheckAt": "2026-11-07T12:26:22.654404+00:00"
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "mihailo ivanovic": {
       "searches": {
@@ -70787,9 +71028,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v5",
-      "checkedAt": "2026-11-04T14:48:57.222623+00:00",
-      "nextCheckAt": "2026-11-04T20:48:57.222623+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     },
     "lamfia dioubate": {
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -76583,6 +76824,499 @@
       "policy": "precollect-names-v6",
       "checkedAt": "2026-11-07T13:42:38.707848+00:00",
       "method": "namuwiki-team-roster-v2"
+    },
+    "pere milla": {
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-08T14:28:44.920061+00:00",
+      "status": "verified",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "method": "namuwiki-team-roster-v2"
+    },
+    "alan nwamba": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Alan+Nwamba+Charlton+Athletic+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Alan+Nwamba",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alan+Nwamba+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "amin nabizada": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Amin+Nabizada+Watford+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Amin+Nabizada",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Amin+Nabizada+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "aune heggebo": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Aune+Heggebo+West+Bromwich+Albion+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Aune+Heggebo",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Aune+Heggebo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "botond balogh": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Botond+Balogh+KVC+Westerlo+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Botond+Balogh",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Botond+Balogh+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "david strelec": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=David+Strelec+Middlesbrough+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=David+Strelec",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=David+Strelec+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "ezra mayers": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Ezra+Mayers+West+Ham+United+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Ezra+Mayers",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ezra+Mayers+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "gady beyuku": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Gady+Beyuku+Blackburn+Rovers+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Gady+Beyuku",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Gady+Beyuku+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "jaydon banel": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jaydon+Banel+Burnley+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jaydon+Banel",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jaydon+Banel+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "jeremy sarmiento": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jeremy+Sarmiento+Middlesbrough+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jeremy+Sarmiento",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jeremy+Sarmiento+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "joel piroe": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jo%C3%ABl+Piroe+West+Ham+United+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jo%C3%ABl+Piroe",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jo%C3%ABl+Piroe+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "josh coburn": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Josh+Coburn+Millwall+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Josh+Coburn",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Josh+Coburn+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "kai fotheringham": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Kai+Fotheringham+St+Johnstone+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Kai+Fotheringham",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Kai+Fotheringham+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "krystian bielik": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Krystian+Bielik+Cardiff+City+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Krystian+Bielik",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Krystian+Bielik+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "lee nicholls": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Lee+Nicholls+Preston+North+End+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Lee+Nicholls",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Lee+Nicholls+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "mamadou doumbia": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mamadou+Doumbia+Watford+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mamadou+Doumbia",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mamadou+Doumbia+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "millenic alli": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Millenic+Alli+Charlton+Athletic+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Millenic+Alli",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Millenic+Alli+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "moussa yeo": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Moussa+Yeo+Swansea+City+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Moussa+Yeo",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Moussa+Yeo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "nathaniel phillips": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Nathaniel+Phillips+West+Bromwich+Albion+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Nathaniel+Phillips",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nathaniel+Phillips+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "noah solheid": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Noah+Solheid+Royal+Charleroi+SC+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Noah+Solheid",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Noah+Solheid+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "ross sinclair": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Ross+Sinclair+St+Johnstone+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Ross+Sinclair",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ross+Sinclair+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "sam byram": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Sam+Byram+Middlesbrough+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Sam+Byram",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Sam+Byram+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "thierry small": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Thierry+Small+Preston+North+End+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Thierry+Small",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Thierry+Small+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
+    },
+    "welington": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Welington+Southampton+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Welington",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Welington+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-07T14:28:44.920061+00:00",
+      "nextCheckAt": "2026-11-07T20:28:44.920061+00:00"
     }
   }
 }

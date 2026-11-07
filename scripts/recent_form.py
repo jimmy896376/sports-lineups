@@ -30,7 +30,7 @@ ESPN_PATHS = {
     'epl': 'soccer/eng.1', 'championship': 'soccer/eng.2', 'laliga': 'soccer/esp.1',
     'bundesliga': 'soccer/ger.1', 'seriea': 'soccer/ita.1', 'ligue1': 'soccer/fra.1',
     'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
-    'scottish': 'soccer/sco.1', 'j1': 'soccer/jpn.1', 'mls': 'soccer/usa.1',
+    'scottish': 'soccer/sco.1', 'j1': 'soccer/jpn.1', 'mls': 'soccer/usa.1', 'ligamx': 'soccer/mex.1',
     'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa',
 }
 REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 hours keeps calls low

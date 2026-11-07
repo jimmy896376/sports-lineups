@@ -13,6 +13,7 @@ const sources = {
   ligue1: {path:'soccer/fra.1', label:['Ligue 1','리그앙'], official:'https://ligue1.com/en/calendar/ligue1'},
   j1: {path:'soccer/jpn.1', label:['J1 League','J1리그'], official:'https://www.jleague.jp/en/j1/match/'},
   mls: {path:'soccer/usa.1', label:['MLS','미국 MLS'], official:'https://www.mlssoccer.com/schedule/2026/'},
+  ligamx: {path:'soccer/mex.1', label:['Liga MX','멕시코 리가 MX']},
   mlb: {path:'baseball/mlb', label:['MLB','MLB'], official:'https://www.mlb.com/schedule'},
   nba: {path:'basketball/nba', label:['NBA','NBA'], official:'https://www.nba.com/games'},
   wnba: {path:'basketball/wnba', label:['WNBA','WNBA']},
@@ -30,7 +31,7 @@ const sources = {
 };
 const sports = [{id:'football',label:['⚽ Football lineups','⚽ 축구 라인업']},{id:'mlb',label:['MLB lineups','MLB 라인업']},{id:'npb',label:['NPB lineups','NPB 라인업']},{id:'cpbl',label:['CPBL lineups','CPBL 라인업']},{id:'nba',label:['NBA lineups','NBA 라인업']},{id:'wnba',label:['WNBA lineups','WNBA 라인업']},{id:'nhl',label:['NHL lineups','NHL 라인업']},{id:'khl',label:['KHL lineups','KHL 라인업']},{id:'kbo',label:['KBO lineups','KBO 라인업']},{id:'kbl',label:['KBL lineups','KBL 라인업']},{id:'wkbl',label:['WKBL lineups','WKBL 라인업']},{id:'kovo',label:['KOVO lineups','KOVO 라인업']}];
 const categories = [{id:'football',label:['⚽ Football lineups','⚽ 축구 라인업'],sports:['football']},{id:'baseball',label:['⚾ Baseball lineups','⚾ 야구 라인업'],sports:['mlb','kbo','npb','cpbl']},{id:'basketball',label:['🏀 Basketball lineups','🏀 농구 라인업'],sports:['nba','kbl','wkbl','wnba']},{id:'volleyball',label:['🏐 Volleyball lineups','🏐 배구 라인업'],sports:['kovo']},{id:'hockey',label:['🏒 Hockey lineups','🏒 하키 라인업'],sports:['nhl','khl']}];
-const leagueIds = ['ucl','uel','epl','championship','laliga','bundesliga','seriea','ligue1','kleague1','kleague2','eredivisie','jupiler','primeira','scottish','j1','mls'];
+const leagueIds = ['ucl','uel','epl','championship','laliga','bundesliga','seriea','ligue1','kleague1','kleague2','eredivisie','jupiler','primeira','scottish','j1','mls','ligamx'];
 const dropdownLeagueNames = {
   "ucl": "UEFA 챔피언스리그",
   "uel": "UEFA 유로파리그",
@@ -48,6 +49,7 @@ const dropdownLeagueNames = {
   "scottish": "스코틀랜드 프리미어십",
   "j1": "일본 J1리그",
   "mls": "미국 메이저리그 사커 (MLS)",
+  "ligamx": "멕시코 리가 MX",
   "mlb": "미국 메이저리그 베이스볼 (MLB)",
   "kbo": "대한민국 프로야구 (KBO 리그)",
   "npb": "일본 프로야구 (NPB)",
@@ -77,6 +79,7 @@ const dropdownLeagueFlags = {
   "scottish": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
   "j1": "🇯🇵",
   "mls": "🇺🇸",
+  "ligamx": "🇲🇽",
   "mlb": "🇺🇸",
   "kbo": "🇰🇷",
   "npb": "🇯🇵",
@@ -91,12 +94,12 @@ const dropdownLeagueFlags = {
 };
 const dropdownLeagueLabel = id => id === 'kbo' ? '대한민국 프로야구 (KBO)' : dropdownLeagueNames[id];
 const dropdownLeagueOrder = {
-  football:['kleague1','kleague2','ucl','uel','epl','championship','laliga','bundesliga','seriea','ligue1','eredivisie','jupiler','primeira','scottish','j1','mls'],
+  football:['kleague1','kleague2','ucl','uel','epl','championship','laliga','bundesliga','seriea','ligue1','eredivisie','jupiler','primeira','scottish','j1','mls','ligamx'],
   baseball:['kbo','mlb','npb','cpbl'],
   basketball:['kbl','wkbl','nba','wnba']
 };
 const leagueLogos = {
-  ucl:'https://a.espncdn.com/i/leaguelogos/soccer/500/2.png',uel:'https://a.espncdn.com/i/leaguelogos/soccer/500/2310.png',epl:'https://a.espncdn.com/i/leaguelogos/soccer/500/23.png',championship:'https://a.espncdn.com/i/leaguelogos/soccer/500/24.png',laliga:'https://a.espncdn.com/i/leaguelogos/soccer/500/15.png',bundesliga:'https://a.espncdn.com/i/leaguelogos/soccer/500/10.png',seriea:'https://a.espncdn.com/i/leaguelogos/soccer/500/12.png',ligue1:'https://a.espncdn.com/i/leaguelogos/soccer/500/9.png',eredivisie:'https://a.espncdn.com/i/leaguelogos/soccer/500/11.png',jupiler:'https://a.espncdn.com/i/leaguelogos/soccer/500/6.png',primeira:'https://a.espncdn.com/i/leaguelogos/soccer/500/14.png',scottish:'https://a.espncdn.com/i/leaguelogos/soccer/500/45.png',j1:'https://a.espncdn.com/i/leaguelogos/soccer/500/2199.png',mls:'https://a.espncdn.com/i/leaguelogos/soccer/500/19.png',mlb:'https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png',nba:'https://a.espncdn.com/i/teamlogos/leagues/500/nba.png',wnba:'https://a.espncdn.com/i/teamlogos/leagues/500/wnba.png',nhl:'https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png',khl:'https://www.khl.ru/local/templates/2025/images/logos/2026_27/khl_ru.svg',kleague1:'https://app.holoduke.nl/footapi/images/leagueimages/SouthKoreaKLeagueClassic.png',kleague2:'https://assets.fclogo.top/png/k-league-2-v2021.png',kbo:'https://upload.wikimedia.org/wikipedia/commons/6/6a/Korea_Baseball_Organization_-_2022_wordmark.svg',npb:'https://upload.wikimedia.org/wikipedia/commons/7/7f/NPB_logo.svg',cpbl:'https://www.cpbl.com.tw/theme/common/images/project/logo_new.png',kbl:'https://www.kbl.or.kr/assets/img/logo/logo-header.svg',wkbl:'https://www.wkbl.or.kr/static/images/about/ci_2023.png',kovo:'https://phinf.pstatic.net/tvcast/20241024_232/6A6Ja_1729757946529X0C9l_JPEG/1729757946519.jpg'
+  ucl:'https://a.espncdn.com/i/leaguelogos/soccer/500/2.png',uel:'https://a.espncdn.com/i/leaguelogos/soccer/500/2310.png',epl:'https://a.espncdn.com/i/leaguelogos/soccer/500/23.png',championship:'https://a.espncdn.com/i/leaguelogos/soccer/500/24.png',laliga:'https://a.espncdn.com/i/leaguelogos/soccer/500/15.png',bundesliga:'https://a.espncdn.com/i/leaguelogos/soccer/500/10.png',seriea:'https://a.espncdn.com/i/leaguelogos/soccer/500/12.png',ligue1:'https://a.espncdn.com/i/leaguelogos/soccer/500/9.png',eredivisie:'https://a.espncdn.com/i/leaguelogos/soccer/500/11.png',jupiler:'https://a.espncdn.com/i/leaguelogos/soccer/500/6.png',primeira:'https://a.espncdn.com/i/leaguelogos/soccer/500/14.png',scottish:'https://a.espncdn.com/i/leaguelogos/soccer/500/45.png',j1:'https://a.espncdn.com/i/leaguelogos/soccer/500/2199.png',mls:'https://a.espncdn.com/i/leaguelogos/soccer/500/19.png',ligamx:'https://a.espncdn.com/i/leaguelogos/soccer/500/22.png',mlb:'https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png',nba:'https://a.espncdn.com/i/teamlogos/leagues/500/nba.png',wnba:'https://a.espncdn.com/i/teamlogos/leagues/500/wnba.png',nhl:'https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png',khl:'https://www.khl.ru/local/templates/2025/images/logos/2026_27/khl_ru.svg',kleague1:'https://app.holoduke.nl/footapi/images/leagueimages/SouthKoreaKLeagueClassic.png',kleague2:'https://assets.fclogo.top/png/k-league-2-v2021.png',kbo:'https://upload.wikimedia.org/wikipedia/commons/6/6a/Korea_Baseball_Organization_-_2022_wordmark.svg',npb:'https://upload.wikimedia.org/wikipedia/commons/7/7f/NPB_logo.svg',cpbl:'https://www.cpbl.com.tw/theme/common/images/project/logo_new.png',kbl:'https://www.kbl.or.kr/assets/img/logo/logo-header.svg',wkbl:'https://www.wkbl.or.kr/static/images/about/ci_2023.png',kovo:'https://phinf.pstatic.net/tvcast/20241024_232/6A6Ja_1729757946529X0C9l_JPEG/1729757946519.jpg'
 };
 function leagueButton(id,item,attribute,selected) {
   const initials=id.toUpperCase().replace('KLEAGUE','K');
@@ -342,7 +345,7 @@ function kstDayRange() {
   const parts = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
   const get = type => Number(parts.find(part => part.type === type).value);
   const start = Date.UTC(get('year'),get('month')-1,get('day')) - 9*3600000;
-  return [start,start+3*24*3600000];
+  return [start,start+5*24*3600000];
 }
 async function getJson(url) {
   const response = await fetch(url,{cache:'no-store'});
@@ -534,28 +537,24 @@ function recentResults(team, event, events, side, prediction) {
 function seasonRecordMarkup(team, side, prediction) {
   const records = team.records || team.team?.records || [];
   const supplied = prediction?.records?.[side];
-  if ((!Array.isArray(records) || !records.length) && supplied) {
-    const overall = /^\d+-\d+(?:-\d+)?$/.test(supplied.record || '') ? `<span>시즌 ${safe(supplied.record)}</span>` : '';
-    const venue = /^\d+-\d+(?:-\d+)?$/.test(supplied.sideRecord || '') ? `<span>${side === 'home' ? '홈' : '원정'} ${safe(supplied.sideRecord)}</span>` : '';
-    return overall || venue ? `<span class="season-record">${overall}${venue}</span>` : '';
-  }
-  if (!Array.isArray(records)) return '';
   const summary = record => String(record?.summary || record?.displayValue || '');
   const valid = value => /^\d+\s*[-–]\s*\d+(?:\s*[-–]\s*\d+)?$/.test(value);
-  const total = records.find(record => /overall|total|league/i.test(`${record.name || ''} ${record.type || ''}`) && valid(summary(record))) || records.find(record => /total/i.test(record.type || '') && valid(summary(record)));
+  const rows = Array.isArray(records) ? records : [];
+  const total = rows.find(record => /overall|total|league/i.test(`${record.name || ''} ${record.type || ''}`) && valid(summary(record))) || rows.find(record => /total/i.test(record.type || '') && valid(summary(record)));
   const venueName = side === 'home' ? /home/i : /away|road/i;
-  const venue = records.find(record => venueName.test(`${record.name || ''} ${record.type || ''}`) && valid(summary(record)));
-  if (!total && !venue) return '';
-  const overallText = total ? `<span>시즌 ${safe(summary(total))}</span>` : '';
-  const venueText = venue ? `<span>${side === 'home' ? '홈' : '원정'} ${safe(summary(venue))}</span>` : '';
+  const venue = rows.find(record => venueName.test(`${record.name || ''} ${record.type || ''}`) && valid(summary(record)));
+  const overallValue = total ? summary(total) : supplied?.record;
+  const venueValue = venue ? summary(venue) : supplied?.sideRecord;
+  if (!valid(overallValue) && !valid(venueValue)) return '';
+  const overallText = valid(overallValue) ? `<span>시즌 ${safe(overallValue)}</span>` : '';
+  const venueText = valid(venueValue) ? `<span>${side === 'home' ? '홈' : '원정'} ${safe(venueValue)}</span>` : '';
   return `<span class="season-record" aria-label="시즌 및 ${side === 'home' ? '홈' : '원정'} 전적">${overallText}${venueText}</span>`;
 }
 function formMarkup(team, event, events, side, prediction) {
   const results = recentResults(team,event,events,side,prediction);
   const name = safe(teamDisplayName(team.team));
   const text = results.length ? results.map(result => `<span class="form-result ${result.toLowerCase()}" aria-label="${result === 'W' ? '승' : result === 'L' ? '패' : '무'}">${result === 'W' ? '승' : result === 'L' ? '패' : '무'}</span>`).join('') : '<span class="form-empty">결과 기록 없음</span>';
-  const sportSupportsRecord = ['mlb','kbo','npb','cpbl','nba','wnba','ncaam','kbl','wkbl'].includes(sport);
-  const record = sportSupportsRecord ? seasonRecordMarkup(team,side,prediction) : '';
+  const record = seasonRecordMarkup(team,side,prediction);
   const logo = teamLogo(team,'matchup-logo');
   const location = `<small class="venue-tag ${side}">${side === 'home' ? '홈' : '원정'}</small>`;
   const heading = side === 'away' ? `${logo}<span>${name}</span>${location}` : `${location}<span>${name}</span>${logo}`;
@@ -648,10 +647,10 @@ function renderTeamSearch() {
   results.hidden=!query;
   if(!query){results.innerHTML='';return;}
   const rows=findTeamGames(query);
-  results.innerHTML=rows.length ? `<p class="search-summary">오늘부터 3일간 경기 ${rows.length}개</p>`+rows.slice(0,20).map(row=>{
+  results.innerHTML=rows.length ? `<p class="search-summary">오늘부터 5일간 경기 ${rows.length}개</p>`+rows.slice(0,20).map(row=>{
     const index=teamSearchRows.indexOf(row);
     return `<button type="button" class="team-search-result" data-search-game="${index}"><strong>${safe(searchTeamName(row.away))} <span class="search-vs">VS</span> ${safe(searchTeamName(row.home))}</strong><span>${safe(dropdownLeagueNames[row.league])} · ${safe(kst(row.date))}</span></button>`;
-  }).join('') : `<p class="search-summary">${teamSearchRows.length ? '오늘부터 3일간 조회된 경기에서 일치하는 팀이 없습니다.' : '경기 자료를 불러온 뒤 다시 검색해 주세요.'}</p>`;
+  }).join('') : `<p class="search-summary">${teamSearchRows.length ? '오늘부터 5일간 조회된 경기에서 일치하는 팀이 없습니다.' : '경기 자료를 불러온 뒤 다시 검색해 주세요.'}</p>`;
 }
 async function openTeamSearchGame(index) {
   const row=teamSearchRows[index];
@@ -782,7 +781,7 @@ async function loadMajorGames(current,preferFresh=false) {
       return card.replace('tabindex="-1">',`tabindex="-1"><div class="overview-league">${safe(dropdownLeagueNames[row.key]||sources[row.key].label[1])}</div>`);
     });
     if(current===requestId){
-      $('games').innerHTML=cards.length?`<div class="major-heading"><h2>오늘부터 3일간 주요 경기</h2><p>결승·포스트시즌, 인기 리그·주요 팀 중심으로 선정 · 최대 12경기</p></div>`+cards.join(''):`<div class="empty">${scores.some(r=>r.status==='fulfilled')?'오늘부터 3일간 선정 기준에 맞는 주요 경기가 없습니다. 전체 경기는 종목 메뉴에서 확인하세요.':'주요 경기 일정을 불러오지 못했습니다. 새로고침해 주세요.'}</div>`;
+      $('games').innerHTML=cards.length?`<div class="major-heading"><h2>오늘부터 5일간 주요 경기</h2><p>결승·포스트시즌, 인기 리그·주요 팀 중심으로 선정 · 최대 12경기</p></div>`+cards.join(''):`<div class="empty">${scores.some(r=>r.status==='fulfilled')?'오늘부터 5일간 선정 기준에 맞는 주요 경기가 없습니다. 전체 경기는 종목 메뉴에서 확인하세요.':'주요 경기 일정을 불러오지 못했습니다. 새로고침해 주세요.'}</div>`;
     }
   } finally {sport=previousSport;league=previousLeague;}
 }
@@ -808,7 +807,7 @@ async function loadGames(preferFresh=true) {
       if (current !== requestId) return;
       $('games').innerHTML = events.length
         ? events.map(entry => { const confirmed = entry.prediction.statuses?.home === 'confirmed' && entry.prediction.statuses?.away === 'confirmed'; return gameCard(entry.event,confirmed ? entry.prediction.lineups || {} : {},entry.prediction,[]); }).join('')
-        : `<div class="empty">${label('No scheduled games in this three-day period.','오늘부터 3일간 예정된 경기가 없습니다.')}</div>`;
+        : `<div class="empty">${label('No scheduled games in this five-day period.','오늘부터 5일간 예정된 경기가 없습니다.')}</div>`;
     } catch {
       if (current === requestId) nameReview.failed = true;
       if (current === requestId) $('games').innerHTML = `<div class="empty">${label('Schedule source could not be refreshed.','일정 자료원을 새로고침하지 못했습니다.')}</div>`;
@@ -831,7 +830,7 @@ async function loadGames(preferFresh=true) {
     const events = allEvents.filter(event => !event.status?.type?.completed && event.competitions?.[0]?.timeValid !== false && Date.parse(event.date) >= dayStart && Date.parse(event.date) < dayEnd).sort((a,b) => Date.parse(a.date)-Date.parse(b.date));
     indexTeamSearch({domestic:{[sport==='football'?league:sport]:events.map(event=>({event}))}},true);
     if (!events.length) {
-      $('games').innerHTML = `<div class="empty">${label('No scheduled games in this three-day period.','오늘부터 3일간 예정된 경기가 없습니다.')}</div>`;
+      $('games').innerHTML = `<div class="empty">${label('No scheduled games in this five-day period.','오늘부터 5일간 예정된 경기가 없습니다.')}</div>`;
       return;
     }
     const kind = sport;

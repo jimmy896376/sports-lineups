@@ -81,7 +81,7 @@ def target(event, league):
 def collect():
     now = dt.datetime.now(UTC)
     start = now.astimezone(KST).replace(hour=0,minute=0,second=0,microsecond=0)
-    end = start + dt.timedelta(days=2)
+    end = start + dt.timedelta(days=5)
     checked = now.isoformat()
     errors, targets, forecasts = [], [], []
     def attempt(label, fn):
@@ -89,7 +89,7 @@ def collect():
         except Exception as error:
             errors.append(dict(source=label,error=str(error)[:160]))
             return None
-    dates = [(start.astimezone(UTC).date()+dt.timedelta(days=i)).strftime('%Y%m%d') for i in range(3)]
+    dates = [(start.astimezone(UTC).date()+dt.timedelta(days=i)).strftime('%Y%m%d') for i in range(6)]
     def scoreboard(pair):
         league, day = pair
         response = json_fetch(f'https://site.api.espn.com/apis/site/v2/sports/{PATHS[league]}/scoreboard?dates={day}&limit=200')

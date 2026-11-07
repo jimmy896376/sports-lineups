@@ -9,11 +9,12 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
+WINDOW_DAYS = 5
 SOURCES = {
     'ucl': ('UCL', 'soccer'), 'epl': ('EPL', 'soccer'),
     'laliga': ('LIGA', 'soccer'), 'bundesliga': ('BUND', 'soccer'),
     'seriea': ('SERI', 'soccer'), 'ligue1': ('FRAN', 'soccer'),
-    'mls': ('MLS', 'soccer'), 'wnba': ('', 'wnba'),
+    'mls': ('MLS', 'soccer'), 'ligamx': ('LMX', 'soccer'), 'wnba': ('', 'wnba'),
     'nba': ('', 'nba'), 'mlb': ('', 'mlb'),
 }
 
@@ -297,7 +298,7 @@ def scrape_nhl_dailyfaceoff():
     eastern = ZoneInfo('America/New_York')
     today = datetime.now(eastern).date()
     scores = {}
-    for offset in range(3):
+    for offset in range(WINDOW_DAYS):
         day = today + timedelta(days=offset)
         board = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates={day:%Y%m%d}&limit=500')
         for event in board.get('events', []):
@@ -357,11 +358,12 @@ def scrape_fotmob_kleague(league_id, key):
     """Use FotMob schedule and its lastStarting11 roster for K League projections."""
     from urllib.parse import urlencode
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    end = today.fromordinal(today.toordinal() + 3)
+    end = today.fromordinal(today.toordinal() + WINDOW_DAYS)
     query = urlencode({'id': league_id, 'ccode3': 'KOR', 'season': today.year})
     data = fetch_json('https://www.fotmob.com/api/data/leagues?' + query)
+    fixture_list = data.get('fixtures', {}).get('allMatches', [])
     events = []
-    for match in data.get('fixtures', {}).get('allMatches', []):
+    for match in fixture_list:
         status = match.get('status', {})
         kickoff_text = status.get('utcTime')
         if not kickoff_text:
@@ -395,16 +397,46 @@ def scrape_fotmob_kleague(league_id, key):
         prediction = {'league': key, 'kickoff': utc, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])},
             'logos': logos, 'lineups': rosters, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'FotMob 최근 선발 11명 기준 예상', 'source': 'https://www.fotmob.com'}
+        prediction['recentForm'], prediction['records'] = fotmob_records(fixture_list, match)
         events.append({'event': {'id': str(match['id']), 'date': utc, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
     return events
 
 
+def fotmob_records(fixtures, upcoming):
+    """Use completed matches in the same season before kickoff; W-D-L for football."""
+    kickoff = upcoming['status']['utcTime']
+    history = []
+    for game in fixtures:
+        status = game.get('status', {})
+        if not status.get('finished') or status.get('cancelled') or status.get('awarded') or not status.get('utcTime') or status['utcTime'] >= kickoff:
+            continue
+        score = re.fullmatch(r'\s*(\d+)\s*[-–:]\s*(\d+)\s*', status.get('scoreStr', ''))
+        if score:
+            history.append((status['utcTime'], game, int(score[1]), int(score[2])))
+    history.sort(key=lambda row: row[0])
+    forms, records = {}, {}
+    for side in ('home', 'away'):
+        team_id = str(upcoming[side]['id'])
+        results = []
+        for _, game, home_score, away_score in history:
+            venue = next((position for position in ('home', 'away') if str(game.get(position, {}).get('id')) == team_id), None)
+            if venue:
+                own, opponent = (home_score, away_score) if venue == 'home' else (away_score, home_score)
+                results.append((venue, 'W' if own > opponent else 'L' if own < opponent else 'D'))
+        if results:
+            forms[side] = [result for _, result in results[-5:]]
+            def tally(rows):
+                return '-'.join(str(sum(result == mark for _, result in rows)) for mark in ('W', 'D', 'L'))
+            records[side] = {'record': tally(results), 'sideRecord': tally([row for row in results if row[0] == side])}
+    return forms, records
+
+
 def scrape_khl():
-    """Import three-day KHL fixtures from the public KHL mobile API."""
+    """Import five-day KHL fixtures from the public KHL mobile API."""
     from urllib.parse import urlencode
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     start = datetime.combine(today, datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).timestamp()
-    end = start + 3 * 86400
+    end = start + WINDOW_DAYS * 86400
     query = urlencode({'q[start_at_gt_time_from_unixtime]': int(start), 'q[start_at_lt_time_from_unixtime]': int(end), 'order_direction': 'asc', 'locale': 'en'}, safe='[]')
     raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + query)
     events = []
@@ -540,7 +572,7 @@ def reviewed_pitcher_fallback(event_id, kickoff, names, pitchers):
 
 
 def scrape_cpbl():
-    """Use CPBL public schedule and game detail API for three-day starter projections."""
+    """Use CPBL public schedule and game detail API for five-day starter projections."""
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     events = []
     recent_batters = {}
@@ -569,7 +601,7 @@ def scrape_cpbl():
                         recent_batters[team_name] = lineup[:9]
         except Exception:
             continue
-    for offset in range(3):
+    for offset in range(WINDOW_DAYS):
         day = today.fromordinal(today.toordinal() + offset)
         games = fetch_json(f'https://stats.cpbl.com.tw/api/proxy/v1/games/schedule/{day.isoformat()}')
         rows = games.get('Data', {}).get('Games', [])
@@ -671,7 +703,7 @@ def scrape_npb():
                     if len(lineup) >= 9 and name not in recent_rosters: recent_rosters[name] = lineup[:9]
         except Exception:
             continue
-    for offset in range(3):
+    for offset in range(WINDOW_DAYS):
         day = today.fromordinal(today.toordinal() + offset)
         raw = fetch_json(f'https://spaia.jp/baseball/npb/api/games_info_by_date?gameDate={day:%Y%m%d}')
         games = raw if isinstance(raw, list) else raw.get('data', raw.get('games', []))
@@ -730,7 +762,7 @@ def scrape_kbo_official():
         return f'https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/emblem/regular/fixed/emblem_{code}.png' if code in logo_codes else ''
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     events = []
-    for offset in range(3):
+    for offset in range(WINDOW_DAYS):
         day = today.fromordinal(today.toordinal() + offset).strftime('%Y%m%d')
         referer = f'https://www.koreabaseball.com/Schedule/GameCenter/Main.aspx?gameDate={day}'
         games = post_json('https://www.koreabaseball.com/ws/Main.asmx/GetKboGameList', {
@@ -832,7 +864,7 @@ def kbl_recent_and_records(detail):
 def scrape_kbl_statgg():
     """Use KBL schedule and season player minutes as a transparent starter projection."""
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    end = today.fromordinal(today.toordinal() + 3)
+    end = today.fromordinal(today.toordinal() + WINDOW_DAYS)
     schedule = fetch_text(f'https://statgg.com/ko/kbl/schedule?date={today.isoformat()}')
     links = re.findall(r'<a[^>]+href="(/ko/kbl/matches/[^\"]+)"[^>]*>(.*?)</a>', schedule, re.S)
     events = []
@@ -864,7 +896,8 @@ def scrape_kbl_statgg():
             {'homeAway': 'home', 'team': {'id': names[0], 'displayName': names[0], 'shortDisplayName': names[0], 'abbreviation': names[0], 'logo': logos['home']}, 'records': comparison['records'].get('home', [])},
             {'homeAway': 'away', 'team': {'id': names[1], 'displayName': names[1], 'shortDisplayName': names[1], 'abbreviation': names[1], 'logo': logos['away']}, 'records': comparison['records'].get('away', [])}
         ]
-        events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'logos': logos, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
+        records = {side: {'record': rows[0]['summary']} for side, rows in comparison['records'].items() if rows}
+        events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'logos': logos, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'records': records, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
     return events
 
 
@@ -917,7 +950,7 @@ def scrape_kovo_bkvolley():
             kickoff_local = datetime(year, month, day, hour, minute, tzinfo=ZoneInfo('Asia/Seoul'))
         except ValueError:
             continue
-        if not today <= kickoff_local.date() <= today.fromordinal(today.toordinal()+2):
+        if not today <= kickoff_local.date() < today.fromordinal(today.toordinal()+WINDOW_DAYS):
             continue
         home, away = [name.strip() for name in pair.groups()]
         kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
@@ -1055,7 +1088,7 @@ def wkbl_projected_lineups(detail, names):
 
 def scrape_wkbl_official():
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(3)}
+    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(WINDOW_DAYS)}
     months = {(day.year, day.month) for day in target_days}
     entries = []
     try:
@@ -1117,7 +1150,7 @@ def main():
     path = ROOT / 'dist' / 'projections.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
-    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(3)}
+    target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(WINDOW_DAYS)}
     def within_window(entry, field):
         try:
             return datetime.fromisoformat(entry[field].replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() in target_days

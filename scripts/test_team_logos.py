@@ -12,6 +12,20 @@ spec.loader.exec_module(projections)
 
 
 class TeamLogos(TestCase):
+    def test_kleague_results_use_only_completed_games_before_kickoff(self):
+        upcoming = {'home': {'id': 'A'}, 'away': {'id': 'B'}, 'status': {'utcTime': '2026-11-08T05:00:00Z'}}
+        def played(day, home, away, score, **status):
+            return {'home': {'id': home}, 'away': {'id': away},
+                    'status': {'utcTime': f'2026-11-{day:02}T05:00:00Z', 'finished': True, 'scoreStr': score, **status}}
+        games = [played(1, 'A', 'B', '2 - 1'), played(2, 'C', 'A', '1 - 1'),
+                 played(3, 'B', 'C', '0 - 1'), played(4, 'A', 'C', '3 - 0'),
+                 played(5, 'C', 'B', '2 - 0'), played(6, 'A', 'C', '4 - 0', awarded=True),
+                 played(9, 'B', 'A', '2 - 0')]
+        form, records = projections.fotmob_records(games, upcoming)
+        self.assertEqual(form, {'home': ['W', 'D', 'W'], 'away': ['L', 'L', 'L']})
+        self.assertEqual(records, {'home': {'record': '2-1-0', 'sideRecord': '2-0-0'},
+                                   'away': {'record': '0-0-3', 'sideRecord': '0-0-2'}})
+
     def test_kleague_uses_last_starters_and_header_logos(self):
         class Clock(datetime):
             @classmethod

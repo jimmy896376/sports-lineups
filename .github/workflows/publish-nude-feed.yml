@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: ['dist/**', 'scripts/**', '.github/workflows/**']
   workflow_run:
-    workflows: ['Refresh lineup projections', 'Publish reviewed full names', 'Refresh published match probabilities']
+    workflows: ['Refresh lineup projections', 'Refresh Scorebase lineups', 'Publish reviewed full names', 'Refresh published match probabilities']
     types: [completed]
     branches: [main]
   workflow_dispatch:

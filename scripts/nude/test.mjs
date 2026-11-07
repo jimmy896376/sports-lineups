@@ -26,6 +26,16 @@ kblRecord.domestic.kleague2[0].event.recentForm={home:['W','L']};
 const transferred=buildFeed(kblRecord,scoped,teams,config,'test').matches[0];
 assert.equal(transferred.records.home.record,'5-3');
 assert.deepEqual(transferred.recentForm.home,['W','L']);
+const scorebaseMatch={id:'scorebase:/live/TEST/1',eventId:'1',league:'test',leagueName:'테스트 리그',sport:'축구',kickoff:Date.parse('2026-11-04T00:00:00Z'),
+ teams:['home','away'].map((side,index)=>({side,id:side,name:scopedTeams[index].name,logo:'https://example.com/'+side+'.png',players:Array.from({length:11},(_,player)=>({name:`선수 ${player}`,position:'',number:'',flag:''})),status:'confirmed',injuries:[],pitcher:null})),
+ recentForm:{home:['W','W','L','W','D'],away:['L','L','W','L','D']},records:{home:{record:'4-2-1',sideRecord:'3-1-0'},away:{record:'2-3-2',sideRecord:'0-2-2'}},checkedAt:'2026-11-04T00:00:00Z'};
+const merged=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch]});
+assert.equal(merged.matches.length,1);
+assert.equal(merged.matches[0].teams[0].status,'confirmed');
+assert.equal(merged.matches[0].teams[0].players.length,11);
+assert.deepEqual(merged.matches[0].recentForm.home,scorebaseMatch.recentForm.home);
+const added=structuredClone(scorebaseMatch);added.id='scorebase:/live/TEST/2';added.teams[0].name='새 홈팀';added.teams[1].name='새 원정팀';
+assert.equal(buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch,added]}).matches.length,2);
 const wrongTime=structuredClone(scopedGame);wrongTime.domestic.kleague2[0].prediction.kickoff='2026-11-04T01:00:00Z';
 assert.throws(()=>buildFeed(wrongTime,scoped,teams,config,'test'),/kickoff mismatch/);
 assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);

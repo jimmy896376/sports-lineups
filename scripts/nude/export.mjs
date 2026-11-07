@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import './source-adapter.cjs';
 import './contract.cjs';
 
-export function buildFeed(snapshot,catalog,teams,config,revision){
+export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matches:[]}){
  for(const rows of Object.values(snapshot.domestic||{}))if(Array.isArray(rows))for(const row of rows){
   const event=Date.parse(row.event?.date),prediction=Date.parse(row.prediction?.kickoff);
   if(Number.isFinite(event)&&Number.isFinite(prediction)&&Math.abs(event-prediction)>60000)
@@ -15,6 +15,22 @@ export function buildFeed(snapshot,catalog,teams,config,revision){
  const model=globalThis.NudeLineupData.normalize(snapshot,catalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
  if(!model.matches.length&&!config.allowEmptyFeed)throw Error('Empty feed blocked. Review collection or deliberately set allowEmptyFeed.');
+ const key=name=>String(name||'').normalize('NFKD').toLowerCase().replace(/\b(?:fc|cf|sc|afc)\b/g,'').replace(/[^\p{L}\p{N}]/gu,'');
+ const alike=(a,b)=>{const left=key(a),right=key(b);return left.length>=3&&right.length>=3&&(left===right||left.includes(right)||right.includes(left));};
+ const days=new Set(Array.from({length:5},(_,offset)=>new Date(Date.parse(snapshot.asOf)+9*3600000+offset*86400000).toISOString().slice(0,10)));
+ for(const extra of scorebase.matches||[]){
+  const date=new Date(extra.kickoff+9*3600000).toISOString().slice(0,10);
+  if(!days.has(date)||extra.sport!=='축구'||extra.teams?.some(team=>team.players?.length!==11)||
+     !['home','away'].every(side=>extra.recentForm?.[side]?.length===5&&extra.records?.[side]?.record&&extra.records?.[side]?.sideRecord))continue;
+  const duplicate=model.matches.find(match=>match.sport===extra.sport&&Math.abs(match.kickoff-extra.kickoff)<=10*60000&&
+    alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name));
+  const translate=player=>({...player,name:catalog.players?.[player.name]||player.name});
+  if(duplicate){
+   duplicate.teams.forEach((team,index)=>{team.players=extra.teams[index].players.map(translate);team.status=extra.teams[index].status;team.logo=extra.teams[index].logo||team.logo;});
+   duplicate.recentForm=extra.recentForm;duplicate.records=extra.records;
+  }else model.matches.push({...extra,teams:extra.teams.map(team=>({...team,players:team.players.map(translate)}))});
+ }
+ model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
  const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,matches:model.matches};
  globalThis.NudeLineupContract.validate(feed);
  return feed;
@@ -25,7 +41,9 @@ export function exportFeed(root=process.cwd()){
  const snapshot=read('dist/projections.json'),catalog=read('dist/name-catalog.json'),teams=read('dist/team-ko.json'),config=read('scripts/nude/config.json');
  catalog.teamCodes=read('scripts/nude/team-codes.json');
  let revision='local';try{revision=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();}catch{}
- const feed=buildFeed(snapshot,catalog,teams,config,revision);
+ const scorebasePath=path.join(root,'dist/scorebase-lineups.json');
+ const scorebase=fs.existsSync(scorebasePath)?read('dist/scorebase-lineups.json'):{matches:[]};
+ const feed=buildFeed(snapshot,catalog,teams,config,revision,scorebase);
  const target=path.join(root,'dist/nude-feed.json');
  if(fs.existsSync(target)){
   const old=read('dist/nude-feed.json');

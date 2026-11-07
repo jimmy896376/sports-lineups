@@ -25,4 +25,5 @@ jobs:
           python-version: '3.x'
       - run: python3 scripts/test_scorebase_lineups.py
       - run: python3 scripts/scorebase_lineups.py
-      - run: bash scripts/publish-generated.sh 'chore: refresh Scorebase confirmed lineups' dist/scorebase-lineups.json
+      - run: |
+          bash scripts/publish-generated.sh 'chore: refresh Scorebase confirmed lineups' dist/scorebase-lineups.json

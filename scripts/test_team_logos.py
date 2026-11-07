@@ -68,7 +68,7 @@ class TeamLogos(TestCase):
         game = {'event': {'id': 1, 'type_id': 24, 'start_at': 1793635200000,
                           'team_a': {'id': 40, 'name': 'Ak Bars', 'image': 'https://example.com/ak.png'},
                           'team_b': {'id': 44, 'name': 'SKA', 'image': 'https://example.com/ska.png'}}}
-        with patch.object(projections, 'fetch_json', side_effect=[{'events': [game]}, {'events': []}, {'team': {}}, {'team': {}}]):
+        with patch.object(projections, 'fetch_json', side_effect=[{'events': [game]}, {'events': []}, [], {'team': {}}, {'team': {}}]):
             row = projections.scrape_khl()[0]
         logos = row['prediction']['logos']
         self.assertEqual(logos, {'home': 'https://example.com/ak.png', 'away': 'https://example.com/ska.png'})

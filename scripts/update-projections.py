@@ -449,9 +449,39 @@ def scrape_khl():
         upcoming.append(game)
     upcoming_teams = {str(team.get('id')) for game in upcoming for team in (game.get('team_a', {}), game.get('team_b', {})) if team.get('id')}
     recent_starters = {}
-    history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(start - 14 * 86400), 'q[start_at_lt_time_from_unixtime]': int(start), 'order_direction': 'desc', 'locale': 'en'}, safe='[]')
-    history_raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + history_query)
-    history = history_raw if isinstance(history_raw, list) else history_raw.get('events', [])
+    history = []
+    for page in range(1, 7):
+        history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(start - 35 * 86400), 'q[start_at_lt_time_from_unixtime]': int(start), 'order_direction': 'desc', 'locale': 'en', 'page': page}, safe='[]')
+        try:
+            history_raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + history_query)
+        except OSError as error:
+            print('khl recent results unavailable:', error)
+            break
+        batch = history_raw if isinstance(history_raw, list) else history_raw.get('events', [])
+        history.extend(batch)
+        if len(batch) < 16:
+            break
+    season = f'{today.year}/{today.year + 1}' if today.month >= 7 else f'{today.year - 1}/{today.year}'
+    try:
+        table = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/tables_v2.json?locale=en')
+    except OSError as error:
+        print('khl season standings unavailable:', error)
+        table = []
+    stage = next((stage for year in table if year.get('season') == season for stage in year.get('stages', []) if stage.get('type') == 'regular'), {})
+    standings = {str(team['id']): team for team in stage.get('regular', [])}
+    results_by_team = {}
+    for row in history:
+        game = row.get('event', row)
+        score = re.fullmatch(r'(\d+)\s*:\s*(\d+)', str(game.get('score', '')))
+        if game.get('type_id') not in (18, 24) or not score:
+            continue
+        home_score, away_score = map(int, score.groups())
+        for side, own, other in (('home', home_score, away_score), ('away', away_score, home_score)):
+            team_id = str(game.get('team_a' if side == 'home' else 'team_b', {}).get('id', ''))
+            if team_id and own != other:
+                results_by_team.setdefault(team_id, []).append((game['start_at'], 'W' if own > other else 'L'))
+    for results in results_by_team.values():
+        results.sort(reverse=True)
     for row in history:
         game = row.get('event', row)
         if game.get('type_id') not in (18, 24):
@@ -460,7 +490,10 @@ def scrape_khl():
         missing = [team for team in teams if str(team.get('id')) in upcoming_teams - recent_starters.keys()]
         if not missing:
             continue
-        detail = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/event_v2.json?' + urlencode({'id': game['id'], 'locale': 'en'}))
+        try:
+            detail = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/event_v2.json?' + urlencode({'id': game['id'], 'locale': 'en'}))
+        except OSError:
+            continue
         detail = detail.get('event', detail)
         for side, team in (('home', detail.get('team_a', {})), ('away', detail.get('team_b', {}))):
             team_id = str(team.get('id', ''))
@@ -496,8 +529,16 @@ def scrape_khl():
             {'homeAway': 'away', 'team': {'id': str(away['id']), 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id']), 'logo': logos['away']}}
         ]
         lineups = {'home': recent_starters.get(str(home['id']), []), 'away': recent_starters.get(str(away['id']), [])}
+        recent_form = {side: [result for _, result in results_by_team.get(str(team['id']), [])[:5]] for side, team in (('home', home), ('away', away))}
+        records = {}
+        for side, team in (('home', home), ('away', away)):
+            standing = standings.get(str(team['id']))
+            if standing:
+                wins = sum(int(standing.get(key) or 0) for key in ('w', 'otw', 'sow'))
+                losses = sum(int(standing.get(key) or 0) for key in ('l', 'otl', 'sol'))
+                records[side] = {'record': f'{wins}-{losses}'}
         prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
-            'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
+            'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}
         events.append({'event': {'id': str(game['id']), 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
     return events
@@ -919,6 +960,9 @@ def scrape_kovo_bkvolley():
             self.value.append(data)
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     page = fetch_text('https://bkvolley.kr/matches')
+    public_match = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)
+    public_data = json.loads(public_match.group(1)).get('data', {}) if public_match else {}
+    completed = public_data.get('recentMatches', [])
     events, seen = [], set()
     for match in re.finditer(r'<a\b[^>]*href=["\'](/matches/\d+)["\'][^>]*>(.*?)</a>', page, re.S | re.I):
         path, anchor = match.groups()
@@ -954,6 +998,25 @@ def scrape_kovo_bkvolley():
             continue
         home, away = [name.strip() for name in pair.groups()]
         kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
+        fixture = next((item for item in public_data.get('upcomingMatches', []) if str(item.get('id')) == path.rsplit('/', 1)[-1]), {})
+        recent_form, records = {}, {}
+        for side in ('home', 'away'):
+            team_id = fixture.get(side + 'TeamId')
+            history = []
+            for result in completed:
+                if result.get('status') != 'finished' or not result.get('matchDate') or datetime.fromisoformat(result['matchDate'].replace('Z', '+00:00')) >= kickoff_local.astimezone(timezone.utc):
+                    continue
+                venue = next((position for position in ('home', 'away') if result.get(position + 'TeamId') == team_id), None)
+                if venue and isinstance(result.get('homeSets'), int) and isinstance(result.get('awaySets'), int):
+                    won = result['homeSets'] > result['awaySets'] if venue == 'home' else result['awaySets'] > result['homeSets']
+                    history.append((result['matchDate'], venue, 'W' if won else 'L', result.get('season')))
+            history.sort(reverse=True)
+            if history:
+                recent_form[side] = [result for _, _, result, _ in history[:5]]
+                season_history = [(venue, result) for _, venue, result, season in history if season == fixture.get('season')]
+                wins = sum(result == 'W' for _, result in season_history)
+                at_venue = [result for venue, result in season_history if venue == side]
+                records[side] = {'record': f'{wins}-{len(season_history)-wins}', 'sideRecord': f'{sum(result == "W" for result in at_venue)}-{sum(result == "L" for result in at_venue)}'}
         logos = {'home': logo(home), 'away': logo(away)}
         competitors = [
             {'homeAway': 'home', 'team': {'id': home, 'displayName': home, 'shortDisplayName': home, 'abbreviation': home, 'logo': logos['home']}},
@@ -1014,6 +1077,7 @@ def scrape_kovo_bkvolley():
         except Exception:
             lineups = {'home': [], 'away': []}
         prediction = {'league': 'kovo', 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away}, 'logos': logos,
+            'recentForm': recent_form, 'records': records,
             'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': '등록 선수 명단과 포지션을 기준으로 구성한 6인 예상 라인업', 'source': url}
         events.append({'event': {'id': path.rsplit('/', 1)[-1], 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
@@ -1030,17 +1094,23 @@ def parse_wkbl_schedule(page, year, month):
         date_match = re.search(r'class="date"[^>]*>\s*(\d{1,2})\.(\d{1,2})', block)
         teams = re.findall(r'class="team_name"[^>]*>\s*([^<]+)', block)
         place = re.search(r'class="place_block".*?(\d{1,2}:\d{2})\s*</span>', block, re.S)
-        if not date_match or len(teams) != 2 or not place:
+        scores = [int(score) for score in re.findall(r'<em>\s*(\d+)\s*</em>', block)[:2]]
+        completed = not place and len(scores) == 2 and 'game_type=01' in block
+        if not date_match or len(teams) != 2 or (not place and not completed):
             continue
         found_month, day = map(int, date_match.groups())
         if found_month != month:
             continue
         try:
-            start = datetime.strptime(f'{year}-{month:02}-{day:02} {place.group(1)}', '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
+            start = datetime.strptime(f'{year}-{month:02}-{day:02} {place.group(1) if place else "00:00"}', '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
         except ValueError:
             continue
-        games.append({'date': start.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z'),
-                      'home': html.unescape(teams[0]).strip(), 'away': html.unescape(teams[1]).strip()})
+        game = {'date': start.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z'),
+                'home': html.unescape(teams[0]).strip(), 'away': html.unescape(teams[1]).strip()}
+        if len(scores) == 2:
+            game['scores'] = scores
+            game['completed'] = completed
+        games.append(game)
     return games
 
 
@@ -1089,7 +1159,13 @@ def wkbl_projected_lineups(detail, names):
 def scrape_wkbl_official():
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     target_days = {today.fromordinal(today.toordinal() + offset) for offset in range(WINDOW_DAYS)}
-    months = {(day.year, day.month) for day in target_days}
+    last_day = max(target_days)
+    season_year = today.year if today.month >= 10 else today.year - 1
+    months = []
+    year, month = season_year, 10
+    while (year, month) <= (last_day.year, last_day.month):
+        months.append((year, month))
+        year, month = (year + 1, 1) if month == 12 else (year, month + 1)
     entries = []
     try:
         schedule = fetch_text(f'https://statgg.com/ko/wkbl/schedule?date={today.isoformat()}')
@@ -1104,13 +1180,22 @@ def scrape_wkbl_official():
         if len(teams) == 2 and time and heading:
             day = heading[-1].group(1).replace('.', '-')
             detail_paths[(day, time.group(1), *map(html.unescape, teams))] = path
+    all_games = []
     for year, month in months:
         page = fetch_text(f'https://www.wkbl.or.kr/m/game/schedule.asp?sch_ym={year}{month:02}')
-        for game in parse_wkbl_schedule(page, year, month):
+        all_games.extend(parse_wkbl_schedule(page, year, month))
+    seen_games = set()
+    for game in all_games:
             kickoff = game['date']
+            if game.get('completed'):
+                continue
             if datetime.fromisoformat(kickoff.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days:
                 continue
             names = {'home': game['home'], 'away': game['away']}
+            game_key = (kickoff, names['home'], names['away'])
+            if game_key in seen_games:
+                continue
+            seen_games.add(game_key)
             local = datetime.fromisoformat(kickoff.replace('Z', '+00:00')).astimezone(ZoneInfo('Asia/Seoul'))
             path = detail_paths.get((local.date().isoformat(), local.strftime('%H:%M'), names['home'], names['away']))
             lineups = {'home': [], 'away': []}
@@ -1120,10 +1205,26 @@ def scrape_wkbl_official():
                 except (OSError, ValueError) as error:
                     print('wkbl lineup unavailable:', error)
             logos = {side: basketball_logo('wkbl', name) for side, name in names.items()}
+            recent_form, records = {}, {}
+            for side in ('home', 'away'):
+                team = names[side]
+                history = []
+                for prior in all_games:
+                    if prior['date'] >= kickoff or len(prior.get('scores', [])) != 2 or team not in (prior['home'], prior['away']):
+                        continue
+                    venue = 'home' if prior['home'] == team else 'away'
+                    own, other = prior['scores'] if venue == 'home' else prior['scores'][::-1]
+                    history.append((prior['date'], venue, 'W' if own > other else 'L'))
+                history.sort(reverse=True)
+                if history:
+                    recent_form[side] = [result for _, _, result in history[:5]]
+                    wins = sum(result == 'W' for _, _, result in history)
+                    at_venue = [result for _, venue, result in history if venue == side]
+                    records[side] = {'record': f'{wins}-{len(history)-wins}', 'sideRecord': f'{sum(result == "W" for result in at_venue)}-{sum(result == "L" for result in at_venue)}'}
             competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side],
                             'shortDisplayName': names[side], 'abbreviation': names[side], 'logo': logos[side]}} for side in ('home', 'away')]
             prediction = {'league': 'wkbl', 'kickoff': kickoff, 'names': names, 'teams': names,
-                          'logos': logos, 'lineups': lineups, 'injuries': {},
+                          'logos': logos, 'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records,
                           'statuses': {'home': 'predicted', 'away': 'predicted'},
                           'note': '현재 등록 선수의 시즌 또는 최근 맞대결 출전시간 기준 예상 선발',
                           'source': 'https://www.wkbl.or.kr/m/game/schedule.asp'}

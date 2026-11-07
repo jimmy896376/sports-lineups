@@ -67,6 +67,12 @@ class WKBLOfficialSchedule(TestCase):
         self.assertEqual(rows, [{'date': '2026-11-01T07:00:00Z', 'home': 'KB스타즈', 'away': 'BNK 썸'}])
         self.assertEqual(module.parse_wkbl_schedule(page, 2026, 10), [])
 
+    def test_completed_regular_season_score_is_available_for_records(self):
+        page = ('<ul class="list_schedule"><li><a href="/m/game/result.asp?game_type=01">'
+                '<span class="date">11.01</span><strong class="team_name">KB스타즈</strong><em>53</em>'
+                '<strong class="team_name">BNK 썸</strong><em>82</em></a></li></ul>')
+        self.assertEqual(module.parse_wkbl_schedule(page, 2026, 11)[0]['scores'], [53, 82])
+
     def test_missing_list_fails_instead_of_reporting_no_games(self):
         with self.assertRaises(ValueError):
             module.parse_wkbl_schedule('<html></html>', 2026, 11)

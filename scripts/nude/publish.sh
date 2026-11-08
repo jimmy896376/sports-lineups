@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+[[ ${GITHUB_ACTIONS:-} == true ]] || { echo 'CI only: this script resets the checkout.' >&2; exit 2; }
 
 git config user.name 'github-actions[bot]'
 git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

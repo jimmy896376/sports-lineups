@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from html import unescape
 from zoneinfo import ZoneInfo
 
-BASE = 'https://www.scorebase.kr'
+BASE = 'https://www.xn--hy1bm7m1yevrd8pq.kr'
 SPORTS = {'soccer': '축구', 'baseball': '야구', 'basketball': '농구',
           'volleyball': '배구', 'hockey': '하키'}
 STARTERS = {'축구': 11, '야구': 9, '농구': 5, '배구': 6, '하키': 6}

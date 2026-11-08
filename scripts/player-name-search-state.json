@@ -3320,7 +3320,33 @@
     },
     "soufian el faouzi": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
-      "bulkPolicy": "wikipedia-exact-sports-v4"
+      "bulkPolicy": "wikipedia-exact-sports-v4",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-09T17:58:27.992055+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-09T17:58:27.992055+00:00",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Soufian+El-Faouzi+Schalke+04+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Soufian+El-Faouzi",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Soufian+El-Faouzi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:58:27.992055+00:00",
+      "nextCheckAt": "2026-11-08T23:58:27.992055+00:00"
     },
     "stefan posch": {
       "status": "verified",
@@ -25148,7 +25174,29 @@
     },
     "robert jan vanwesemael": {
       "nextBulkCheckAt": "2026-10-25T17:42:47.084380+00:00",
-      "bulkPolicy": "wikipedia-exact-sports-v4"
+      "bulkPolicy": "wikipedia-exact-sports-v4",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Robert-Jan+Vanwesemael+Sint-Truidense+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Robert-Jan+Vanwesemael",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Robert-Jan+Vanwesemael+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:58:27.992055+00:00",
+      "nextCheckAt": "2026-11-08T23:58:27.992055+00:00"
     },
     "ryan merlen": {
       "nextBulkCheckAt": "2026-11-02T14:53:45.241284+00:00",
@@ -43558,16 +43606,23 @@
       "nextBulkCheckAt": "2026-10-30T19:33:27.685219+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Benoit+De+Jaegere+Zulte-Waregem&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Benoit+De+Jaegere+Zulte-Waregem+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Benoit+De+Jaegere",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Benoit+De+Jaegere+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-29T12:15:20.635526+00:00",
-      "nextCheckAt": "2026-10-29T18:15:20.635526+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:58:27.992055+00:00",
+      "nextCheckAt": "2026-11-08T23:58:27.992055+00:00"
     },
     "christian ordonez": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -43628,16 +43683,23 @@
       "nextBulkCheckAt": "2026-10-30T19:33:27.685219+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Istv%C3%A1n+%C3%81trok+Zulte-Waregem&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Istv%C3%A1n+%C3%81trok+Zulte-Waregem+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Istv%C3%A1n+%C3%81trok",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Istv%C3%A1n+%C3%81trok+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-29T12:15:20.635526+00:00",
-      "nextCheckAt": "2026-10-29T18:15:20.635526+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:58:27.992055+00:00",
+      "nextCheckAt": "2026-11-08T23:58:27.992055+00:00"
     },
     "jose romero": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -60641,8 +60703,11 @@
       "nextBulkCheckAt": "2026-10-31T15:35:09.726491+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Natnael+Abraha+TSG+Hoffenheim+-site%3Awikipedia.org&hl=ko",
-          "status": "disabled-after-block"
+          "url": "https://www.google.com/search?q=Natnael+Abraha+1899+Hoffenheim+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Natnael+Abraha",
@@ -60656,12 +60721,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-05T17:17:34.116434+00:00",
-      "nextCheckAt": "2026-11-05T23:17:34.116434+00:00",
+      "checkedAt": "2026-11-08T17:58:27.992055+00:00",
+      "nextCheckAt": "2026-11-08T23:58:27.992055+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-06T18:57:45.365102+00:00",
+      "nextNamuCheckAt": "2026-11-09T17:58:27.992055+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-07T02:36:19.594792+00:00"
+      "nextScorebaseCheckAt": "2026-11-09T17:58:27.992055+00:00"
     },
     "tom baack": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -82962,7 +83027,7 @@
     },
     "elias salomonsson": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T17:22:09.131213+00:00",
+      "nextNamuCheckAt": "2026-11-09T17:58:27.992055+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Elias+Salomonsson+Winnipeg+Jets+-site%3Awikipedia.org&hl=ko",

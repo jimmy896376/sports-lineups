@@ -574,7 +574,7 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "policy": "precollect-names-v6",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-08T21:40:27.165853+00:00"
     },
@@ -10341,16 +10341,26 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Rafa+Soares+Estrela&hl=ko",
+          "url": "https://www.google.com/search?q=Rafa+Soares+Estrela+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Rafa+Soares",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Rafa+Soares+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T12:22:04.835586+00:00",
-      "nextCheckAt": "2026-10-31T18:22:04.835586+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "ryan thomas": {
       "nextBulkCheckAt": "2026-10-30T23:12:07.202690+00:00",
@@ -12563,7 +12573,7 @@
       "checkedAt": "2026-11-08T16:02:07.796147+00:00",
       "nextCheckAt": "2026-11-08T22:02:07.796147+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "andy najar": {
       "status": "verified",
@@ -25626,8 +25636,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "dinis pinto": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -25872,8 +25882,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "ricard sanchez": {
       "nextBulkCheckAt": "2026-10-31T20:12:34.041171+00:00",
@@ -25954,8 +25964,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "aaron bouwman": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -29696,7 +29706,7 @@
       "checkedAt": "2026-11-08T18:46:56.594041+00:00",
       "nextCheckAt": "2026-11-09T00:46:56.594041+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-09T00:22:31.729915+00:00"
     },
@@ -29776,16 +29786,28 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Gorby+Braga&hl=ko",
+          "url": "https://www.google.com/search?q=Gorby+Braga+-site%3Awikipedia.org&hl=ko",
           "status": "unavailable",
-          "reason": "ValueError"
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Gorby",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Gorby+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T07:56:28.793697+00:00",
-      "nextCheckAt": "2026-11-01T13:56:28.793697+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "gustaf lagerbielke": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -30070,16 +30092,27 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Pau+V%C3%ADctor+Braga&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Pau+V%C3%ADctor+Braga+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Pau+V%C3%ADctor",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Pau+V%C3%ADctor+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T07:56:28.793697+00:00",
-      "nextCheckAt": "2026-11-01T13:56:28.793697+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-09T20:14:43.562900+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "pedro bondo": {
       "nextBulkCheckAt": "2026-10-25T17:42:47.084380+00:00",
@@ -33406,7 +33439,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "jan jenik": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -33568,7 +33601,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "walker zimmerman": {
       "status": "verified",
@@ -33646,7 +33679,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "alec regula": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -34092,7 +34125,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "logan mailloux": {
       "nextBulkCheckAt": "2026-11-02T05:20:35.641006+00:00",
@@ -34358,7 +34391,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "rasmus sandin": {
       "nextBulkCheckAt": "2026-11-02T06:02:29.157874+00:00",
@@ -38638,7 +38671,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "mathew barzal": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -38973,7 +39006,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "jack thompson": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
@@ -39002,7 +39035,7 @@
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "thatcher demko": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -39294,7 +39327,7 @@
       "checkedAt": "2026-11-08T16:02:07.796147+00:00",
       "nextCheckAt": "2026-11-08T22:02:07.796147+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-09T03:31:05.704593+00:00"
     },
@@ -46916,8 +46949,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "kevyn": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -51814,16 +51847,27 @@
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Bright+Arrey-Mbi+Braga&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Bright+Arrey-Mbi+Braga+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Bright+Arrey-Mbi",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Bright+Arrey-Mbi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T06:53:16.414882+00:00",
-      "nextCheckAt": "2026-11-01T12:53:16.414882+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-09T20:14:43.562900+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "diogo nascimento": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54733,8 +54777,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "gabor szalai": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54756,8 +54800,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "igor juliao": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54779,8 +54823,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "martin tejon": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54802,8 +54846,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "maxime dominguez": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54864,8 +54908,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "rodrigo andrade": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54887,8 +54931,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "romain correia": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -54910,8 +54954,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "tomas tavares": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -55656,12 +55700,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-05T19:56:27.567949+00:00",
-      "nextCheckAt": "2026-11-06T01:56:27.567949+00:00",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-06T19:56:27.567949+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-06T21:50:33.537259+00:00"
+      "nextScorebaseCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "ezekiel alladoh": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -65512,7 +65556,7 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "nextBulkCheckAt": "2026-11-02T17:32:59.767215+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Connor+Zary+Calgary+Flames+-site%3Awikipedia.org&hl=ko",
@@ -68184,8 +68228,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "martin turk": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -68207,8 +68251,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "pedro carvalho": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -68230,8 +68274,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "peixinho": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -68253,8 +68297,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "stelios andreou": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -68276,8 +68320,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "tiago parente": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -68299,8 +68343,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "laurent brossoit": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -70123,8 +70167,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "neneca": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -70169,8 +70213,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "triston rowe": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -70312,7 +70356,7 @@
       "checkedAt": "2026-11-08T16:02:07.796147+00:00",
       "nextCheckAt": "2026-11-08T22:02:07.796147+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-09T00:22:31.729915+00:00"
     },
@@ -70345,7 +70389,7 @@
       "checkedAt": "2026-11-08T16:02:07.796147+00:00",
       "nextCheckAt": "2026-11-08T22:02:07.796147+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-09T00:22:31.729915+00:00"
     },
@@ -71237,7 +71281,7 @@
       "checkedAt": "2026-11-08T14:43:35.529732+00:00",
       "nextCheckAt": "2026-11-08T20:43:35.529732+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00"
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
     "romelu lukaku": {
       "searches": {
@@ -71752,7 +71796,7 @@
     },
     "braden smith": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Braden+Smith+Indiana+Pacers+-site%3Awikipedia.org&hl=ko",
@@ -84711,7 +84755,7 @@
     },
     "sandis vilmanis": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00",
+      "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Sandis+Vilmanis+Florida+Panthers+-site%3Awikipedia.org&hl=ko",
@@ -86225,10 +86269,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Daizen+Maeda+Ipswich+Town+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Daizen+Maeda",
@@ -86242,21 +86283,18 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "jefferson lerma": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-09T13:52:44.457845+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:52:44.457845+00:00",
+      "nextNamuCheckAt": "2026-11-09T02:14:43.562900+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jefferson+Lerma+Crystal+Palace+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Jefferson+Lerma",
@@ -86270,8 +86308,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T13:52:44.457845+00:00",
-      "nextCheckAt": "2026-11-08T19:52:44.457845+00:00"
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     },
     "mathis mout": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -87141,6 +87179,30 @@
       "policy": "precollect-names-v6",
       "checkedAt": "2026-11-08T19:27:59.102763+00:00",
       "nextCheckAt": "2026-11-09T01:27:59.102763+00:00"
+    },
+    "julien lomboto": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Julien+Lomboto+Rio+Ave+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Julien+Lomboto",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Julien+Lomboto+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T20:14:43.562900+00:00",
+      "nextCheckAt": "2026-11-09T02:14:43.562900+00:00"
     }
   }
 }

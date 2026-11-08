@@ -83,3 +83,5 @@ jobs:
       - name: Publish the name catalog
         run: |
           bash scripts/publish-generated.sh 'chore: publish approved full names' dist/name-catalog.json dist/team-ko.json scripts/player-name-auto-review.json scripts/scorebase-name-candidates.json scripts/player-name-search-state.json scripts/scorebase-khl-profile-cache.json scripts/player-name-run-report.json
+      - name: Publish lineup feed
+        run: bash scripts/nude/publish.sh

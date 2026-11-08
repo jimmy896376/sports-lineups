@@ -1,9 +1,28 @@
 {
   "schemaVersion": 1,
-  "asOf": "2026-11-08T04:26:02.857872+00:00",
+  "asOf": "2026-11-08T05:16:45.172530+00:00",
   "windowStart": "2026-11-08T00:00:00+09:00",
   "windowEnd": "2026-11-13T00:00:00+09:00",
   "items": [
+    {
+      "league": "nba",
+      "eventId": "401909946",
+      "kickoff": "2026-11-08T23:00Z",
+      "homeId": "8",
+      "awayId": "13",
+      "homeName": "Detroit Pistons",
+      "awayName": "Los Angeles Lakers",
+      "values": {
+        "home": 66.7,
+        "away": 33.3,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909946",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
     {
       "league": "nba",
       "eventId": "401909947",
@@ -19,7 +38,7 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909947",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -38,45 +57,7 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909950",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909946",
-      "kickoff": "2026-11-08T23:00Z",
-      "homeId": "8",
-      "awayId": "13",
-      "homeName": "Detroit Pistons",
-      "awayName": "Los Angeles Lakers",
-      "values": {
-        "home": 66.7,
-        "away": 33.3,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909946",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909945",
-      "kickoff": "2026-11-08T20:30Z",
-      "homeId": "4",
-      "awayId": "20",
-      "homeName": "Chicago Bulls",
-      "awayName": "Philadelphia 76ers",
-      "values": {
-        "home": 22.5,
-        "away": 77.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909945",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -95,26 +76,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909948",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
       "league": "nba",
-      "eventId": "401909951",
-      "kickoff": "2026-11-09T02:00Z",
-      "homeId": "23",
-      "awayId": "14",
-      "homeName": "Sacramento Kings",
-      "awayName": "Miami Heat",
+      "eventId": "401909945",
+      "kickoff": "2026-11-08T20:30Z",
+      "homeId": "4",
+      "awayId": "20",
+      "homeName": "Chicago Bulls",
+      "awayName": "Philadelphia 76ers",
       "values": {
-        "home": 21.8,
-        "away": 78.2,
+        "home": 22.5,
+        "away": 77.5,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909951",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909945",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -133,596 +114,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909949",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
       "league": "nba",
-      "eventId": "401909952",
-      "kickoff": "2026-11-10T00:00Z",
-      "homeId": "1",
-      "awayId": "13",
-      "homeName": "Atlanta Hawks",
-      "awayName": "Los Angeles Lakers",
+      "eventId": "401909951",
+      "kickoff": "2026-11-09T02:00Z",
+      "homeId": "23",
+      "awayId": "14",
+      "homeName": "Sacramento Kings",
+      "awayName": "Miami Heat",
       "values": {
-        "home": 56.5,
-        "away": 43.5,
+        "home": 21.8,
+        "away": 78.2,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909952",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909954",
-      "kickoff": "2026-11-10T00:00Z",
-      "homeId": "8",
-      "awayId": "27",
-      "homeName": "Detroit Pistons",
-      "awayName": "Washington Wizards",
-      "values": {
-        "home": 77.4,
-        "away": 22.6,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909954",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909953",
-      "kickoff": "2026-11-10T00:00Z",
-      "homeId": "30",
-      "awayId": "5",
-      "homeName": "Charlotte Hornets",
-      "awayName": "Cleveland Cavaliers",
-      "values": {
-        "home": 24.7,
-        "away": 75.3,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909953",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909955",
-      "kickoff": "2026-11-10T00:30Z",
-      "homeId": "28",
-      "awayId": "29",
-      "homeName": "Toronto Raptors",
-      "awayName": "Memphis Grizzlies",
-      "values": {
-        "home": 51.5,
-        "away": 48.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909955",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909958",
-      "kickoff": "2026-11-10T02:00Z",
-      "homeId": "21",
-      "awayId": "24",
-      "homeName": "Phoenix Suns",
-      "awayName": "San Antonio Spurs",
-      "values": {
-        "home": 25.7,
-        "away": 74.3,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909958",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909956",
-      "kickoff": "2026-11-10T01:00Z",
-      "homeId": "6",
-      "awayId": "11",
-      "homeName": "Dallas Mavericks",
-      "awayName": "Indiana Pacers",
-      "values": {
-        "home": 70.1,
-        "away": 29.9,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909956",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909957",
-      "kickoff": "2026-11-10T01:30Z",
-      "homeId": "10",
-      "awayId": "7",
-      "homeName": "Houston Rockets",
-      "awayName": "Denver Nuggets",
-      "values": {
-        "home": 61.6,
-        "away": 38.4,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909957",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909959",
-      "kickoff": "2026-11-10T03:00Z",
-      "homeId": "9",
-      "awayId": "3",
-      "homeName": "Golden State Warriors",
-      "awayName": "New Orleans Pelicans",
-      "values": {
-        "home": 69.9,
-        "away": 30.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909959",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909967",
-      "kickoff": "2026-11-12T00:00Z",
-      "homeId": "18",
-      "awayId": "5",
-      "homeName": "New York Knicks",
-      "awayName": "Cleveland Cavaliers",
-      "values": {
-        "home": 58.6,
-        "away": 41.4,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909967",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909968",
-      "kickoff": "2026-11-12T00:00Z",
-      "homeId": "28",
-      "awayId": "2",
-      "homeName": "Toronto Raptors",
-      "awayName": "Boston Celtics",
-      "values": {
-        "home": 29.9,
-        "away": 70.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909968",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909969",
-      "kickoff": "2026-11-12T01:00Z",
-      "homeId": "4",
-      "awayId": "24",
-      "homeName": "Chicago Bulls",
-      "awayName": "San Antonio Spurs",
-      "values": {
-        "home": 13.3,
-        "away": 86.7,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909969",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909971",
-      "kickoff": "2026-11-12T01:00Z",
-      "homeId": "15",
-      "awayId": "13",
-      "homeName": "Milwaukee Bucks",
-      "awayName": "Los Angeles Lakers",
-      "values": {
-        "home": 22.2,
-        "away": 77.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909971",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909966",
-      "kickoff": "2026-11-12T00:00Z",
-      "homeId": "11",
-      "awayId": "27",
-      "homeName": "Indiana Pacers",
-      "awayName": "Washington Wizards",
-      "values": {
-        "home": 49.1,
-        "away": 50.9,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909966",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909970",
-      "kickoff": "2026-11-12T01:00Z",
-      "homeId": "29",
-      "awayId": "7",
-      "homeName": "Memphis Grizzlies",
-      "awayName": "Denver Nuggets",
-      "values": {
-        "home": 35.5,
-        "away": 64.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909970",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909973",
-      "kickoff": "2026-11-12T02:00Z",
-      "homeId": "26",
-      "awayId": "19",
-      "homeName": "Utah Jazz",
-      "awayName": "Orlando Magic",
-      "values": {
-        "home": 45.3,
-        "away": 54.7,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909973",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909974",
-      "kickoff": "2026-11-12T02:30Z",
-      "homeId": "10",
-      "awayId": "9",
-      "homeName": "Houston Rockets",
-      "awayName": "Golden State Warriors",
-      "values": {
-        "home": 71.8,
-        "away": 28.2,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909974",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909972",
-      "kickoff": "2026-11-12T01:00Z",
-      "homeId": "3",
-      "awayId": "17",
-      "homeName": "New Orleans Pelicans",
-      "awayName": "Brooklyn Nets",
-      "values": {
-        "home": 64.9,
-        "away": 35.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909972",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909975",
-      "kickoff": "2026-11-12T03:00Z",
-      "homeId": "22",
-      "awayId": "25",
-      "homeName": "Portland Trail Blazers",
-      "awayName": "Oklahoma City Thunder",
-      "values": {
-        "home": 42.9,
-        "away": 57.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909975",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401924646",
-      "kickoff": "2026-11-08T17:00Z",
-      "homeId": "2599",
-      "awayId": "314",
-      "homeName": "St. John's Red Storm",
-      "awayName": "Iona Gaels",
-      "values": {
-        "home": 95.4,
-        "away": 4.6,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401924646",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401920424",
-      "kickoff": "2026-11-08T18:00Z",
-      "homeId": "258",
-      "awayId": "8",
-      "homeName": "Virginia Cavaliers",
-      "awayName": "Arkansas Razorbacks",
-      "values": {
-        "home": 41.9,
-        "away": 58.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920424",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401919029",
-      "kickoff": "2026-11-09T04:00Z",
-      "homeId": "2724",
-      "awayId": "30",
-      "homeName": "Wichita State Shockers",
-      "awayName": "USC Trojans",
-      "values": {
-        "home": 27.5,
-        "away": 72.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401919029",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401918053",
-      "kickoff": "2026-11-09T01:30Z",
-      "homeId": "25",
-      "awayId": "248",
-      "homeName": "California Golden Bears",
-      "awayName": "Houston Cougars",
-      "values": {
-        "home": 6.6,
-        "away": 93.4,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401918053",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401906771",
-      "kickoff": "2026-11-10T23:00Z",
-      "homeId": "52",
-      "awayId": "57",
-      "homeName": "Florida State Seminoles",
-      "awayName": "Florida Gators",
-      "values": {
-        "home": 12.2,
-        "away": 87.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906771",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401918987",
-      "kickoff": "2026-11-11T00:15Z",
-      "homeId": "238",
-      "awayId": "235",
-      "homeName": "Vanderbilt Commodores",
-      "awayName": "Memphis Tigers",
-      "values": {
-        "home": 85.2,
-        "away": 14.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401918987",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401909564",
-      "kickoff": "2026-11-11T00:00Z",
-      "homeId": "150",
-      "awayId": "127",
-      "homeName": "Duke Blue Devils",
-      "awayName": "Michigan State Spartans",
-      "values": {
-        "home": 73.4,
-        "away": 26.6,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909564",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401909773",
-      "kickoff": "2026-11-11T01:00Z",
-      "homeId": "66",
-      "awayId": "2582",
-      "homeName": "Iowa State Cyclones",
-      "awayName": "Southern Jaguars",
-      "values": {
-        "home": 99.2,
-        "away": 0.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909773",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401909740",
-      "kickoff": "2026-11-11T02:00Z",
-      "homeId": "12",
-      "awayId": "2464",
-      "homeName": "Arizona Wildcats",
-      "awayName": "Northern Arizona Lumberjacks",
-      "values": {
-        "home": 98.9,
-        "away": 1.1,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909740",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401921740",
-      "kickoff": "2026-11-11T02:00Z",
-      "homeId": "252",
-      "awayId": "2511",
-      "homeName": "BYU Cougars",
-      "awayName": "Queens University Royals",
-      "values": {
-        "home": 96.5,
-        "away": 3.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401921740",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401913527",
-      "kickoff": "2026-11-11T01:00Z",
-      "homeId": "2641",
-      "awayId": "356",
-      "homeName": "Texas Tech Red Raiders",
-      "awayName": "Illinois Fighting Illini",
-      "values": {
-        "home": 44.8,
-        "away": 55.2,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401913527",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401920425",
-      "kickoff": "2026-11-11T02:00Z",
-      "homeId": "258",
-      "awayId": "2083",
-      "homeName": "Virginia Cavaliers",
-      "awayName": "Bucknell Bison",
-      "values": {
-        "home": 98.8,
-        "away": 1.2,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920425",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909961",
-      "kickoff": "2026-11-11T01:00Z",
-      "homeId": "20",
-      "awayId": "2",
-      "homeName": "Philadelphia 76ers",
-      "awayName": "Boston Celtics",
-      "values": {
-        "home": 46.5,
-        "away": 53.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909951",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -741,45 +152,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401909786",
-      "kickoff": "2026-11-11T02:30Z",
-      "homeId": "96",
-      "awayId": "2305",
-      "homeName": "Kentucky Wildcats",
-      "awayName": "Kansas Jayhawks",
-      "values": {
-        "home": 44.8,
-        "away": 55.2,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909786",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
       "league": "nba",
-      "eventId": "401909962",
-      "kickoff": "2026-11-11T02:00Z",
-      "homeId": "21",
-      "awayId": "12",
-      "homeName": "Phoenix Suns",
-      "awayName": "LA Clippers",
+      "eventId": "401909961",
+      "kickoff": "2026-11-11T01:00Z",
+      "homeId": "20",
+      "awayId": "2",
+      "homeName": "Philadelphia 76ers",
+      "awayName": "Boston Celtics",
       "values": {
-        "home": 67.5,
-        "away": 32.5,
+        "home": 46.5,
+        "away": 53.5,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -798,26 +190,7 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "nba",
-      "eventId": "401909963",
-      "kickoff": "2026-11-11T02:00Z",
-      "homeId": "26",
-      "awayId": "14",
-      "homeName": "Utah Jazz",
-      "awayName": "Miami Heat",
-      "values": {
-        "home": 37.3,
-        "away": 62.7,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -836,45 +209,634 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
-      "league": "ncaam",
-      "eventId": "401906865",
-      "kickoff": "2026-11-10T00:00Z",
-      "homeId": "251",
-      "awayId": "2755",
-      "homeName": "Texas Longhorns",
-      "awayName": "Grambling Tigers",
+      "league": "nba",
+      "eventId": "401909962",
+      "kickoff": "2026-11-11T02:00Z",
+      "homeId": "21",
+      "awayId": "12",
+      "homeName": "Phoenix Suns",
+      "awayName": "LA Clippers",
       "values": {
-        "home": 99.4,
-        "away": 0.6,
+        "home": 67.5,
+        "away": 32.5,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906865",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909963",
+      "kickoff": "2026-11-11T02:00Z",
+      "homeId": "26",
+      "awayId": "14",
+      "homeName": "Utah Jazz",
+      "awayName": "Miami Heat",
+      "values": {
+        "home": 37.3,
+        "away": 62.7,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909952",
+      "kickoff": "2026-11-10T00:00Z",
+      "homeId": "1",
+      "awayId": "13",
+      "homeName": "Atlanta Hawks",
+      "awayName": "Los Angeles Lakers",
+      "values": {
+        "home": 56.5,
+        "away": 43.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909952",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909953",
+      "kickoff": "2026-11-10T00:00Z",
+      "homeId": "30",
+      "awayId": "5",
+      "homeName": "Charlotte Hornets",
+      "awayName": "Cleveland Cavaliers",
+      "values": {
+        "home": 24.7,
+        "away": 75.3,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909953",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909954",
+      "kickoff": "2026-11-10T00:00Z",
+      "homeId": "8",
+      "awayId": "27",
+      "homeName": "Detroit Pistons",
+      "awayName": "Washington Wizards",
+      "values": {
+        "home": 77.4,
+        "away": 22.6,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909954",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909955",
+      "kickoff": "2026-11-10T00:30Z",
+      "homeId": "28",
+      "awayId": "29",
+      "homeName": "Toronto Raptors",
+      "awayName": "Memphis Grizzlies",
+      "values": {
+        "home": 51.5,
+        "away": 48.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909955",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909958",
+      "kickoff": "2026-11-10T02:00Z",
+      "homeId": "21",
+      "awayId": "24",
+      "homeName": "Phoenix Suns",
+      "awayName": "San Antonio Spurs",
+      "values": {
+        "home": 25.7,
+        "away": 74.3,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909958",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909956",
+      "kickoff": "2026-11-10T01:00Z",
+      "homeId": "6",
+      "awayId": "11",
+      "homeName": "Dallas Mavericks",
+      "awayName": "Indiana Pacers",
+      "values": {
+        "home": 70.1,
+        "away": 29.9,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909956",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909959",
+      "kickoff": "2026-11-10T03:00Z",
+      "homeId": "9",
+      "awayId": "3",
+      "homeName": "Golden State Warriors",
+      "awayName": "New Orleans Pelicans",
+      "values": {
+        "home": 69.9,
+        "away": 30.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909959",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909957",
+      "kickoff": "2026-11-10T01:30Z",
+      "homeId": "10",
+      "awayId": "7",
+      "homeName": "Houston Rockets",
+      "awayName": "Denver Nuggets",
+      "values": {
+        "home": 61.6,
+        "away": 38.4,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909957",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909970",
+      "kickoff": "2026-11-12T01:00Z",
+      "homeId": "29",
+      "awayId": "7",
+      "homeName": "Memphis Grizzlies",
+      "awayName": "Denver Nuggets",
+      "values": {
+        "home": 35.5,
+        "away": 64.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909970",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909968",
+      "kickoff": "2026-11-12T00:00Z",
+      "homeId": "28",
+      "awayId": "2",
+      "homeName": "Toronto Raptors",
+      "awayName": "Boston Celtics",
+      "values": {
+        "home": 29.9,
+        "away": 70.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909968",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909966",
+      "kickoff": "2026-11-12T00:00Z",
+      "homeId": "11",
+      "awayId": "27",
+      "homeName": "Indiana Pacers",
+      "awayName": "Washington Wizards",
+      "values": {
+        "home": 49.1,
+        "away": 50.9,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909966",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909967",
+      "kickoff": "2026-11-12T00:00Z",
+      "homeId": "18",
+      "awayId": "5",
+      "homeName": "New York Knicks",
+      "awayName": "Cleveland Cavaliers",
+      "values": {
+        "home": 58.6,
+        "away": 41.4,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909967",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909969",
+      "kickoff": "2026-11-12T01:00Z",
+      "homeId": "4",
+      "awayId": "24",
+      "homeName": "Chicago Bulls",
+      "awayName": "San Antonio Spurs",
+      "values": {
+        "home": 13.3,
+        "away": 86.7,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909969",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909973",
+      "kickoff": "2026-11-12T02:00Z",
+      "homeId": "26",
+      "awayId": "19",
+      "homeName": "Utah Jazz",
+      "awayName": "Orlando Magic",
+      "values": {
+        "home": 45.3,
+        "away": 54.7,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909973",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909972",
+      "kickoff": "2026-11-12T01:00Z",
+      "homeId": "3",
+      "awayId": "17",
+      "homeName": "New Orleans Pelicans",
+      "awayName": "Brooklyn Nets",
+      "values": {
+        "home": 64.9,
+        "away": 35.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909972",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909971",
+      "kickoff": "2026-11-12T01:00Z",
+      "homeId": "15",
+      "awayId": "13",
+      "homeName": "Milwaukee Bucks",
+      "awayName": "Los Angeles Lakers",
+      "values": {
+        "home": 22.2,
+        "away": 77.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909971",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909975",
+      "kickoff": "2026-11-12T03:00Z",
+      "homeId": "22",
+      "awayId": "25",
+      "homeName": "Portland Trail Blazers",
+      "awayName": "Oklahoma City Thunder",
+      "values": {
+        "home": 42.9,
+        "away": 57.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909975",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "nba",
+      "eventId": "401909974",
+      "kickoff": "2026-11-12T02:30Z",
+      "homeId": "10",
+      "awayId": "9",
+      "homeName": "Houston Rockets",
+      "awayName": "Golden State Warriors",
+      "values": {
+        "home": 71.8,
+        "away": 28.2,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909974",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
       "league": "ncaam",
-      "eventId": "401906849",
-      "kickoff": "2026-11-10T00:00Z",
-      "homeId": "2633",
-      "awayId": "2515",
-      "homeName": "Tennessee Volunteers",
-      "awayName": "Radford Highlanders",
+      "eventId": "401924646",
+      "kickoff": "2026-11-08T17:00Z",
+      "homeId": "2599",
+      "awayId": "314",
+      "homeName": "St. John's Red Storm",
+      "awayName": "Iona Gaels",
+      "values": {
+        "home": 95.4,
+        "away": 4.6,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401924646",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401920424",
+      "kickoff": "2026-11-08T18:00Z",
+      "homeId": "258",
+      "awayId": "8",
+      "homeName": "Virginia Cavaliers",
+      "awayName": "Arkansas Razorbacks",
+      "values": {
+        "home": 41.9,
+        "away": 58.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920424",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401918053",
+      "kickoff": "2026-11-09T01:30Z",
+      "homeId": "25",
+      "awayId": "248",
+      "homeName": "California Golden Bears",
+      "awayName": "Houston Cougars",
+      "values": {
+        "home": 6.6,
+        "away": 93.4,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401918053",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401919029",
+      "kickoff": "2026-11-09T04:00Z",
+      "homeId": "2724",
+      "awayId": "30",
+      "homeName": "Wichita State Shockers",
+      "awayName": "USC Trojans",
+      "values": {
+        "home": 27.5,
+        "away": 72.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401919029",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401906771",
+      "kickoff": "2026-11-10T23:00Z",
+      "homeId": "52",
+      "awayId": "57",
+      "homeName": "Florida State Seminoles",
+      "awayName": "Florida Gators",
+      "values": {
+        "home": 12.2,
+        "away": 87.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906771",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401918987",
+      "kickoff": "2026-11-11T00:15Z",
+      "homeId": "238",
+      "awayId": "235",
+      "homeName": "Vanderbilt Commodores",
+      "awayName": "Memphis Tigers",
+      "values": {
+        "home": 85.2,
+        "away": 14.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401918987",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401913527",
+      "kickoff": "2026-11-11T01:00Z",
+      "homeId": "2641",
+      "awayId": "356",
+      "homeName": "Texas Tech Red Raiders",
+      "awayName": "Illinois Fighting Illini",
+      "values": {
+        "home": 44.8,
+        "away": 55.2,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401913527",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401909564",
+      "kickoff": "2026-11-11T00:00Z",
+      "homeId": "150",
+      "awayId": "127",
+      "homeName": "Duke Blue Devils",
+      "awayName": "Michigan State Spartans",
+      "values": {
+        "home": 73.4,
+        "away": 26.6,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909564",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401909740",
+      "kickoff": "2026-11-11T02:00Z",
+      "homeId": "12",
+      "awayId": "2464",
+      "homeName": "Arizona Wildcats",
+      "awayName": "Northern Arizona Lumberjacks",
+      "values": {
+        "home": 98.9,
+        "away": 1.1,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909740",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401921740",
+      "kickoff": "2026-11-11T02:00Z",
+      "homeId": "252",
+      "awayId": "2511",
+      "homeName": "BYU Cougars",
+      "awayName": "Queens University Royals",
+      "values": {
+        "home": 96.5,
+        "away": 3.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401921740",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401909773",
+      "kickoff": "2026-11-11T01:00Z",
+      "homeId": "66",
+      "awayId": "2582",
+      "homeName": "Iowa State Cyclones",
+      "awayName": "Southern Jaguars",
+      "values": {
+        "home": 99.2,
+        "away": 0.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909773",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401920425",
+      "kickoff": "2026-11-11T02:00Z",
+      "homeId": "258",
+      "awayId": "2083",
+      "homeName": "Virginia Cavaliers",
+      "awayName": "Bucknell Bison",
       "values": {
         "home": 98.8,
         "away": 1.2,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906849",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920425",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401909786",
+      "kickoff": "2026-11-11T02:30Z",
+      "homeId": "96",
+      "awayId": "2305",
+      "homeName": "Kentucky Wildcats",
+      "awayName": "Kansas Jayhawks",
+      "values": {
+        "home": 44.8,
+        "away": 55.2,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909786",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -893,45 +855,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401921720",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
     {
       "league": "ncaam",
-      "eventId": "401930177",
-      "kickoff": "2026-11-11T05:00Z",
-      "homeId": "26",
-      "awayId": "2029",
-      "homeName": "UCLA Bruins",
-      "awayName": "Arkansas-Pine Bluff Golden Lions",
+      "eventId": "401906865",
+      "kickoff": "2026-11-10T00:00Z",
+      "homeId": "251",
+      "awayId": "2755",
+      "homeName": "Texas Longhorns",
+      "awayName": "Grambling Tigers",
       "values": {
-        "home": 99.5,
-        "away": 0.5,
+        "home": 99.4,
+        "away": 0.6,
         "draw": 0
       },
       "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401930177",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401906759",
-      "kickoff": "2026-11-10T00:30Z",
-      "homeId": "333",
-      "awayId": "2473",
-      "homeName": "Alabama Crimson Tide",
-      "awayName": "Oakland Golden Grizzlies",
-      "values": {
-        "home": 97.2,
-        "away": 2.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906759",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906865",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -950,7 +893,64 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920686",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401906849",
+      "kickoff": "2026-11-10T00:00Z",
+      "homeId": "2633",
+      "awayId": "2515",
+      "homeName": "Tennessee Volunteers",
+      "awayName": "Radford Highlanders",
+      "values": {
+        "home": 98.8,
+        "away": 1.2,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906849",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401906759",
+      "kickoff": "2026-11-10T00:30Z",
+      "homeId": "333",
+      "awayId": "2473",
+      "homeName": "Alabama Crimson Tide",
+      "awayName": "Oakland Golden Grizzlies",
+      "values": {
+        "home": 97.2,
+        "away": 2.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401906759",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401930177",
+      "kickoff": "2026-11-11T05:00Z",
+      "homeId": "26",
+      "awayId": "2029",
+      "homeName": "UCLA Bruins",
+      "awayName": "Arkansas-Pine Bluff Golden Lions",
+      "values": {
+        "home": 99.5,
+        "away": 0.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401930177",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -969,45 +969,7 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401909524",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401920680",
-      "kickoff": "2026-11-12T00:00Z",
-      "homeId": "2599",
-      "awayId": "2142",
-      "homeName": "St. John's Red Storm",
-      "awayName": "Colgate Raiders",
-      "values": {
-        "home": 94.5,
-        "away": 5.5,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920680",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": ""
-    },
-    {
-      "league": "ncaam",
-      "eventId": "401925702",
-      "kickoff": "2026-11-12T01:00Z",
-      "homeId": "248",
-      "awayId": "55",
-      "homeName": "Houston Cougars",
-      "awayName": "Jacksonville State Gamecocks",
-      "values": {
-        "home": 98.2,
-        "away": 1.8,
-        "draw": 0
-      },
-      "provider": "ESPN",
-      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401925702",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -1026,7 +988,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401928824",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401920680",
+      "kickoff": "2026-11-12T00:00Z",
+      "homeId": "2599",
+      "awayId": "2142",
+      "homeName": "St. John's Red Storm",
+      "awayName": "Colgate Raiders",
+      "values": {
+        "home": 94.5,
+        "away": 5.5,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401920680",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -1045,7 +1026,26 @@
       },
       "provider": "ESPN",
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401918054",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": ""
+    },
+    {
+      "league": "ncaam",
+      "eventId": "401925702",
+      "kickoff": "2026-11-12T01:00Z",
+      "homeId": "248",
+      "awayId": "55",
+      "homeName": "Houston Cougars",
+      "awayName": "Jacksonville State Gamecocks",
+      "values": {
+        "home": 98.2,
+        "away": 1.8,
+        "draw": 0
+      },
+      "provider": "ESPN",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary?event=401925702",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": ""
     },
@@ -1064,159 +1064,7 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/fiorentina-vs-juventus_game_261967.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "laliga",
-      "eventId": "401882816",
-      "kickoff": "2026-11-08T20:00Z",
-      "homeId": "1068",
-      "awayId": "83",
-      "homeName": "Atlético Madrid",
-      "awayName": "Barcelona",
-      "values": {
-        "home": 29.46,
-        "away": 49.9,
-        "draw": 20.64
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/atletico-madrid-vs-barcelona_game_261969.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "ligue1",
-      "eventId": "401876412",
-      "kickoff": "2026-11-08T16:15Z",
-      "homeId": "7868",
-      "awayId": "2502",
-      "homeName": "Angers",
-      "awayName": "Nice",
-      "values": {
-        "home": 31.56,
-        "away": 41.14,
-        "draw": 27.3
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/angers-vs-nice_game_261939.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "seriea",
-      "eventId": "401875018",
-      "kickoff": "2026-11-08T14:00Z",
-      "homeId": "3263",
-      "awayId": "103",
-      "homeName": "Genoa",
-      "awayName": "AC Milan",
-      "values": {
-        "home": 27.82,
-        "away": 46.44,
-        "draw": 25.74
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/genoa-vs-ac-milan_game_261891.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "laliga",
-      "eventId": "401882815",
-      "kickoff": "2026-11-08T17:30Z",
-      "homeId": "85",
-      "awayId": "1538",
-      "homeName": "Celta Vigo",
-      "awayName": "Levante",
-      "values": {
-        "home": 42.81,
-        "away": 30.2,
-        "draw": 26.99
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/celta-vigo-vs-levante_game_261954.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "ligue1",
-      "eventId": "401876410",
-      "kickoff": "2026-11-08T16:15Z",
-      "homeId": "6997",
-      "awayId": "167",
-      "homeName": "Brest",
-      "awayName": "Lyon",
-      "values": {
-        "home": 43.99,
-        "away": 29.23,
-        "draw": 26.74
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/brest-vs-lyon_game_261938.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "laliga",
-      "eventId": "401882814",
-      "kickoff": "2026-11-08T13:00Z",
-      "homeId": "3751",
-      "awayId": "244",
-      "homeName": "Elche",
-      "awayName": "Real Betis",
-      "values": {
-        "home": 29.07,
-        "away": 44.09,
-        "draw": 26.84
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/elche-vs-betis_game_261877.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "seriea",
-      "eventId": "401874808",
-      "kickoff": "2026-11-08T17:00Z",
-      "homeId": "110",
-      "awayId": "2572",
-      "homeName": "Internazionale",
-      "awayName": "Como",
-      "values": {
-        "home": 49.63,
-        "away": 28.48,
-        "draw": 21.89
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/inter-milan-vs-como_game_261946.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "laliga",
-      "eventId": "401882810",
-      "kickoff": "2026-11-08T15:15Z",
-      "homeId": "89",
-      "awayId": "101",
-      "homeName": "Real Sociedad",
-      "awayName": "Rayo Vallecano",
-      "values": {
-        "home": 49.65,
-        "away": 25.96,
-        "draw": 24.39
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/real-sociedad-vs-rayo-vallecano_game_261914.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1235,83 +1083,83 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/premier-league/crystal-palace-vs-liverpool_game_261896.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "laliga",
-      "eventId": "401882807",
-      "kickoff": "2026-11-08T17:30Z",
-      "homeId": "102",
-      "awayId": "2922",
-      "homeName": "Villarreal",
-      "awayName": "Getafe",
-      "values": {
-        "home": 54.29,
-        "away": 21.32,
-        "draw": 24.36
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/villarreal-vs-getafe_game_261953.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "ligue1",
-      "eventId": "401876404",
-      "kickoff": "2026-11-08T19:45Z",
-      "homeId": "175",
-      "awayId": "176",
-      "homeName": "Lens",
-      "awayName": "Marseille",
-      "values": {
-        "home": 38.68,
-        "away": 38.85,
-        "draw": 22.47
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/lens-vs-marseille_game_261968.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
     {
       "league": "seriea",
-      "eventId": "401874810",
-      "kickoff": "2026-11-08T11:30Z",
-      "homeId": "114",
-      "awayId": "112",
-      "homeName": "Napoli",
-      "awayName": "Lazio",
+      "eventId": "401875018",
+      "kickoff": "2026-11-08T14:00Z",
+      "homeId": "3263",
+      "awayId": "103",
+      "homeName": "Genoa",
+      "awayName": "AC Milan",
       "values": {
-        "home": 42.45,
-        "away": 30.91,
-        "draw": 26.67
+        "home": 27.82,
+        "away": 46.44,
+        "draw": 25.74
       },
       "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/napoli-vs-lazio_game_261864.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/genoa-vs-ac-milan_game_261891.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
     {
-      "league": "jupiler",
-      "eventId": "401878946",
-      "kickoff": "2026-11-08T12:30Z",
-      "homeId": "570",
-      "awayId": "441",
-      "homeName": "Club Brugge",
-      "awayName": "Anderlecht",
+      "league": "seriea",
+      "eventId": "401874808",
+      "kickoff": "2026-11-08T17:00Z",
+      "homeId": "110",
+      "awayId": "2572",
+      "homeName": "Internazionale",
+      "awayName": "Como",
       "values": {
-        "home": 60.23,
-        "away": 18.69,
-        "draw": 21.08
+        "home": 49.63,
+        "away": 28.48,
+        "draw": 21.89
       },
       "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/belgian-pro-league/club-brugge-vs-anderlecht_game_261869.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/inter-milan-vs-como_game_261946.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "laliga",
+      "eventId": "401882816",
+      "kickoff": "2026-11-08T20:00Z",
+      "homeId": "1068",
+      "awayId": "83",
+      "homeName": "Atlético Madrid",
+      "awayName": "Barcelona",
+      "values": {
+        "home": 29.46,
+        "away": 49.9,
+        "draw": 20.64
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/atletico-madrid-vs-barcelona_game_261969.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "ligue1",
+      "eventId": "401876412",
+      "kickoff": "2026-11-08T16:15Z",
+      "homeId": "7868",
+      "awayId": "2502",
+      "homeName": "Angers",
+      "awayName": "Nice",
+      "values": {
+        "home": 31.56,
+        "away": 41.14,
+        "draw": 27.3
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/angers-vs-nice_game_261939.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1330,7 +1178,26 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/premier-league/man-utd-vs-aston-villa_game_261942.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "laliga",
+      "eventId": "401882815",
+      "kickoff": "2026-11-08T17:30Z",
+      "homeId": "85",
+      "awayId": "1538",
+      "homeName": "Celta Vigo",
+      "awayName": "Levante",
+      "values": {
+        "home": 42.81,
+        "away": 30.2,
+        "draw": 26.99
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/celta-vigo-vs-levante_game_261954.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1349,26 +1216,121 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/premier-league/sunderland-vs-chelsea_game_261894.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
     {
-      "league": "j1",
-      "eventId": "401877555",
-      "kickoff": "2026-11-08T06:00Z",
-      "homeId": "7102",
-      "awayId": "7109",
-      "homeName": "Gamba Osaka",
-      "awayName": "Cerezo Osaka",
+      "league": "ligue1",
+      "eventId": "401876410",
+      "kickoff": "2026-11-08T16:15Z",
+      "homeId": "6997",
+      "awayId": "167",
+      "homeName": "Brest",
+      "awayName": "Lyon",
       "values": {
-        "home": 47.17,
-        "away": 27.33,
-        "draw": 25.5
+        "home": 43.99,
+        "away": 29.23,
+        "draw": 26.74
       },
       "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/j1-league/gamba-osaka-vs-cerezo-osaka_game_261847.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/brest-vs-lyon_game_261938.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "laliga",
+      "eventId": "401882814",
+      "kickoff": "2026-11-08T13:00Z",
+      "homeId": "3751",
+      "awayId": "244",
+      "homeName": "Elche",
+      "awayName": "Real Betis",
+      "values": {
+        "home": 29.15,
+        "away": 44.06,
+        "draw": 26.8
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/elche-vs-betis_game_261877.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "seriea",
+      "eventId": "401874810",
+      "kickoff": "2026-11-08T11:30Z",
+      "homeId": "114",
+      "awayId": "112",
+      "homeName": "Napoli",
+      "awayName": "Lazio",
+      "values": {
+        "home": 42.23,
+        "away": 30.99,
+        "draw": 26.74
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/serie-a/napoli-vs-lazio_game_261864.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "laliga",
+      "eventId": "401882810",
+      "kickoff": "2026-11-08T15:15Z",
+      "homeId": "89",
+      "awayId": "101",
+      "homeName": "Real Sociedad",
+      "awayName": "Rayo Vallecano",
+      "values": {
+        "home": 49.65,
+        "away": 25.96,
+        "draw": 24.39
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/real-sociedad-vs-rayo-vallecano_game_261914.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "laliga",
+      "eventId": "401882807",
+      "kickoff": "2026-11-08T17:30Z",
+      "homeId": "102",
+      "awayId": "2922",
+      "homeName": "Villarreal",
+      "awayName": "Getafe",
+      "values": {
+        "home": 54.29,
+        "away": 21.32,
+        "draw": 24.36
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/la-liga/villarreal-vs-getafe_game_261953.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "jupiler",
+      "eventId": "401878946",
+      "kickoff": "2026-11-08T12:30Z",
+      "homeId": "570",
+      "awayId": "441",
+      "homeName": "Club Brugge",
+      "awayName": "Anderlecht",
+      "values": {
+        "home": 60.24,
+        "away": 18.69,
+        "draw": 21.11
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/belgian-pro-league/club-brugge-vs-anderlecht_game_261869.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1387,7 +1349,26 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/scottish-premiership/celtic-vs-kilmarnock_game_261933.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "ligue1",
+      "eventId": "401876404",
+      "kickoff": "2026-11-08T19:45Z",
+      "homeId": "175",
+      "awayId": "176",
+      "homeName": "Lens",
+      "awayName": "Marseille",
+      "values": {
+        "home": 38.68,
+        "away": 38.85,
+        "draw": 22.47
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/ligue-1/lens-vs-marseille_game_261968.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1406,26 +1387,7 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/primeira-liga/rio-ave-vs-braga_game_261971.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "j1",
-      "eventId": "401877559",
-      "kickoff": "2026-11-08T05:00Z",
-      "homeId": "22167",
-      "awayId": "7114",
-      "homeName": "Machida Zelvia",
-      "awayName": "Sanfrecce Hiroshima",
-      "values": {
-        "home": 32.7,
-        "away": 41.76,
-        "draw": 25.54
-      },
-      "provider": "Sports Mole",
-      "sourceUrl": "https://www.sportsmole.co.uk/football/j1-league/machida-zelvia-vs-sanfrecce-hiroshima_game_261845.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1444,7 +1406,45 @@
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/primeira-liga/santa-clara-vs-gil-vicente_game_261922.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "j1",
+      "eventId": "401877555",
+      "kickoff": "2026-11-08T06:00Z",
+      "homeId": "7102",
+      "awayId": "7109",
+      "homeName": "Gamba Osaka",
+      "awayName": "Cerezo Osaka",
+      "values": {
+        "home": 47.3,
+        "away": 27.2,
+        "draw": 25.5
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/j1-league/gamba-osaka-vs-cerezo-osaka_game_261847.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
+      "kind": "published-model",
+      "note": "Match result over regular time; source rounding retained."
+    },
+    {
+      "league": "j1",
+      "eventId": "401877559",
+      "kickoff": "2026-11-08T05:00Z",
+      "homeId": "22167",
+      "awayId": "7114",
+      "homeName": "Machida Zelvia",
+      "awayName": "Sanfrecce Hiroshima",
+      "values": {
+        "home": 32.7,
+        "away": 41.76,
+        "draw": 25.54
+      },
+      "provider": "Sports Mole",
+      "sourceUrl": "https://www.sportsmole.co.uk/football/j1-league/machida-zelvia-vs-sanfrecce-hiroshima_game_261845.html",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
     },
@@ -1457,36 +1457,15 @@
       "homeName": "Vissel Kobe",
       "awayName": "Urawa Red Diamonds",
       "values": {
-        "home": 50.98,
-        "away": 24.36,
-        "draw": 24.73
+        "home": 50.95,
+        "away": 24.39,
+        "draw": 24.69
       },
       "provider": "Sports Mole",
       "sourceUrl": "https://www.sportsmole.co.uk/football/j1-league/vissel-kobe-vs-urawa-red-diamonds_game_261846.html",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Match result over regular time; source rounding retained."
-    },
-    {
-      "league": "kovo",
-      "eventId": "2026271014",
-      "kickoff": "2026-11-08T05:00:00Z",
-      "homeId": "현대캐피탈",
-      "awayId": "KB손해보험",
-      "homeName": "현대캐피탈",
-      "awayName": "KB손해보험",
-      "values": {
-        "home": 56.39999999999999,
-        "away": 43.60000000000001,
-        "draw": 0
-      },
-      "provider": "BK Volley",
-      "sourceUrl": "https://www.bkvolley.kr/matches/2026271014",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
-      "kind": "published-model",
-      "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
-      "sourceExpiresAt": "2026-11-08T14:00:00+09:00",
-      "publishedAt": "2026-11-05T13:57:31.139Z"
     },
     {
       "league": "kovo",
@@ -1503,7 +1482,7 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271015",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-08T16:00:00+09:00",
@@ -1524,7 +1503,7 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271016",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-10T19:00:00+09:00",
@@ -1545,7 +1524,7 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026270003",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-10T19:00:00+09:00",
@@ -1566,11 +1545,11 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271018",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-11T19:00:00+09:00",
-      "publishedAt": "2026-11-08T04:26:15.988Z"
+      "publishedAt": "2026-11-08T05:16:58.716Z"
     },
     {
       "league": "kovo",
@@ -1587,11 +1566,11 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271019",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-11T19:00:00+09:00",
-      "publishedAt": "2026-11-08T04:26:15.988Z"
+      "publishedAt": "2026-11-08T05:16:58.716Z"
     },
     {
       "league": "kovo",
@@ -1608,11 +1587,11 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271020",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-12T19:00:00+09:00",
-      "publishedAt": "2026-11-08T04:26:15.988Z"
+      "publishedAt": "2026-11-08T05:16:58.716Z"
     },
     {
       "league": "kovo",
@@ -1629,16 +1608,16 @@
       },
       "provider": "BK Volley",
       "sourceUrl": "https://www.bkvolley.kr/matches/2026271021",
-      "checkedAt": "2026-11-08T04:26:02.857872+00:00",
+      "checkedAt": "2026-11-08T05:16:45.172530+00:00",
       "kind": "published-model",
       "note": "Publisher marks its model uncalibrated; probability is not a validated success rate.",
       "sourceExpiresAt": "2026-11-12T19:00:00+09:00",
-      "publishedAt": "2026-11-08T04:26:15.988Z"
+      "publishedAt": "2026-11-08T05:16:58.716Z"
     }
   ],
   "coverage": {
     "scheduled": 239,
-    "external": 85
+    "external": 84
   },
   "errors": []
 }

@@ -15762,8 +15762,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-08T22:22:06.469650+00:00"
     },
@@ -21756,16 +21756,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Daan+Heymans+Racing+Genk&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Daan+Heymans+Racing+Genk+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Daan+Heymans",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Daan+Heymans+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T08:28:31.821761+00:00",
-      "nextCheckAt": "2026-10-31T14:28:31.821761+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "dennis dargahi": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -28839,8 +28846,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-09T00:22:31.729915+00:00"
     },
@@ -38878,14 +38885,14 @@
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Dj%C3%A9+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
-          "status": "results"
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T16:43:12.777303+00:00",
-      "nextCheckAt": "2026-11-08T16:43:12.777303+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "emanuel moreira": {
       "nextBulkCheckAt": "2026-11-01T20:04:50.504128+00:00",
@@ -50809,8 +50816,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-09T15:22:07.794695+00:00"
     },
@@ -76541,10 +76548,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Adem+Zorgane+Union+St.-Gilloise+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Adem+Zorgane",
@@ -76558,8 +76562,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-05T19:56:27.567949+00:00",
-      "nextCheckAt": "2026-11-06T01:56:27.567949+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "adrian ugarriza": {
       "searches": {
@@ -79298,8 +79302,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "alistrov vladimir": {
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -79333,7 +79337,10 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Romanov+Vladislav+Y.+SKA+-site%3Awikipedia.org&hl=ko",
-          "status": "disabled-after-block"
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Romanov+Vladislav+Y.",
@@ -79347,8 +79354,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-07T16:43:12.777303+00:00",
-      "nextCheckAt": "2026-11-08T16:43:12.777303+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-09T17:22:04.600781+00:00"
     },
     "mory kera": {
       "searches": {
@@ -80021,8 +80028,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "cesar garza": {
       "searches": {
@@ -80084,8 +80091,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "diego sanchez": {
       "searches": {
@@ -80168,8 +80175,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "federico pereira": {
       "searches": {
@@ -80315,8 +80322,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "gonzalo piovi": {
       "searches": {
@@ -80399,8 +80406,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "jesus corona": {
       "searches": {
@@ -80567,8 +80574,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "luis garcia": {
       "searches": {
@@ -80735,8 +80742,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "rogelio gonzalez": {
       "searches": {
@@ -80798,8 +80805,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "adalberto carrasquilla": {
       "searches": {
@@ -81269,7 +81276,10 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Alejandro+Organista+Puebla+-site%3Awikipedia.org&hl=ko",
-          "status": "disabled-after-block"
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Alejandro+Organista",
@@ -81283,8 +81293,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "ali avila": {
       "searches": {
@@ -81304,8 +81314,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "bernardo parra": {
       "searches": {
@@ -81325,8 +81335,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "brayan garnica": {
       "searches": {
@@ -81367,8 +81377,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "daniel parra": {
       "searches": {
@@ -81388,8 +81398,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "denilson munoz": {
       "searches": {
@@ -81409,8 +81419,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "diego reyes": {
       "searches": {
@@ -81430,8 +81440,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "eduardo armenta": {
       "searches": {
@@ -81514,8 +81524,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T11:09:14.727347+00:00",
-      "nextCheckAt": "2026-11-08T17:09:14.727347+00:00"
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     },
     "benjamin cremaschi": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -86599,6 +86609,69 @@
       "policy": "precollect-names-v6",
       "checkedAt": "2026-11-08T16:41:50.728858+00:00",
       "nextCheckAt": "2026-11-08T22:41:50.728858+00:00"
+    },
+    "aaron bibout": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Aaron+Bibout+Racing+Genk+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Aaron+Bibout",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Aaron+Bibout+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
+    },
+    "christiaan ravych": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Christiaan+Ravych+Racing+Genk+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Christiaan+Ravych",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Christiaan+Ravych+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
+    },
+    "ross sykes": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Ross+Sykes+Union+St.-Gilloise+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Ross+Sykes",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ross+Sykes+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T17:22:04.600781+00:00",
+      "nextCheckAt": "2026-11-08T23:22:04.600781+00:00"
     }
   }
 }

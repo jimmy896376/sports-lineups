@@ -21820,8 +21820,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T07:40:16.522062+00:00",
-      "nextCheckAt": "2026-11-08T13:40:16.522062+00:00"
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "junya ito": {
       "status": "verified",
@@ -21849,8 +21849,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T07:40:16.522062+00:00",
-      "nextCheckAt": "2026-11-08T13:40:16.522062+00:00"
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "lucca kiaba mounganga": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -30331,8 +30331,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T07:40:16.522062+00:00",
-      "nextCheckAt": "2026-11-08T13:40:16.522062+00:00"
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "louis patris": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -48895,9 +48895,9 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v5",
-      "checkedAt": "2026-11-04T14:48:57.222623+00:00",
-      "nextCheckAt": "2026-11-04T20:48:57.222623+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "brecht dejaegere": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -51314,16 +51314,23 @@
       "nextBulkCheckAt": "2026-11-01T19:24:50.684601+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Tibe+De+Vlieger+KAA+Gent&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Tibe+De+Vlieger+KAA+Gent+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Tibe+De+Vlieger",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Tibe+De+Vlieger+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-11-01T06:02:29.157874+00:00",
-      "nextCheckAt": "2026-11-01T12:02:29.157874+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "tristan degreef": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -66407,8 +66414,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T07:40:16.522062+00:00",
-      "nextCheckAt": "2026-11-08T13:40:16.522062+00:00"
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     },
     "jimmy morgan": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -85756,6 +85763,120 @@
       "policy": "precollect-names-v6",
       "checkedAt": "2026-11-08T13:52:44.457845+00:00",
       "method": "namuwiki-team-roster-v2"
+    },
+    "jack mcmillan": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jack+Mcmillan+Falkirk+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jack+Mcmillan",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jack+Mcmillan+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
+    },
+    "josue yamir vergara ortega": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Josu%C3%A9+Yamir+Vergara+Ortega+KAA+Gent+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Josu%C3%A9+Yamir+Vergara+Ortega",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Josu%C3%A9+Yamir+Vergara+Ortega+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
+    },
+    "pierre landry kabore": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Pierre+Landry+Kabore+Heart+of+Midlothian+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Pierre+Landry+Kabore",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Pierre+Landry+Kabore+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
+    },
+    "stuart findlay": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Stuart+Findlay+Heart+of+Midlothian+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Stuart+Findlay",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Stuart+Findlay+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
+    },
+    "yan dhanda": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Yan+Dhanda+Heart+of+Midlothian+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Yan+Dhanda",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Yan+Dhanda+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-08T14:13:09.601718+00:00",
+      "nextCheckAt": "2026-11-08T20:13:09.601718+00:00"
     }
   }
 }

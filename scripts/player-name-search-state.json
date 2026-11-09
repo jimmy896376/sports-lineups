@@ -33815,7 +33815,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T08:34:53.054344+00:00"
+      "nextNamuCheckAt": "2026-11-10T09:40:27.657548+00:00"
     },
     "chris tanev": {
       "nextBulkCheckAt": "2026-10-31T19:29:39.537826+00:00",
@@ -34341,7 +34341,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T08:34:53.054344+00:00"
+      "nextNamuCheckAt": "2026-11-10T09:40:27.657548+00:00"
     },
     "quentin musty": {
       "nextBulkCheckAt": "2026-11-02T20:39:07.893975+00:00",
@@ -34572,7 +34572,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T08:34:53.054344+00:00"
+      "nextNamuCheckAt": "2026-11-10T09:40:27.657548+00:00"
     },
     "andre franco": {
       "nextBulkCheckAt": "2026-10-29T19:09:33.048195+00:00",
@@ -38754,7 +38754,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "nextNamuCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "florian xhekaj": {
       "nextBulkCheckAt": "2026-10-26T17:56:39.758827+00:00",
@@ -38850,7 +38850,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "nextNamuCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "nick bjugstad": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -38906,7 +38906,7 @@
       "checkedAt": "2026-11-09T05:48:19.698012+00:00",
       "nextCheckAt": "2026-11-09T11:48:19.698012+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "nextNamuCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "vladislav namestnikov": {
       "status": "verified",
@@ -61036,7 +61036,10 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Ryan+McDonagh+Tampa+Bay+Lightning+-site%3Awikipedia.org&hl=ko",
-          "status": "disabled-after-block"
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Ryan+McDonagh",
@@ -61050,8 +61053,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00",
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-10T02:22:54.525926+00:00"
     },
@@ -67870,8 +67873,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "bryan zamble": {
       "bulkPolicy": "wikipedia-exact-sports-v4",
@@ -71310,10 +71313,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Kaedan+Korczak+Pittsburgh+Penguins+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Kaedan+Korczak",
@@ -71327,8 +71327,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00",
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-09T20:14:43.562900+00:00"
     },
@@ -71863,8 +71863,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "kobe brown": {
       "namuPolicy": "namuwiki-team-roster-v1",
@@ -73633,8 +73633,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "anthony gill": {
       "searches": {
@@ -75804,7 +75804,7 @@
     },
     "aday mara": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T08:34:53.054344+00:00",
+      "nextNamuCheckAt": "2026-11-10T09:40:27.657548+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Aday+Mara+Oklahoma+City+Thunder+-site%3Awikipedia.org&hl=ko",
@@ -75822,8 +75822,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "jimmy butler": {
       "searches": {
@@ -81879,8 +81879,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "facundo almada": {
       "searches": {
@@ -84409,7 +84409,7 @@
     },
     "josh anderson": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T09:27:39.093323+00:00",
+      "nextNamuCheckAt": "2026-11-09T15:40:27.657548+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Josh+Anderson+Montreal+Canadiens+-site%3Awikipedia.org&hl=ko",
@@ -85201,8 +85201,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "nicolas vallejo": {
       "searches": {
@@ -85975,8 +85975,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "andrea compagno": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -86169,8 +86169,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "tecatito corona": {
       "searches": {
@@ -86190,8 +86190,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-09T03:27:39.093323+00:00",
-      "nextCheckAt": "2026-11-09T09:27:39.093323+00:00"
+      "checkedAt": "2026-11-09T09:40:27.657548+00:00",
+      "nextCheckAt": "2026-11-09T15:40:27.657548+00:00"
     },
     "cheveyo tsawa": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",

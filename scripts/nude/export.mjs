@@ -28,6 +28,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
     alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name));
   const translate=player=>({...player,name:catalog.players?.[player.name]||player.name});
   if(duplicate){
+   duplicate.league=extra.league;duplicate.leagueName=extra.leagueName;
    duplicate.teams.forEach((team,index)=>{team.players=extra.teams[index].players.map(translate);team.status=extra.teams[index].status;team.logo=extra.teams[index].logo||team.logo;});
    if(Object.keys(extra.recentForm||{}).length)duplicate.recentForm=extra.recentForm;
    if(Object.keys(extra.records||{}).length)duplicate.records=extra.records;

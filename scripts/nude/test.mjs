@@ -31,6 +31,7 @@ const scorebaseMatch={id:'scorebase:/live/TEST/1',eventId:'1',league:'test',leag
  recentForm:{home:['W','W','L','W','D'],away:['L','L','W','L','D']},records:{home:{record:'4-2-1',sideRecord:'3-1-0'},away:{record:'2-3-2',sideRecord:'0-2-2'}},checkedAt:'2026-11-04T00:00:00Z'};
 const merged=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch],leagues:{축구:[{id:'test',name:'테스트 리그'}]}});
 assert.equal(merged.matches.length,1);
+assert.equal(merged.matches[0].league,'test');
 assert.equal(merged.leagues.축구[0].name,'테스트 리그');
 assert.equal(merged.matches[0].teams[0].status,'confirmed');
 assert.equal(merged.matches[0].teams[0].players.length,11);

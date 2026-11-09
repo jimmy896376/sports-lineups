@@ -18,16 +18,19 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  const key=name=>String(name||'').normalize('NFKD').toLowerCase().replace(/\b(?:fc|cf|sc|afc)\b/g,'').replace(/[^\p{L}\p{N}]/gu,'');
  const alike=(a,b)=>{const left=key(a),right=key(b);return left.length>=3&&right.length>=3&&(left===right||left.includes(right)||right.includes(left));};
  const days=new Set(Array.from({length:5},(_,offset)=>new Date(Date.parse(snapshot.asOf)+9*3600000+offset*86400000).toISOString().slice(0,10)));
+ const starters={축구:[11],야구:[9],농구:[5],배구:[6,7],하키:[19]};
  for(const extra of scorebase.matches||[]){
   const date=new Date(extra.kickoff+9*3600000).toISOString().slice(0,10);
-  if(!days.has(date)||extra.sport!=='축구'||extra.teams?.some(team=>team.players?.length!==11)||
-     !['home','away'].every(side=>extra.recentForm?.[side]?.length===5&&extra.records?.[side]?.record&&extra.records?.[side]?.sideRecord))continue;
+  if(!days.has(date)||!starters[extra.sport]||extra.teams?.length!==2||
+     extra.teams.some(team=>!starters[extra.sport].includes(team.players?.length))||
+     (extra.sport==='축구'&&!['home','away'].every(side=>extra.recentForm?.[side]?.length===5&&extra.records?.[side]?.record&&extra.records?.[side]?.sideRecord)))continue;
   const duplicate=model.matches.find(match=>match.sport===extra.sport&&Math.abs(match.kickoff-extra.kickoff)<=10*60000&&
     alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name));
   const translate=player=>({...player,name:catalog.players?.[player.name]||player.name});
   if(duplicate){
    duplicate.teams.forEach((team,index)=>{team.players=extra.teams[index].players.map(translate);team.status=extra.teams[index].status;team.logo=extra.teams[index].logo||team.logo;});
-   duplicate.recentForm=extra.recentForm;duplicate.records=extra.records;
+   if(Object.keys(extra.recentForm||{}).length)duplicate.recentForm=extra.recentForm;
+   if(Object.keys(extra.records||{}).length)duplicate.records=extra.records;
   }else model.matches.push({...extra,teams:extra.teams.map(team=>({...team,players:team.players.map(translate)}))});
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));

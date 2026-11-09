@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
-from scorebase_lineups import parse_detail, board_rows, records_from_page, KST
+from scorebase_lineups import parse_detail, board_rows, records_from_page, html_rosters, KST
 
 
 class ScorebaseLineupTests(unittest.TestCase):
@@ -42,6 +42,34 @@ class ScorebaseLineupTests(unittest.TestCase):
         row = '<div class="sb-row"><span class="sb-st-time">19:00</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'
         self.assertEqual(len(board_rows(row, now.date(), now)), 1)
         self.assertEqual(board_rows(row, now.date() + timedelta(days=1), now), [])
+
+    def test_published_basketball_and_volleyball_rosters_without_encoded_lineup(self):
+        now = datetime(2026, 11, 10, 8, tzinfo=KST)
+        event = {'@type': 'SportsEvent', 'startDate': (now + timedelta(hours=2)).astimezone(timezone.utc).isoformat(),
+                 'homeTeam': {'name': '홈'}, 'awayTeam': {'name': '원정'}, 'organizer': {'name': '테스트 리그'}}
+        schema = f'<script type="application/ld+json">{json.dumps(event)}</script>'
+        for sport, count, wrapper in [('농구', 5, '<section><h2>예상 선발 라인업</h2>{}</section>'),
+                                      ('배구', 7, '<div data-live-sec="lineup"><div>예상 선발 라인업</div>{}</div>')]:
+            grid = '<div class="grid gap-5 sm:grid-cols-2">' + ''.join(
+                '<div class="min-w-0">' + ''.join(f'<a href="/players/{side}{number}">{side} 선수 {number}</a>'
+                                                 for number in range(count)) + '</div>' for side in ('홈', '원정')) + '</div>'
+            page = schema + wrapper.format(grid)
+            self.assertEqual([len(team) for team in html_rosters(page)], [count, count])
+            match = parse_detail(page, '/live/TEST/1', sport, ('홈', '원정'), now)
+            self.assertEqual([len(team['players']) for team in match['teams']], [count, count])
+            self.assertEqual(match['teams'][0]['status'], 'predicted')
+            self.assertEqual(match['recentForm'], {})
+
+    def test_incomplete_hockey_roster_is_not_published(self):
+        now = datetime(2026, 11, 10, 8, tzinfo=KST)
+        event = {'@type': 'SportsEvent', 'startDate': (now + timedelta(hours=2)).astimezone(timezone.utc).isoformat(),
+                 'homeTeam': {'name': '홈'}, 'awayTeam': {'name': '원정'}}
+        page = f'<script type="application/ld+json">{json.dumps(event)}</script>'
+        page += '<section><h2>예상 출전 명단</h2><div class="grid sm:grid-cols-2">' + ''.join(
+            '<div>' + ''.join(f'<a href="/players/{side}{number}">{side} 선수 {number}</a>'
+                                for number in range(17)) + '</div>' for side in ('홈', '원정')) + '</div></section>'
+        self.assertEqual([len(team) for team in html_rosters(page)], [17, 17])
+        self.assertIsNone(parse_detail(page, '/live/NHL/1', '하키', ('홈', '원정'), now))
 
 
 if __name__ == '__main__':

@@ -6,12 +6,13 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from html import unescape
+from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
 BASE = 'https://www.xn--hy1bm7m1yevrd8pq.kr'
 SPORTS = {'soccer': '축구', 'baseball': '야구', 'basketball': '농구',
           'volleyball': '배구', 'hockey': '하키'}
-STARTERS = {'축구': 11, '야구': 9, '농구': 5, '배구': 6, '하키': 6}
+STARTERS = {'축구': (11,), '야구': (9,), '농구': (5,), '배구': (6, 7), '하키': (19,)}
 KST = ZoneInfo('Asia/Seoul')
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; NudeLineups/1.0)', 'Accept': 'text/html'}
 ROW = re.compile(r'<div class="sb-row(?: [^"]*)?"')
@@ -102,10 +103,73 @@ def records_from_page(page):
              'away': {'record': season[1], 'sideRecord': venue[1]}})
 
 
+class LineupTree(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.root = {'tag': '', 'attrs': {}, 'children': []}
+        self.stack = [self.root]
+
+    def handle_starttag(self, tag, attrs):
+        node = {'tag': tag, 'attrs': dict(attrs), 'children': []}
+        self.stack[-1]['children'].append(node)
+        if tag not in {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'wbr'}:
+            self.stack.append(node)
+
+    def handle_endtag(self, tag):
+        for index in range(len(self.stack) - 1, 0, -1):
+            if self.stack[index]['tag'] == tag:
+                del self.stack[index:]
+                break
+
+    def handle_data(self, value):
+        self.stack[-1]['children'].append(value)
+
+
+def descendants(node):
+    if isinstance(node, dict):
+        yield node
+        for child in node['children']:
+            yield from descendants(child)
+
+
+def node_text(node):
+    if isinstance(node, str):
+        return node
+    return ''.join(node_text(child) for child in node['children'])
+
+
+def html_rosters(page):
+    """Read the two published pregame roster columns, never infer names from a schedule."""
+    tree = LineupTree()
+    tree.feed(page)
+    for section in descendants(tree.root):
+        if section['tag'] not in {'section', 'div'}:
+            continue
+        if section['tag'] == 'div' and section['attrs'].get('data-live-sec') != 'lineup':
+            continue
+        headings = [node_text(node).strip() for node in descendants(section)
+                    if node['tag'] == 'h2' or
+                    (node['tag'] == 'div' and all(isinstance(child, str) for child in node['children']))]
+        if not any(label in {'예상 선발 라인업', '예상 출전 명단'} for label in headings):
+            continue
+        for grid in descendants(section):
+            if grid['tag'] != 'div' or 'sm:grid-cols-2' not in grid['attrs'].get('class', '').split():
+                continue
+            columns = [child for child in grid['children'] if isinstance(child, dict) and child['tag'] == 'div']
+            if len(columns) != 2:
+                continue
+            rosters = [[node_text(link).strip() for link in descendants(column)
+                        if link['tag'] == 'a' and link['attrs'].get('href', '').startswith('/players/')]
+                       for column in columns]
+            if all(rosters) and all(len(players) == len(set(players)) for players in rosters):
+                return rosters
+    return None
+
+
 def parse_detail(page, path, sport, names, now):
     schema = re.search(r'<script type="application/ld\+json">(\{.*?\})</script>', page, re.S)
     payload = re.search(r'/lineup\?d=([A-Za-z0-9_-]+)', page)
-    if not (schema and payload):
+    if not schema:
         return None
     event = json.loads(schema[1])
     if event.get('@type') != 'SportsEvent' or not event.get('startDate'):
@@ -117,30 +181,33 @@ def parse_detail(page, path, sport, names, now):
     until_kickoff = kickoff - now.astimezone(timezone.utc)
     if until_kickoff > timedelta(hours=12):
         return None
-    encoded = payload[1]
-    board = json.loads(base64.urlsafe_b64decode(encoded + '=' * (-len(encoded) % 4)))
-    rosters = [board.get('h', {}).get('pl', []), board.get('a', {}).get('pl', [])]
-    if any(len(players) != STARTERS[sport] for players in rosters):
+    if payload:
+        encoded = payload[1]
+        board = json.loads(base64.urlsafe_b64decode(encoded + '=' * (-len(encoded) % 4)))
+        rosters = [[str(player[3]).strip() for player in board.get(side, {}).get('pl', [])
+                    if len(player) > 3 and str(player[3]).strip()] for side in ('h', 'a')]
+    else:
+        rosters = html_rosters(page)
+    if not rosters or any(len(players) not in STARTERS[sport] for players in rosters):
         return None
     confirmed = until_kickoff <= timedelta(hours=2) and bool(re.search(r'확정 라인업', page))
     stats = records_from_page(page) if sport == '축구' else None
-    if not stats:
+    if sport == '축구' and not stats:
         return None
     teams = []
     for side, name, players, key in zip(('home', 'away'), names, rosters, ('homeTeam', 'awayTeam')):
         team = event.get(key) or {}
         teams.append({'side': side, 'id': str(team.get('name') or name)[:240], 'name': name[:240],
                       'logo': str(team.get('logo') or '')[:240],
-                      'players': [{'name': str(player[3])[:240], 'originalName': str(player[3])[:240],
-                                   'position': '', 'number': '', 'flag': ''} for player in players if len(player) > 3 and player[3]],
+                      'players': [{'name': player[:240], 'originalName': player[:240],
+                                   'position': '', 'number': '', 'flag': ''} for player in players],
                       'status': 'confirmed' if confirmed else 'predicted', 'injuries': [], 'pitcher': None})
-    if any(len(team['players']) != STARTERS[sport] for team in teams):
-        return None
     league = path.split('/')[2]
     return {'id': 'scorebase:' + path, 'eventId': path.rsplit('/', 1)[-1], 'league': league.lower(),
             'sport': sport, 'leagueName': str((event.get('organizer') or {}).get('name') or league)[:240],
             'kickoff': int(kickoff.timestamp() * 1000), 'teams': teams, 'logos': {},
-            'recentForm': stats[0], 'records': stats[1], 'checkedAt': datetime.now(timezone.utc).isoformat(),
+            'recentForm': stats[0] if stats else {}, 'records': stats[1] if stats else {},
+            'checkedAt': datetime.now(timezone.utc).isoformat(),
             'sourceFailed': False, 'note': ''}
 
 

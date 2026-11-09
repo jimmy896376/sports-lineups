@@ -42,7 +42,7 @@ def board_rows(page, day, now):
                 continue
             approximate = datetime.combine(day, datetime.min.time(), KST).replace(hour=int(clock[1]), minute=int(clock[2]))
             # shortcut: pregame lineups appear near kickoff; rescan this five-day window each run.
-            if approximate - now > timedelta(hours=6):
+            if approximate - now > timedelta(hours=12):
                 continue
         elif state[1] not in ('sb-st-live', 'sb-st-ft'):
             continue
@@ -109,15 +109,16 @@ def parse_detail(page, path, sport, names, now):
     kickoff = datetime.fromisoformat(event['startDate'].replace('Z', '+00:00'))
     if not now.date() <= kickoff.astimezone(KST).date() < now.date() + timedelta(days=5):
         return None
-    # A future match may show a stale "confirmed" board; accept it only near kickoff.
-    if kickoff - now.astimezone(timezone.utc) > timedelta(hours=2):
+    # Early boards can retain a stale confirmed label; publish them as predictions until kickoff nears.
+    until_kickoff = kickoff - now.astimezone(timezone.utc)
+    if until_kickoff > timedelta(hours=12):
         return None
     encoded = payload[1]
     board = json.loads(base64.urlsafe_b64decode(encoded + '=' * (-len(encoded) % 4)))
     rosters = [board.get('h', {}).get('pl', []), board.get('a', {}).get('pl', [])]
     if any(len(players) != STARTERS[sport] for players in rosters):
         return None
-    confirmed = bool(re.search(r'확정 라인업', page))
+    confirmed = until_kickoff <= timedelta(hours=2) and bool(re.search(r'확정 라인업', page))
     stats = records_from_page(page) if sport == '축구' else None
     if not stats:
         return None

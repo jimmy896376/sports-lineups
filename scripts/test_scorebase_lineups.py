@@ -29,6 +29,14 @@ class ScorebaseLineupTests(unittest.TestCase):
     def test_record_shape_is_not_guessed(self):
         self.assertIsNone(records_from_page('<html>최근 5경기</html>'))
 
+    def test_venue_record_must_fit_season_record(self):
+        def chunk(home, away):
+            parts = ['5승 2무 5패', '리그성적', '4승 2무 6패',
+                     '홈 · 원정 강도 (홈 / 원정)', home, '기록', away] + ['W'] * 5 + ['L'] * 5
+            return '<script>self.__next_f.push([1,' + json.dumps('0:' + json.dumps({'children': parts}, ensure_ascii=False)) + '])</script>'
+        page = chunk('14승 8무 6패', '2승 0무 4패') + chunk('2승 2무 2패', '2승 0무 4패')
+        self.assertEqual(records_from_page(page)[1]['home']['sideRecord'], '2-2-2')
+
     def test_board_does_not_treat_far_schedule_as_lineup(self):
         now = datetime(2026, 11, 8, 12, tzinfo=KST)
         row = '<div class="sb-row"><span class="sb-st-time">19:00</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'

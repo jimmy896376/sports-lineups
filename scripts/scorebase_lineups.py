@@ -69,7 +69,7 @@ def records_from_page(page):
             texts.append(list(rendered_text(json.loads(chunk.split(':', 1)[1]))))
         except (ValueError, IndexError):
             continue
-    def pair(label):
+    def pair(label, valid=lambda values: True):
         for parts in texts:
             if label not in parts:
                 continue
@@ -79,7 +79,7 @@ def records_from_page(page):
             else:
                 index = parts.index(label)
                 values = [part for part in parts[index + 1:] if RECORD.fullmatch(part)][:2]
-            if len(values) == 2 and all(RECORD.fullmatch(value) for value in values):
+            if len(values) == 2 and all(RECORD.fullmatch(value) for value in values) and valid(values):
                 return ['-'.join(RECORD.fullmatch(value).groups()) for value in values]
         return []
     forms = []
@@ -90,7 +90,11 @@ def records_from_page(page):
             break
         if len(values) == 5 and len(forms) < 10:
             forms.extend(values)
-    season, venue = pair('리그성적'), pair('홈 · 원정 강도 (홈 / 원정)')
+    season = pair('리그성적')
+    def fits_season(values):
+        return all(all(int(part) <= int(total) for part, total in zip(RECORD.fullmatch(value).groups(), overall.split('-')))
+                   for value, overall in zip(values, season))
+    venue = pair('홈 · 원정 강도 (홈 / 원정)', fits_season) if season else []
     if len(forms) != 10 or len(season) != 2 or len(venue) != 2:
         return None
     return ({'home': forms[:5], 'away': forms[5:]},

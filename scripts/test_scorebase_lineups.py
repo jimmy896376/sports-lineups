@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
-from scorebase_lineups import parse_detail, board_rows, records_from_page, html_rosters, KST
+from scorebase_lineups import parse_detail, board_rows, board_leagues, records_from_page, html_rosters, KST
 
 
 class ScorebaseLineupTests(unittest.TestCase):
@@ -42,6 +42,14 @@ class ScorebaseLineupTests(unittest.TestCase):
         row = '<div class="sb-row"><span class="sb-st-time">19:00</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'
         self.assertEqual(len(board_rows(row, now.date(), now)), 1)
         self.assertEqual(board_rows(row, now.date() + timedelta(days=1), now), [])
+
+    def test_all_sidebar_leagues_are_kept_without_match_lineups(self):
+        page = ('<aside aria-label="축구 리그 목록">'
+                '<a href="/scores/UCL"><span class="truncate">UEFA 챔피언스리그</span><span>0</span></a>'
+                '<a href="/scores/EPL"><span class="truncate">프리미어리그</span><span>3</span></a>'
+                '</aside>')
+        self.assertEqual(board_leagues(page), [{'id': 'ucl', 'name': 'UEFA 챔피언스리그'},
+                                               {'id': 'epl', 'name': '프리미어리그'}])
 
     def test_published_basketball_and_volleyball_rosters_without_encoded_lineup(self):
         now = datetime(2026, 11, 10, 8, tzinfo=KST)

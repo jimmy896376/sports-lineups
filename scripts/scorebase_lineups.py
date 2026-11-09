@@ -18,6 +18,7 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; NudeLineups/1.0)', 'Accept': 
 ROW = re.compile(r'<div class="sb-row(?: [^"]*)?"')
 CHUNK = re.compile(r'<script>self\.__next_f\.push\(\[1,("(?:\\.|[^"\\])*")\]\)</script>', re.S)
 RECORD = re.compile(r'(\d+)승\s+(\d+)무\s+(\d+)패')
+LEAGUE_LINK = re.compile(r'<a\b[^>]*href="/scores/([^"/?]+)"[^>]*>(.*?)</a>', re.S)
 
 
 def fetch(path):
@@ -49,6 +50,18 @@ def board_rows(page, day, now):
             continue
         found.append((path[1], unescape(home[1]), unescape(away[1])))
     return found
+
+
+def board_leagues(page):
+    sidebar = re.search(r'<aside\b[^>]*aria-label="[^"]*리그 목록"[^>]*>(.*?)</aside>', page, re.S)
+    if not sidebar:
+        return []
+    leagues = []
+    for entry in LEAGUE_LINK.finditer(sidebar[1]):
+        name = re.search(r'<span\b[^>]*class="[^"]*\btruncate\b[^"]*"[^>]*>(.*?)</span>', entry[2], re.S)
+        if name:
+            leagues.append({'id': entry[1].lower(), 'name': unescape(re.sub(r'<[^>]+>', '', name[1])).strip()})
+    return [league for league in leagues if league['name']]
 
 
 def rendered_text(node):
@@ -214,6 +227,7 @@ def parse_detail(page, path, sport, names, now):
 def collect(now=None):
     now = now or datetime.now(KST)
     paths = {}
+    leagues = {sport: {} for sport in SPORTS.values()}
     boards = [(now.date() + timedelta(days=offset), query, sport)
               for offset in range(5) for query, sport in SPORTS.items()]
     with ThreadPoolExecutor(max_workers=5) as pool:
@@ -221,7 +235,10 @@ def collect(now=None):
                    for day, query, sport in boards}
         for future in as_completed(futures):
             day, sport = futures[future]
-            for path, home, away in board_rows(future.result(), day, now):
+            page = future.result()
+            for league in board_leagues(page):
+                leagues[sport][league['id']] = league['name']
+            for path, home, away in board_rows(page, day, now):
                 paths[path] = (sport, (home, away))
     matches = []
     with ThreadPoolExecutor(max_workers=6) as pool:
@@ -234,13 +251,16 @@ def collect(now=None):
                     matches.append(match)
             except (OSError, ValueError, KeyError, IndexError, TimeoutError) as error:
                 print(f'Scorebase detail unavailable: {path}: {error}')
-    return sorted(matches, key=lambda match: (match['kickoff'], match['id']))
+    return sorted(matches, key=lambda match: (match['kickoff'], match['id'])), {
+        sport: [{'id': key, 'name': name} for key, name in sorted(entries.items(), key=lambda item: item[1])]
+        for sport, entries in leagues.items()}
 
 
 if __name__ == '__main__':
     import pathlib
     target = pathlib.Path('dist/scorebase-lineups.json')
-    matches = collect()
+    matches, leagues = collect()
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': matches}, ensure_ascii=False) + '\n')
-    print(f'Scorebase lineups: {len(matches)}')
+    target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': matches,
+                                  'leagues': leagues}, ensure_ascii=False) + '\n')
+    print(f'Scorebase lineups: {len(matches)}; leagues: {sum(map(len, leagues.values()))}')

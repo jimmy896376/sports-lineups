@@ -29,8 +29,9 @@ assert.deepEqual(transferred.recentForm.home,['W','L']);
 const scorebaseMatch={id:'scorebase:/live/TEST/1',eventId:'1',league:'test',leagueName:'테스트 리그',sport:'축구',kickoff:Date.parse('2026-11-04T00:00:00Z'),
  teams:['home','away'].map((side,index)=>({side,id:side,name:scopedTeams[index].name,logo:'https://example.com/'+side+'.png',players:Array.from({length:11},(_,player)=>({name:`선수 ${player}`,position:'',number:'',flag:''})),status:'confirmed',injuries:[],pitcher:null})),
  recentForm:{home:['W','W','L','W','D'],away:['L','L','W','L','D']},records:{home:{record:'4-2-1',sideRecord:'3-1-0'},away:{record:'2-3-2',sideRecord:'0-2-2'}},checkedAt:'2026-11-04T00:00:00Z'};
-const merged=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch]});
+const merged=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch],leagues:{축구:[{id:'test',name:'테스트 리그'}]}});
 assert.equal(merged.matches.length,1);
+assert.equal(merged.leagues.축구[0].name,'테스트 리그');
 assert.equal(merged.matches[0].teams[0].status,'confirmed');
 assert.equal(merged.matches[0].teams[0].players.length,11);
 assert.deepEqual(merged.matches[0].recentForm.home,scorebaseMatch.recentForm.home);

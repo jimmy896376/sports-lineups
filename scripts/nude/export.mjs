@@ -34,7 +34,8 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
   }else model.matches.push({...extra,teams:extra.teams.map(team=>({...team,players:team.players.map(translate)}))});
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
- const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,matches:model.matches};
+ const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,
+  leagues:scorebase.leagues||{},matches:model.matches};
  globalThis.NudeLineupContract.validate(feed);
  return feed;
 }

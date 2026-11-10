@@ -53,6 +53,23 @@ def board_rows(page, day, now):
     return found
 
 
+def board_upcoming(page, day, now):
+    starts = list(ROW.finditer(page))
+    for index, start in enumerate(starts):
+        segment = page[start.start():starts[index + 1].start() if index + 1 < len(starts) else start.start() + 5000]
+        clock = re.search(r'class="sb-st-time"[^>]*>(\d{1,2}):(\d{2})', segment[:1500])
+        if not clock:
+            continue
+        kickoff = datetime.combine(day, datetime.min.time(), KST).replace(hour=int(clock[1]), minute=int(clock[2]))
+        if kickoff <= now:
+            continue
+        path = re.search(r'href="/live/([^/"?]+)/', segment)
+        tennis = re.search(r'href="/tennis/match/(atp|wta)/(\d+-\d{4})/', segment)
+        league = path[1].lower() if path else f'{tennis[1]}-{tennis[2]}' if tennis else ''
+        if league:
+            yield league, int(kickoff.timestamp() * 1000)
+
+
 def board_leagues(page):
     sidebar = re.search(r'<aside\b[^>]*aria-label="[^"]*(?:리그|대회) 목록"[^>]*>(.*?)</aside>', page, re.S)
     if not sidebar:
@@ -233,6 +250,7 @@ def collect(now=None):
     now = now or datetime.now(KST)
     paths = {}
     leagues = {sport: {} for sport in SPORTS.values()}
+    upcoming = {sport: {} for sport in SPORTS.values()}
     boards = [(now.date() + timedelta(days=offset), query, sport)
               for offset in range(5) for query, sport in SPORTS.items()]
     with ThreadPoolExecutor(max_workers=5) as pool:
@@ -243,6 +261,8 @@ def collect(now=None):
             page = future.result()
             for league in board_leagues(page):
                 leagues[sport][league['id']] = league['name']
+            for league, kickoff in board_upcoming(page, day, now):
+                upcoming[sport][league] = max(kickoff, upcoming[sport].get(league, 0))
             if sport in STARTERS:
                 for path, home, away in board_rows(page, day, now):
                     paths[path] = (sport, (home, away))
@@ -258,7 +278,8 @@ def collect(now=None):
             except (OSError, ValueError, KeyError, IndexError, TimeoutError) as error:
                 print(f'Scorebase detail unavailable: {path}: {error}')
     return sorted(matches, key=lambda match: (match['kickoff'], match['id'])), {
-        sport: [{'id': key, 'name': name} for key, name in sorted(entries.items(), key=lambda item: item[1])]
+        sport: [{'id': key, 'name': name, **({'lastScheduledKickoff': upcoming[sport][key]} if key in upcoming[sport] else {})}
+                for key, name in sorted(entries.items(), key=lambda item: item[1])]
         for sport, entries in leagues.items()}
 
 

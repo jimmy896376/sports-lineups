@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
-from scorebase_lineups import parse_detail, board_rows, board_leagues, records_from_page, html_rosters, KST, SPORTS
+from scorebase_lineups import parse_detail, board_rows, board_upcoming, board_leagues, records_from_page, html_rosters, KST, SPORTS
 
 
 class ScorebaseLineupTests(unittest.TestCase):
@@ -42,6 +42,15 @@ class ScorebaseLineupTests(unittest.TestCase):
         row = '<div class="sb-row"><span class="sb-st-time">19:00</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'
         self.assertEqual(len(board_rows(row, now.date(), now)), 1)
         self.assertEqual(board_rows(row, now.date() + timedelta(days=1), now), [])
+
+    def test_upcoming_leagues_do_not_require_player_lineups(self):
+        now = datetime(2026, 11, 10, 12, tzinfo=KST)
+        page = ('<div class="sb-row"><span class="sb-st-time">13:00</span><a href="/live/CPBL/game1">경기</a>'
+                '<div class="sb-row"><span class="sb-st-time">14:00</span><a href="/tennis/match/wta/1084-2026/186747">경기</a>'
+                '<div class="sb-row"><span class="sb-st-live">진행</span><a href="/live/MLB/game2">경기</a>')
+        self.assertEqual([league for league, _ in board_upcoming(page, now.date(), now)],
+                         ['cpbl', 'wta-1084-2026'])
+        self.assertEqual(list(board_upcoming(page, now.date() - timedelta(days=1), now)), [])
 
     def test_all_sidebar_leagues_are_kept_without_match_lineups(self):
         page = ('<aside aria-label="축구 리그 목록">'

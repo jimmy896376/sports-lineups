@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
-from scorebase_lineups import parse_detail, board_rows, board_leagues, records_from_page, html_rosters, KST
+from scorebase_lineups import parse_detail, board_rows, board_leagues, records_from_page, html_rosters, KST, SPORTS
 
 
 class ScorebaseLineupTests(unittest.TestCase):
@@ -50,6 +50,14 @@ class ScorebaseLineupTests(unittest.TestCase):
                 '</aside>')
         self.assertEqual(board_leagues(page), [{'id': 'ucl', 'name': 'UEFA 챔피언스리그'},
                                                {'id': 'epl', 'name': '프리미어리그'}])
+
+    def test_every_scorebase_sport_and_tennis_tournaments_are_catalogued(self):
+        self.assertEqual(set(SPORTS), {'soccer', 'baseball', 'basketball', 'volleyball', 'hockey',
+                                       'esports', 'mma', 'tennis', 'golf', 'f1'})
+        page = ('<aside aria-label="테니스 대회 목록">'
+                '<a href="/scores?sport=tennis&amp;date=2026-11-10&amp;league=atp-148-2026">'
+                '<span class="truncate">스톡홀름 오픈</span></a></aside>')
+        self.assertEqual(board_leagues(page), [{'id': 'atp-148-2026', 'name': '스톡홀름 오픈'}])
 
     def test_published_basketball_and_volleyball_rosters_without_encoded_lineup(self):
         now = datetime(2026, 11, 10, 8, tzinfo=KST)

@@ -11,7 +11,8 @@ from zoneinfo import ZoneInfo
 
 BASE = 'https://www.xn--hy1bm7m1yevrd8pq.kr'
 SPORTS = {'soccer': '축구', 'baseball': '야구', 'basketball': '농구',
-          'volleyball': '배구', 'hockey': '하키'}
+          'volleyball': '배구', 'hockey': '하키', 'esports': 'e스포츠',
+          'mma': 'UFC', 'tennis': '테니스', 'golf': '골프', 'f1': 'F1'}
 STARTERS = {'축구': (11,), '야구': (9,), '농구': (5,), '배구': (6, 7), '하키': (19,)}
 KST = ZoneInfo('Asia/Seoul')
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; NudeLineups/1.0)', 'Accept': 'text/html'}
@@ -53,11 +54,15 @@ def board_rows(page, day, now):
 
 
 def board_leagues(page):
-    sidebar = re.search(r'<aside\b[^>]*aria-label="[^"]*리그 목록"[^>]*>(.*?)</aside>', page, re.S)
+    sidebar = re.search(r'<aside\b[^>]*aria-label="[^"]*(?:리그|대회) 목록"[^>]*>(.*?)</aside>', page, re.S)
     if not sidebar:
         return []
     leagues = []
     for entry in LEAGUE_LINK.finditer(sidebar[1]):
+        name = re.search(r'<span\b[^>]*class="[^"]*\btruncate\b[^"]*"[^>]*>(.*?)</span>', entry[2], re.S)
+        if name:
+            leagues.append({'id': entry[1].lower(), 'name': unescape(re.sub(r'<[^>]+>', '', name[1])).strip()})
+    for entry in re.finditer(r'<a\b[^>]*href="/scores\?[^" ]*?league=([^&"]+)[^"]*"[^>]*>(.*?)</a>', sidebar[1], re.S):
         name = re.search(r'<span\b[^>]*class="[^"]*\btruncate\b[^"]*"[^>]*>(.*?)</span>', entry[2], re.S)
         if name:
             leagues.append({'id': entry[1].lower(), 'name': unescape(re.sub(r'<[^>]+>', '', name[1])).strip()})
@@ -238,8 +243,9 @@ def collect(now=None):
             page = future.result()
             for league in board_leagues(page):
                 leagues[sport][league['id']] = league['name']
-            for path, home, away in board_rows(page, day, now):
-                paths[path] = (sport, (home, away))
+            if sport in STARTERS:
+                for path, home, away in board_rows(page, day, now):
+                    paths[path] = (sport, (home, away))
     matches = []
     with ThreadPoolExecutor(max_workers=6) as pool:
         futures = {pool.submit(fetch, path): (path, *details) for path, details in paths.items()}

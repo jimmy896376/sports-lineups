@@ -36,7 +36,12 @@
     const records=row.event?.competitions?.[0]?.competitors?.find(t=>t.homeAway===side)?.records||[];
     return [side,records.find(r=>r.name==='overall')?.summary];
    }).filter(([,value])=>value).map(([side,record])=>[side,{record}]));
-   matches.push({id:identity,eventId:text(String(row.event?.id||'')),league,sport:kind[0],leagueName:kind[1],kickoff,teams,logos:p.logos||{},recentForm:Object.keys(p.recentForm||{}).length?p.recentForm:row.event?.recentForm||{},records:{...competitorRecords,...p.records},checkedAt:text(source.checkedAt||snapshot.asOf),sourceFailed:source.fresh===false,note:text(p.note)});
+   // shortcut: older KOVO snapshots have no division; update these club names if they change before the next source refresh.
+   const legacyWomen=/^(IBK기업은행|정관장|흥국생명|GS칼텍스|한국도로공사|현대건설|SOOP)/.test(p.names?.home||'');
+   const legacyMen=/^(대한항공|현대캐피탈|우리카드|KB손해보험|한국전력|OK저축은행|삼성화재)/.test(p.names?.home||'');
+   const division=p.division||(legacyWomen?'women':legacyMen?'men':'');
+   const publishedLeague=league==='kovo'&&division==='men'?'v_league':league==='kovo'&&division==='women'?'v_league_w':league;
+   matches.push({id:identity,eventId:text(String(row.event?.id||'')),league:publishedLeague,sport:kind[0],leagueName:publishedLeague==='v_league'?'V리그(남)':publishedLeague==='v_league_w'?'V리그(여)':kind[1],kickoff,teams,logos:p.logos||{},recentForm:Object.keys(p.recentForm||{}).length?p.recentForm:row.event?.recentForm||{},records:{...competitorRecords,...p.records},checkedAt:text(source.checkedAt||snapshot.asOf),sourceFailed:source.fresh===false,note:text(p.note)});
   }
   const days=new Set(Array.from({length:5},(_,offset)=>day(Date.parse(snapshot.asOf)+offset*86400000)));
   return {asOf:snapshot.asOf,matches:matches.filter(m=>days.has(day(m.kickoff))).sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id)),rejected};

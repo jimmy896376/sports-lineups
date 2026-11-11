@@ -1052,6 +1052,7 @@ def scrape_kovo_bkvolley():
         home, away = [name.strip() for name in pair.groups()]
         kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
         fixture = next((item for item in public_data.get('upcomingMatches', []) if str(item.get('id')) == path.rsplit('/', 1)[-1]), {})
+        division = {'KOVO 남자부': 'men', 'KOVO 여자부': 'women'}.get(fixture.get('league'), '')
         recent_form, records = {}, {}
         for side in ('home', 'away'):
             team_id = fixture.get(side + 'TeamId')
@@ -1129,7 +1130,7 @@ def scrape_kovo_bkvolley():
             lineups = {'home': estimate(home, away), 'away': estimate(away, home)}
         except Exception:
             lineups = {'home': [], 'away': []}
-        prediction = {'league': 'kovo', 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away}, 'logos': logos,
+        prediction = {'league': 'kovo', 'division': division, 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away}, 'logos': logos,
             'recentForm': recent_form, 'records': records,
             'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': '등록 선수 명단과 포지션을 기준으로 구성한 6인 예상 라인업', 'source': url}

@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from io import BytesIO
 from datetime import datetime
 from pathlib import Path
@@ -103,7 +104,8 @@ class TeamLogos(TestCase):
             @classmethod
             def now(cls, tz=None):
                 return cls(2026, 11, 2, 12, tzinfo=ZoneInfo('Asia/Seoul'))
-        page = '<div>2026년 11월 3일 19:00</div><a href="/matches/123">GS칼텍스 vs 한국도로공사</a>'
+        fixture = json.dumps({'data': {'upcomingMatches': [{'id': 123, 'league': 'KOVO 여자부'}]}})
+        page = f'<div>2026년 11월 3일 19:00</div><a href="/matches/123">GS칼텍스 vs 한국도로공사</a><script id="volley-public-data" type="application/json">{fixture}</script>'
         with patch.object(projections, 'datetime', Clock), patch.object(projections, 'fetch_text', side_effect=[page, '<div>두 팀 등록 선수</div>']):
             row = projections.scrape_kovo_bkvolley()[0]
         logos = row['prediction']['logos']
@@ -111,6 +113,7 @@ class TeamLogos(TestCase):
                                  'away': 'https://cdn.kovo.co.kr/emblems/hipass.svg'})
         teams = row['event']['competitions'][0]['competitors']
         self.assertEqual([team['team']['logo'] for team in teams], [logos['home'], logos['away']])
+        self.assertEqual(row['prediction']['division'], 'women')
 
 
 if __name__ == '__main__':

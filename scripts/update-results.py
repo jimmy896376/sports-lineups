@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://site.api.espn.com/apis/site/v2/sports/'
 
 
-def fetch(url):
-    request = urllib.request.Request(url, headers={'User-Agent': 'sports-lineups-results/1.0', 'Accept': 'application/json'})
+def fetch(url, headers=None):
+    request = urllib.request.Request(url, headers={'User-Agent': 'sports-lineups-results/1.0', 'Accept': 'application/json', **(headers or {})})
     with urllib.request.urlopen(request, timeout=20) as response:
         return json.load(response)
 
@@ -30,6 +30,34 @@ def fetch_text(url):
 
 def text(value):
     return html.unescape(re.sub(r'<[^>]+>', ' ', value)).strip()
+
+
+def parse_kbl_results(payload, start, now, checked_at):
+    """Accept only ended regular-season games with an official ID and valid final score."""
+    if payload.get('resultCode') not in (None, '', 'Success', '00'):
+        raise ValueError('KBL official API rejected the results request')
+    rows = payload.get('object') or payload.get('data') or []
+    if isinstance(rows, dict):
+        rows = rows.get('list') or rows.get('matches') or []
+    results = []
+    for match in rows if isinstance(rows, list) else []:
+        if str(match.get('isEnded') or '').upper() not in ('Y', 'TRUE', '1'):
+            continue
+        event_id = str(match.get('gmkey') or match.get('gameId') or '')
+        date = re.sub(r'[^0-9]', '', str(match.get('gameDate') or ''))[:8]
+        time = re.sub(r'[^0-9]', '', str(match.get('gameTime') or match.get('startTime') or ''))[:4].ljust(4, '0')
+        try:
+            kickoff = datetime.strptime(date + time, '%Y%m%d%H%M').replace(tzinfo=ZoneInfo('Asia/Seoul')).astimezone(timezone.utc)
+            home_score, away_score = int(match['scoreH']), int(match['scoreA'])
+        except (KeyError, TypeError, ValueError):
+            continue
+        home, away = str(match.get('tnameH') or '').strip(), str(match.get('tnameA') or '').strip()
+        if not event_id or not home or not away or home == away or home_score == away_score or not start <= kickoff <= now:
+            continue
+        results.append({'eventId': event_id, 'league': 'kbl', 'kickoff': kickoff.isoformat(), 'status': 'final',
+                        'homeName': home, 'awayName': away, 'homeScore': home_score, 'awayScore': away_score,
+                        'winner': 'home' if home_score > away_score else 'away', 'checkedAt': checked_at, 'note': ''})
+    return results
 
 
 def main():
@@ -94,33 +122,16 @@ def main():
                         continue
                 if row['eventId']:
                     items[row['eventId']] = row
-    # StatGG publishes completed KBL scores and the same match ID used by the lineup feed.
+    # KBL's official API returns match ID, game date and final scores together.
     kst = ZoneInfo('Asia/Seoul')
-    for offset in range(4):
-        day = now.astimezone(kst).date() - timedelta(days=offset)
-        try:
-            page = fetch_text('https://statgg.com/ko/kbl/schedule?date=' + day.isoformat())
-        except (OSError, urllib.error.URLError) as error:
-            print(f'KBL results unavailable: {day}: {error}')
-            continue
-        for event_id, card in re.findall(r'<a[^>]+href="/ko/kbl/matches/([^"]+)"[^>]*>(.*?)</a>', page, re.S):
-            if '종료' not in text(card):
-                continue
-            teams_block = re.search(r'<div data-card-teams="true"[^>]*>(.*?)</div>\s*</div>', card, re.S)
-            if not teams_block:
-                continue
-            names = [text(name) for name in re.findall(r'<span[^>]*>([^<]+)</span>', teams_block.group(1))]
-            scores = [int(score) for score in re.findall(r'<strong[^>]*class="[^"]*stat-num[^"]*"[^>]*>(\d+)</strong>', teams_block.group(1))]
-            time_match = re.search(r'class="stat-num[^\"]*">(\d{1,2}:\d{2})</span>', card)
-            if len(names) != 2 or len(scores) != 2 or not time_match or scores[0] == scores[1]:
-                continue
-            local = datetime.strptime(day.isoformat() + ' ' + time_match.group(1), '%Y-%m-%d %H:%M').replace(tzinfo=kst)
-            kickoff = local.astimezone(timezone.utc)
-            if not start <= kickoff <= now:
-                continue
-            items[event_id] = {'eventId': event_id, 'league': 'kbl', 'kickoff': kickoff.isoformat(), 'status': 'final',
-                               'homeName': names[0], 'awayName': names[1], 'homeScore': scores[0], 'awayScore': scores[1],
-                               'winner': 'home' if scores[0] > scores[1] else 'away', 'checkedAt': now.isoformat(), 'note': ''}
+    try:
+        query = urllib.parse.urlencode({'fromDate': (now.astimezone(kst).date() - timedelta(days=3)).strftime('%Y%m%d'),
+                                        'toDate': now.astimezone(kst).date().strftime('%Y%m%d'), 'tcodeList': 'all', 'seasonGrade': 1})
+        payload = fetch('https://api.kbl.or.kr/match/list?' + query, {'channel': 'WEB', 'teamCode': 'XX'})
+        for row in parse_kbl_results(payload, start, now, now.isoformat()):
+            items[row['eventId']] = row
+    except (OSError, ValueError, urllib.error.URLError) as error:
+        print(f'KBL results unavailable: {error}')
     # KOVO's public match data includes final set scores and feed-matching match IDs.
     try:
         page = fetch_text('https://bkvolley.kr/matches')

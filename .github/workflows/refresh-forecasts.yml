@@ -40,6 +40,7 @@ jobs:
       - name: Check parser and display contracts
         run: |
           python3 scripts/check-external-forecasts.py
+          python3 scripts/test_update_results.py
           node scripts/check-win-probability.mjs
       - name: Fetch original published match probabilities
         run: python3 scripts/update-external-forecasts.py

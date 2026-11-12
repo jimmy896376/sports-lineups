@@ -45,6 +45,20 @@ for(const p of projectionRows)for(const side of ['home','away']){
  for(const player of [...(p.injuryDetails?.[side]||[]),...(p.injuries?.[side]||[])])add(player,'injury');
  if(p.startingPitchers?.[side])add(p.startingPitchers[side],'starting-pitcher');
 }
+// The published feed also includes Scorebase-only rosters; they need the same name review queue.
+const scorebasePath=root+'/dist/scorebase-lineups.json';
+if(fs.existsSync(scorebasePath))for(const match of JSON.parse(fs.readFileSync(scorebasePath,'utf8')).matches||[])for(const team of match.teams||[]){
+ const name=team.name,league=match.league;
+ if(!teams.has(league+':'+name))teams.set(league+':'+name,{name,short:name,league,korean:reviewedTeams[name]||name});
+ for(const player of team.players||[]){
+  const original=player.originalName||player.name;
+  if(!original)continue;
+  const key=[league,name,'lineup',original].join('\0');
+  if(seen.has(key))continue;
+  seen.add(key);
+  records.push({name:original,eventDate:new Date(match.kickoff).toISOString(),team:name,league,kind:'lineup',korean:player.name});
+ }
+}
 fs.writeFileSync(output,JSON.stringify({at:new Date().toISOString(),leagues,records,teams:[...teams.values()],failures},null,2));
 const unique=[...new Map(records.map(r=>[r.name,r])).values()];console.log(JSON.stringify({total:unique.length,missing:unique.filter(r=>[...r.name].some(char=>/\p{L}/u.test(char)&&!/\p{Script=Hangul}/u.test(char))&&r.name===r.korean).length,failures:failures.length}));
 

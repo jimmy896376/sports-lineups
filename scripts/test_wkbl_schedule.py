@@ -59,6 +59,35 @@ class WKBLOfficialSchedule(TestCase):
         self.assertEqual(row['prediction']['logos']['home'], 'https://www.wkbl.or.kr/static/images/team/teamlogo_07.png')
         self.assertEqual(row['prediction']['logos']['away'], 'https://www.wkbl.or.kr/static/images/team/teamlogo_05.png')
 
+    def test_recent_five_can_cross_seasons_without_changing_season_record(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 4, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        def game(day, scores=None):
+            row = {'date': day + 'T10:00:00Z', 'home': '신한은행', 'away': '우리은행'}
+            if scores:
+                row['scores'] = scores
+            return row
+        def schedule(page, year, month):
+            if (year, month) == (2026, 10):
+                return [game('2026-10-28', [70, 60]), game('2026-10-29', [60, 70]), game('2026-10-30', [70, 60])]
+            return [game('2026-11-04')]
+        older = [dict(game('2026-03-01', [70, 60]), id='old-1'), dict(game('2026-03-02', [60, 70]), id='old-2')]
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', return_value=''), patch.object(module, 'parse_wkbl_schedule', side_effect=schedule), patch.object(module, 'parse_wkbl_datalab_results', return_value=older):
+            result = module.scrape_wkbl_official()[0]['prediction']
+        self.assertEqual(result['recentForm']['home'], ['W', 'L', 'W', 'L', 'W'])
+        self.assertEqual(result['records']['home'], {'record': '2-1', 'sideRecord': '2-1'})
+
+    def test_datalab_results_extract_scores_and_home_side(self):
+        page = ('<li class="game-item on" data-id="04601083"><strong class="game-date">03.28(토)</strong>'
+                '<dl class="home-team"><dt class="home-team-name"><img src="logo">우리은행</dt>'
+                '<dd class=" home-team-score">61</dd></dl><dl class="away-team">'
+                '<dt class="away-team-name">신한은행</dt><dd class="win away-team-score">63</dd></dl></li>')
+        self.assertEqual(module.parse_wkbl_datalab_results(page, 2026), [
+            {'id': '04601083', 'date': '2026-03-28T00:00:00Z', 'home': '우리은행',
+             'away': '신한은행', 'scores': [61, 63]}])
+
     def test_official_monthly_schedule_keeps_home_side_and_kst_time(self):
         page = '<ul class="list_schedule"><li><span class="date">11.01</span>' \
                '<strong class="team_name">KB스타즈</strong><strong class="team_name">BNK 썸</strong>' \

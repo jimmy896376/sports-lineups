@@ -56,6 +56,11 @@ scorebaseBasketball.recentForm={};scorebaseBasketball.records={};
 const withBasketball=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseBasketball]});
 assert.equal(withBasketball.matches.length,2);
 assert.equal(withBasketball.matches.find(m=>m.id===scorebaseBasketball.id).teams[0].players.length,5);
+for(const [home,away,alternate] of [['밀워키 벅스','로스앤젤레스 레이커스','LA 레이커스'],['포틀랜드 트레일블레이저스','오클라호마시티 선더','오클라호마시티 썬더']]){
+ const native={asOf:'2026-11-04T00:00:00Z',domestic:{},items:[{league:'nba',kickoff:'2026-11-04T01:00:00Z',names:{home,away},teams:{home,away},lineups:{home:Array.from({length:5},(_,i)=>({name:`홈선수${i}`})),away:Array.from({length:5},(_,i)=>({name:`원정선수${i}`}))}}]};
+ const other={...scorebaseBasketball,id:'scorebase:/live/NBA/'+home,kickoff:Date.parse('2026-11-04T01:00:00Z'),teams:scorebaseBasketball.teams.map((team,i)=>({...team,name:i?alternate:home}))};
+ assert.equal(buildFeed(native,scoped,teams,config,'test',{matches:[other]}).matches.length,1,home+' 중복 경기');
+}
 const wrongTime=structuredClone(scopedGame);wrongTime.domestic.kleague2[0].prediction.kickoff='2026-11-04T01:00:00Z';
 assert.throws(()=>buildFeed(wrongTime,scoped,teams,config,'test'),/kickoff mismatch/);
 assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);

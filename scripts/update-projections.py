@@ -1168,6 +1168,23 @@ def parse_wkbl_schedule(page, year, month):
     return games
 
 
+def parse_wkbl_datalab_results(page, year):
+    games = []
+    for block in re.findall(r'<li class="game-item[^>]*data-id="([^"]+)"[^>]*>(.*?)</li>', page, re.S):
+        game_id, card = block
+        date = re.search(r'class="game-date">\s*(\d{2})\.(\d{2})', card)
+        names = [html.unescape(re.sub(r'<[^>]+>', '', name)).strip() for name in
+                 re.findall(r'<dt class="(?:home|away)-team-name">(.*?)</dt>', card, re.S)]
+        scores = [re.search(r'<dd class="[^"]*team-score">\s*(\d+)\s*</dd>', side)
+                  for side in re.findall(r'<dl class="(?:home|away)-team">(.*?)</dl>', card, re.S)]
+        if not date or len(names) != 2 or len(scores) != 2 or not all(scores):
+            continue
+        month, day = map(int, date.groups())
+        games.append({'id': game_id, 'date': f'{year}-{month:02}-{day:02}T00:00:00Z',
+                      'home': names[0], 'away': names[1], 'scores': [int(score.group(1)) for score in scores]})
+    return games
+
+
 def wkbl_projected_lineups(detail, names):
     """Estimate starters from current-roster minutes, then prior head-to-head minutes."""
     title = re.search(r'<h1[^>]*>(.*?)</h1>', detail, re.S)
@@ -1238,6 +1255,20 @@ def scrape_wkbl_official():
     for year, month in months:
         page = fetch_text(f'https://www.wkbl.or.kr/m/game/schedule.asp?sch_ym={year}{month:02}')
         all_games.extend(parse_wkbl_schedule(page, year, month))
+    target_teams = {name for game in all_games
+                    if game['date'][:10] in {day.isoformat() for day in target_days}
+                    for name in (game['home'], game['away'])}
+    older_games = []
+    if any(sum(len(game.get('scores', [])) == 2 and name in (game['home'], game['away'])
+               for game in all_games) < 5 for name in target_teams):
+        try:
+            for month_day in ('0323', '0222', '0215'):
+                url = f'https://datalab.wkbl.or.kr/game/list/month?firstGameDate={season_year}{month_day}&selectedId=&selectedGameDate='
+                older_games.extend(parse_wkbl_datalab_results(fetch_text(url), season_year))
+            older_games = list({game['id']: game for game in older_games}.values())
+        except (OSError, ValueError) as error:
+            print('wkbl previous season results unavailable:', error)
+    season_games = {id(game) for game in all_games}
     seen_games = set()
     for game in all_games:
             kickoff = game['date']
@@ -1263,18 +1294,19 @@ def scrape_wkbl_official():
             for side in ('home', 'away'):
                 team = names[side]
                 history = []
-                for prior in all_games:
+                for prior in all_games + older_games:
                     if prior['date'] >= kickoff or len(prior.get('scores', [])) != 2 or team not in (prior['home'], prior['away']):
                         continue
                     venue = 'home' if prior['home'] == team else 'away'
                     own, other = prior['scores'] if venue == 'home' else prior['scores'][::-1]
-                    history.append((prior['date'], venue, 'W' if own > other else 'L'))
+                    history.append((prior['date'], venue, 'W' if own > other else 'L', id(prior) in season_games))
                 history.sort(reverse=True)
                 if history:
-                    recent_form[side] = [result for _, _, result in history[:5]]
-                    wins = sum(result == 'W' for _, _, result in history)
-                    at_venue = [result for _, venue, result in history if venue == side]
-                    records[side] = {'record': f'{wins}-{len(history)-wins}', 'sideRecord': f'{sum(result == "W" for result in at_venue)}-{sum(result == "L" for result in at_venue)}'}
+                    recent_form[side] = [result for _, _, result, _ in history[:5]]
+                    current = [(venue, result) for _, venue, result, in_season in history if in_season]
+                    wins = sum(result == 'W' for _, result in current)
+                    at_venue = [result for venue, result in current if venue == side]
+                    records[side] = {'record': f'{wins}-{len(current)-wins}', 'sideRecord': f'{sum(result == "W" for result in at_venue)}-{sum(result == "L" for result in at_venue)}'}
             competitors = [{'homeAway': side, 'team': {'id': names[side], 'displayName': names[side],
                             'shortDisplayName': names[side], 'abbreviation': names[side], 'logo': logos[side]}} for side in ('home', 'away')]
             prediction = {'league': 'wkbl', 'kickoff': kickoff, 'names': names, 'teams': names,

@@ -17,6 +17,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  if(!model.matches.length&&!config.allowEmptyFeed)throw Error('Empty feed blocked. Review collection or deliberately set allowEmptyFeed.');
  const key=name=>String(name||'').normalize('NFKD').toLowerCase().replace(/\b(?:fc|cf|sc|afc)\b/g,'').replace(/[^\p{L}\p{N}]/gu,'');
  const alike=(a,b)=>{const left=key(a),right=key(b);return left.length>=3&&right.length>=3&&(left===right||left.includes(right)||right.includes(left));};
+ const sharedName=(a,b)=>String(a).split(/[^\p{L}\p{N}]+/u).some(word=>word.length>=3&&String(b).split(/[^\p{L}\p{N}]+/u).includes(word));
  const days=new Set(Array.from({length:5},(_,offset)=>new Date(Date.parse(snapshot.asOf)+9*3600000+offset*86400000).toISOString().slice(0,10)));
  const starters={축구:[11],야구:[9],농구:[5],배구:[6,7],하키:[19]};
  for(const extra of scorebase.matches||[]){
@@ -25,7 +26,9 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
      extra.teams.some(team=>!starters[extra.sport].includes(team.players?.length))||
      (extra.sport==='축구'&&!['home','away'].every(side=>extra.recentForm?.[side]?.length===5&&extra.records?.[side]?.record&&extra.records?.[side]?.sideRecord)))continue;
   const duplicate=model.matches.find(match=>match.sport===extra.sport&&Math.abs(match.kickoff-extra.kickoff)<=10*60000&&
-    alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name));
+    (alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name)||
+     key(match.teams[0].name)===key(extra.teams[0].name)&&sharedName(match.teams[1].name,extra.teams[1].name)||
+     key(match.teams[1].name)===key(extra.teams[1].name)&&sharedName(match.teams[0].name,extra.teams[0].name)));
   const translate=player=>({...player,name:catalog.players?.[player.name]||player.name});
   if(duplicate){
    duplicate.league=extra.league;duplicate.leagueName=extra.leagueName;

@@ -33,7 +33,8 @@ SCOREBASE_TRANSFER_LIMIT = 30
 SCOREBASE_FOOTBALL_POLICY = 'scorebase-bilingual-candidate-v1'
 SCOREBASE_FOOTBALL_CHECK_POLICY = 'scorebase-club-punctuation-v2'
 FOOTBALL_LEAGUES = {'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'primeira',
-                    'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'kleague1', 'kleague2', 'j1', 'mls', 'ligamx'}
+                    'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'uefa_wcl', 'brasileirao_2',
+                    'kleague1', 'kleague2', 'j1', 'mls', 'ligamx'}
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
     'FC Seoul': ('kleague1', 'K09'), 'Ulsan HD FC': ('kleague1', 'K01'),
@@ -306,7 +307,7 @@ def scorebase_transfer_names(rows, team_dictionary, get=fetch_page):
             break
         if row.get('league') not in FOOTBALL_LEAGUES or len(normalize(row['name']).split()) < 2:
             continue
-        team = team_dictionary.get(row.get('team', ''), '')
+        team = team_dictionary.get(row.get('team', ''), row.get('team', ''))
         club_words = [word for word in re.findall(r'[가-힣]{2,}', team) if word not in ('대한민국',)]
         if not club_words:
             continue
@@ -364,7 +365,8 @@ def scorebase_transfer_names(rows, team_dictionary, get=fetch_page):
                 continue
             english_heading = normalize(english.headings[0]) if english.headings else ''
             if not (english_heading.startswith(normalize(row['name']) + ' ')
-                    and normalize(row['team']).replace(' ', '') in english_heading.replace(' ', '')):
+                    and (re.search(r'[가-힣]', row['team']) or
+                         normalize(row['team']).replace(' ', '') in english_heading.replace(' ', ''))):
                 continue
             matched.append({'name': row['name'], 'korean': korean, 'team': row['team'],
                             'league': row['league'], 'method': SCOREBASE_FOOTBALL_POLICY,
@@ -656,7 +658,7 @@ def main():
     transfer_approved = transfer_checked = transfer_candidates_saved = 0
     transfer_candidates = [row for row in candidates_for_review if row.get('league') in FOOTBALL_LEAGUES
                            and len(normalize(row['name']).split()) >= 2
-                           and re.search(r'[가-힣]{2,}', teams.get(row.get('team', ''), ''))
+                           and re.search(r'[가-힣]{2,}', teams.get(row.get('team', ''), row.get('team', '')))
                            and (state['players'].get(normalize(row['name']), {}).get('scorebasePolicy') != SCOREBASE_FOOTBALL_CHECK_POLICY
                                 or state['players'].get(normalize(row['name']), {}).get('nextScorebaseCheckAt', '') <= now.isoformat())]
     transfer_entries, transfer_checked = scorebase_transfer_names(transfer_candidates, teams)

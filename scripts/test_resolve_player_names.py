@@ -51,6 +51,23 @@ class NameVerification(unittest.TestCase):
         self.assertEqual((checked,found[0]['korean'],found[0]['method']),
                          (1,'신 네알리스',r.SCOREBASE_FOOTBALL_POLICY))
 
+    def test_scorebase_football_checks_korean_named_club_without_alias(self):
+        row={'name':'Example Player','team':'리옹 위민','league':'uefa_wcl'}
+        def get(url):
+            if '/search?' in url:
+                return r.Page('<a href="/transfers/abc123">아델 마틴 몸값·커리어 상세</a>')
+            if '/en/transfers/' in url:
+                return r.Page('<title>Example Player — Lyon Women Forward | Scorebase</title>')
+            if '/transfers/' in url:
+                return r.Page('<title>아델 마틴 프로필 — 리옹 위민 공격수 | Scorebase</title>')
+            return r.Page('')
+        found,checked=r.scorebase_transfer_names([row],{},get)
+        self.assertEqual((checked,found[0]['korean']),(1,'아델 마틴'))
+        def wrong_club(url):
+            page=get(url)
+            return r.Page(page.raw.replace('리옹 위민','다른 구단')) if '/transfers/' in url and '/en/' not in url else page
+        self.assertEqual(r.scorebase_transfer_names([row],{},wrong_club)[0],[])
+
     def test_current_feed_names_take_search_priority(self):
         now=r.dt.datetime(2026,11,5,tzinfo=r.dt.timezone.utc)
         state={'players':{}}

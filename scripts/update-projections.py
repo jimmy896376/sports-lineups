@@ -233,7 +233,10 @@ def international_item(event, summary, league):
                          for row in players if (row.get('athlete') or {}).get('displayName')]
         if len(lineups[side]) != 11:
             return None
+    status = (event.get('status') or {}).get('type') or {}
+    match_status = 'finished' if status.get('completed') or status.get('state') == 'post' else 'live' if status.get('state') == 'in' else 'scheduled'
     return {'league': league, 'kickoff': event['date'], 'espnEventId': str(event['id']),
+            'matchStatus': match_status,
             'teams': teams, 'names': names, 'logos': logos, 'lineups': lineups,
             'injuries': {}, 'statuses': {'home': 'confirmed', 'away': 'confirmed'},
             'source': 'https://www.espn.com/soccer/match/_/gameId/' + str(event['id'])}
@@ -1429,6 +1432,28 @@ def restore_missing_lineups(entries, previous_entries):
                 current_lines[side] = old_lines[side]
 
 
+def retain_started_lineups(entries, previous_entries, now=None):
+    """Keep a published lineup when its schedule source drops the game at kickoff."""
+    now = now or datetime.now(timezone.utc)
+    def key(row):
+        item = row.get('prediction', row)
+        kickoff = item.get('kickoff') or row.get('event', {}).get('date', '')
+        teams = item.get('teams') or {}
+        return item.get('league'), kickoff[:13], teams.get('home'), teams.get('away')
+    seen = {key(row) for row in entries}
+    for old in previous_entries:
+        item = old.get('prediction', old)
+        try:
+            age = now - datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00'))
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not timedelta(0) <= age <= timedelta(hours=8) or key(old) in seen or not any((item.get('lineups') or {}).get(side) for side in ('home', 'away')):
+            continue
+        retained = {**old, 'prediction': {**item, 'matchStatus': 'unknown'}} if 'prediction' in old else {**old, 'matchStatus': 'unknown'}
+        entries.append(retained)
+        seen.add(key(old))
+
+
 def main():
     path = ROOT / 'dist' / 'projections.json'
     previous = json.loads(path.read_text()) if path.exists() else {}
@@ -1493,6 +1518,8 @@ def main():
             payload['domestic'][key] = [entry for entry in previous.get('domestic', {}).get(key, []) if within_window(entry.get('event', {}), 'date')]
             source_status[key] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get(key, {}).get('checkedAt')}
         restore_missing_lineups(payload['domestic'][key], previous.get('domestic', {}).get(key, []))
+        retain_started_lineups(payload['domestic'][key], previous.get('domestic', {}).get(key, []))
+    retain_started_lineups(all_results, previous.get('items', []))
     if not any(status['fresh'] for status in source_status.values()):
         raise SystemExit('No lineup sources refreshed; keeping the current snapshot')
     enrich_injury_details(payload)
@@ -1504,6 +1531,7 @@ def main():
         recent_form = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(recent_form)
         print('recent form', recent_form.enrich_recent_form(payload, previous, fetch_json))
+        print('match status', recent_form.refresh_match_status(payload, fetch_json))
         print('KBO recent form', recent_form.enrich_kbo_form(
             payload, previous,
             lambda day: post_json('https://www.koreabaseball.com/ws/Main.asmx/GetKboGameList',

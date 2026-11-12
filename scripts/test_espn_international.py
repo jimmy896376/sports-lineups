@@ -1,5 +1,5 @@
 """National-team matches need a real kickoff and two published starting elevens."""
-from datetime import date
+from datetime import date, datetime, timezone
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from unittest.mock import patch
@@ -22,6 +22,7 @@ def roster(side):
 
 
 event = {'id': '123', 'date': '2026-11-12T19:45Z',
+         'status': {'type': {'state': 'in', 'completed': False}},
          'competitions': [{'competitors': [team('home', 'Türkiye', 'TUR'),
                                            team('away', 'Belgium', 'BEL')]}]}
 summary = {'rosters': [roster('away'), roster('home')]}
@@ -29,6 +30,8 @@ item = source.international_item(event, summary, 'uefa_nl')
 assert item['kickoff'] == '2026-11-12T19:45Z'
 assert item['names'] == {'home': '튀르키예', 'away': '벨기에'}
 assert item['statuses'] == {'home': 'confirmed', 'away': 'confirmed'}
+assert item['matchStatus'] == 'live'
+assert source.international_item({**event, 'status': {'type': {'state': 'post', 'completed': True}}}, summary, 'uefa_nl')['matchStatus'] == 'finished'
 assert all(len(item['lineups'][side]) == 11 for side in ('home', 'away'))
 assert source.international_item(event, {'rosters': [roster('home')]}, 'uefa_nl') is None
 
@@ -53,4 +56,11 @@ def partial(url):
 
 with patch.object(source, 'fetch_json', side_effect=partial):
     assert len(source.scrape_espn_international('uefa_nl', 'soccer/uefa.nations', {date(2026, 11, 13)})) == 1
+old = {'league': 'uefa_nl', 'kickoff': '2026-11-12T19:45:00Z',
+       'teams': {'home': 'TUR', 'away': 'BEL'}, 'lineups': {'home': [{'name': 'Starter'}]}}
+retained = []
+source.retain_started_lineups(retained, [old], datetime(2026, 11, 12, 20, 0, tzinfo=timezone.utc))
+source.retain_started_lineups(retained, [old], datetime(2026, 11, 12, 20, 0, tzinfo=timezone.utc))
+assert len(retained) == 1 and retained[0]['matchStatus'] == 'unknown'
+assert old.get('matchStatus') is None
 print('PASS international fixtures: exact KST date, home/away, 11 starters, missing lineup rejection')

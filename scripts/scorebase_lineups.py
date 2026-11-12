@@ -50,7 +50,8 @@ def board_rows(page, day, now):
                 continue
         elif state[1] not in ('sb-st-live', 'sb-st-ft'):
             continue
-        found.append((path[1], unescape(home[1]), unescape(away[1])))
+        status = {'sb-st-live': 'live', 'sb-st-ft': 'finished'}.get(state[1], 'scheduled')
+        found.append((path[1], unescape(home[1]), unescape(away[1]), status))
     return found
 
 
@@ -265,16 +266,17 @@ def collect(now=None):
             for league, kickoff in board_upcoming(page, day, now):
                 upcoming[sport][league] = max(kickoff, upcoming[sport].get(league, 0))
             if sport in STARTERS:
-                for path, home, away in board_rows(page, day, now):
-                    paths[path] = (sport, (home, away))
+                for path, home, away, status in board_rows(page, day, now):
+                    paths[path] = (sport, (home, away), status)
     matches = []
     with ThreadPoolExecutor(max_workers=6) as pool:
         futures = {pool.submit(fetch, path): (path, *details) for path, details in paths.items()}
         for future in as_completed(futures):
-            path, sport, names = futures[future]
+            path, sport, names, status = futures[future]
             try:
                 match = parse_detail(future.result(), path, sport, names, now)
                 if match:
+                    match['matchStatus'] = status
                     matches.append(match)
             except (OSError, ValueError, KeyError, IndexError, TimeoutError) as error:
                 print(f'Scorebase detail unavailable: {path}: {error}')

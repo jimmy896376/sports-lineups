@@ -66,6 +66,10 @@ class ScorebaseLineupTests(unittest.TestCase):
         row = '<div class="sb-row"><span class="sb-st-time">19:00</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'
         self.assertEqual(len(board_rows(row, now.date(), now)), 1)
         self.assertEqual(board_rows(row, now.date() + timedelta(days=1), now), [])
+        live = row.replace('sb-st-time">19:00', 'sb-st-live">진행')
+        finished = row.replace('sb-st-time">19:00', 'sb-st-ft">종료')
+        self.assertEqual(board_rows(live, now.date(), now)[0][3], 'live')
+        self.assertEqual(board_rows(finished, now.date(), now)[0][3], 'finished')
 
     def test_upcoming_leagues_do_not_require_player_lineups(self):
         now = datetime(2026, 11, 10, 12, tzinfo=KST)

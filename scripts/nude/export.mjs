@@ -6,6 +6,15 @@ import {fileURLToPath} from 'node:url';
 import './source-adapter.cjs';
 import './contract.cjs';
 
+export function matchState(match,now=Date.now()){
+ const age=now-match.kickoff,checked=Date.parse(match.checkedAt);
+ if(match.matchStatus==='finished')return 'finished';
+ if(match.matchStatus==='live'&&now-checked<3600000)return 'live';
+ // shortcut: when a provider omits final status, expire after a sport-specific maximum; replace with a verified final feed when available.
+ if(age>({축구:4,야구:8,농구:5,배구:5,하키:5}[match.sport]||5)*3600000)return 'finished';
+ return age>=0?'live':'scheduled';
+}
+
 export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matches:[]}){
  for(const rows of Object.values(snapshot.domestic||{}))if(Array.isArray(rows))for(const row of rows){
   const event=Date.parse(row.event?.date),prediction=Date.parse(row.prediction?.kickoff);
@@ -22,7 +31,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  const starters={축구:[11],야구:[9],농구:[5],배구:[6,7],하키:[19]};
  for(const extra of scorebase.matches||[]){
   const date=new Date(extra.kickoff+9*3600000).toISOString().slice(0,10);
-  if(!days.has(date)||!starters[extra.sport]||extra.teams?.length!==2||
+  if(!days.has(date)&&!(extra.kickoff<Date.now()&&Date.now()-extra.kickoff<8*3600000)||!starters[extra.sport]||extra.teams?.length!==2||
      extra.teams.some(team=>!starters[extra.sport].includes(team.players?.length))||
      (extra.sport==='축구'&&!['home','away'].every(side=>extra.recentForm?.[side]?.length===5&&extra.records?.[side]?.record&&extra.records?.[side]?.sideRecord)))continue;
   const duplicate=model.matches.find(match=>match.sport===extra.sport&&Math.abs(match.kickoff-extra.kickoff)<=10*60000&&
@@ -33,12 +42,14 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
   if(duplicate){
    duplicate.league=extra.league;duplicate.leagueName=extra.leagueName;
    duplicate.teams.forEach((team,index)=>{team.players=extra.teams[index].players.map(translate);team.status=extra.teams[index].status;team.logo=extra.teams[index].logo||team.logo;});
+   if(Date.parse(extra.checkedAt)>=Date.parse(duplicate.checkedAt))duplicate.matchStatus=extra.matchStatus||duplicate.matchStatus;
    if(Object.keys(extra.recentForm||{}).length)duplicate.recentForm=extra.recentForm;
    if(Object.keys(extra.records||{}).length)duplicate.records=extra.records;
   }else model.matches.push({...extra,teams:extra.teams.map(team=>({...team,players:team.players.map(translate)}))});
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
- const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,
+ for(const match of model.matches)match.matchStatus=matchState(match);
+ const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,removalPolicy:'finished',
   leagues:scorebase.leagues||{},matches:model.matches};
  globalThis.NudeLineupContract.validate(feed);
  return feed;

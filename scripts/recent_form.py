@@ -387,3 +387,35 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
             stats['failed'] += 1
             log('logo directory', path, 'failed:', error)
     return stats
+
+
+def refresh_match_status(payload, fetch_json, now=None, log=print):
+    """Check live ESPN events by scoreboard; one request per league and game day."""
+    now = now or time.time()
+    boards = {}
+    checked = 0
+    for item in payload.get('items', []):
+        path, event_id = ESPN_PATHS.get(item.get('league')), str(item.get('espnEventId') or '')
+        if not path or not event_id:
+            continue
+        kickoff = datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00')).timestamp()
+        if not kickoff - 900 <= now <= kickoff + 12 * 3600:
+            continue
+        key = path, espn_date(item['kickoff'])
+        if key not in boards:
+            try:
+                board = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard?dates={key[1]}&limit=500')
+                boards[key] = {str(event.get('id')): event for event in board.get('events', [])}
+            except Exception as error:
+                boards[key] = {}
+                log('match status unavailable:', path, key[1], error)
+        event = boards[key].get(event_id)
+        status = (event or {}).get('status', {}).get('type', {})
+        if status.get('completed') or status.get('state') == 'post':
+            item['matchStatus'] = 'finished'
+        elif status.get('state') == 'in':
+            item['matchStatus'] = 'live'
+        elif status.get('state') == 'pre':
+            item['matchStatus'] = 'scheduled'
+        checked += bool(status)
+    return {'boards': len(boards), 'checked': checked}

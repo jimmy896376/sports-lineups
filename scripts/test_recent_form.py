@@ -216,6 +216,20 @@ class RecentForm(TestCase):
         self.assertEqual(fixture['prediction']['recentForm'], {'home': ['W']})
         self.assertEqual(fixture['prediction']['records'], {'home': {'record': '83-58'}})
 
+    def test_live_status_uses_one_board_and_removes_finished_games(self):
+        kickoff = '2026-11-12T19:45:00Z'
+        rows = [{'league': 'uefa_nl', 'kickoff': kickoff, 'espnEventId': event_id}
+                for event_id in ('live', 'done')]
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            return {'events': [{'id': 'live', 'status': {'type': {'state': 'in', 'completed': False}}},
+                               {'id': 'done', 'status': {'type': {'state': 'post', 'completed': True}}}]}
+        result = module.refresh_match_status({'items': rows}, fetch, now=1794517200)
+        self.assertEqual(result, {'boards': 1, 'checked': 2})
+        self.assertEqual([row['matchStatus'] for row in rows], ['live', 'finished'])
+        self.assertEqual(len(calls), 1)
+
 
 if __name__ == '__main__':
     main()

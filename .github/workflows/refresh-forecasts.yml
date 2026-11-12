@@ -13,7 +13,7 @@ on:
       - 'dist/app.js'
       - '.github/workflows/refresh-forecasts.yml'
   schedule:
-    - cron: '5,20,35,50 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 permissions:

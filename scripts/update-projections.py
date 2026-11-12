@@ -1460,9 +1460,9 @@ def main():
         source_status['uel'] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get('uel', {}).get('checkedAt')}
     all_results.extend(europa)
     print('uel', len(europa))
-    for league, (path, _) in ESPN_INTERNATIONAL.items():
+    for league, (espn_path, _) in ESPN_INTERNATIONAL.items():
         try:
-            national = scrape_espn_international(league, path, target_days)
+            national = scrape_espn_international(league, espn_path, target_days)
             source_status[league] = {'fresh': True, 'checkedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')}
         except Exception as error:
             print(league, 'source unavailable:', error)

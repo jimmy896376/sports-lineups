@@ -4,7 +4,7 @@ import html
 import json
 import re
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -172,6 +172,102 @@ ESPN_INJURY_PATHS = {
     'nba': 'basketball/nba', 'wnba': 'basketball/wnba', 'mlb': 'baseball/mlb',
     'nhl': 'hockey/nhl',
 }
+
+ESPN_INTERNATIONAL = {
+    'uefa_nl': ('soccer/uefa.nations', 'UEFA 네이션스 리그'),
+    'intl_friendly': ('soccer/fifa.friendly', '국가대표 친선'),
+    'fifa_world': ('soccer/fifa.world', 'FIFA 월드컵'),
+    'afc_asian_cup': ('soccer/afc.asian.cup', 'AFC 아시안컵'),
+    'caf_nations': ('soccer/caf.nations', '아프리카 네이션스컵'),
+    'uefa_euro': ('soccer/uefa.euro', 'UEFA 유로'),
+    'uefa_u21': ('soccer/uefa.euro_u21', 'UEFA U21 챔피언십'),
+}
+NATIONAL_TEAM_KO = {
+    'Albania': '알바니아', 'Andorra': '안도라', 'Armenia': '아르메니아',
+    'Austria': '오스트리아', 'Azerbaijan': '아제르바이잔', 'Belarus': '벨라루스',
+    'Belgium': '벨기에', 'Bosnia-Herzegovina': '보스니아 헤르체고비나',
+    'Bulgaria': '불가리아', 'Croatia': '크로아티아', 'Cyprus': '키프로스',
+    'Czechia': '체코', 'Denmark': '덴마크', 'England': '잉글랜드',
+    'Estonia': '에스토니아', 'Faroe Islands': '페로 제도', 'Finland': '핀란드',
+    'France': '프랑스', 'Georgia': '조지아', 'Germany': '독일',
+    'Gibraltar': '지브롤터', 'Greece': '그리스', 'Hungary': '헝가리',
+    'Iceland': '아이슬란드', 'Israel': '이스라엘', 'Italy': '이탈리아',
+    'Kazakhstan': '카자흐스탄', 'Kosovo': '코소보', 'Latvia': '라트비아',
+    'Liechtenstein': '리히텐슈타인', 'Lithuania': '리투아니아',
+    'Luxembourg': '룩셈부르크', 'Malta': '몰타', 'Moldova': '몰도바',
+    'Montenegro': '몬테네그로', 'Netherlands': '네덜란드',
+    'New Zealand': '뉴질랜드', 'North Macedonia': '북마케도니아',
+    'Northern Ireland': '북아일랜드', 'Norway': '노르웨이',
+    'Poland': '폴란드', 'Portugal': '포르투갈',
+    'Republic of Ireland': '아일랜드', 'Romania': '루마니아',
+    'Russia': '러시아', 'San Marino': '산마리노', 'Scotland': '스코틀랜드',
+    'Serbia': '세르비아', 'Slovakia': '슬로바키아', 'Slovenia': '슬로베니아',
+    'Spain': '스페인', 'Sweden': '스웨덴', 'Switzerland': '스위스',
+    'Türkiye': '튀르키예', 'Ukraine': '우크라이나',
+    'Uzbekistan': '우즈베키스탄', 'Wales': '웨일스', 'India': '인도',
+}
+
+
+def international_item(event, summary, league):
+    """Use ESPN's exact kickoff and published starting elevens only."""
+    competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
+    rosters = summary.get('rosters') or []
+    if len(competitors) != 2 or len(rosters) != 2:
+        return None
+    by_side = {entry.get('homeAway'): entry for entry in competitors}
+    roster_by_side = {entry.get('homeAway'): entry for entry in rosters}
+    if set(by_side) != {'home', 'away'} or set(roster_by_side) != {'home', 'away'}:
+        return None
+    names, teams, logos, lineups = {}, {}, {}, {}
+    for side in ('home', 'away'):
+        team = by_side[side].get('team') or {}
+        name = team.get('displayName') or ''
+        players = [row for row in roster_by_side[side].get('roster', []) if row.get('starter') is True]
+        if not name or len(players) != 11:
+            return None
+        names[side] = NATIONAL_TEAM_KO.get(name, name)
+        teams[side] = team.get('abbreviation') or name
+        logos[side] = team.get('logo') or ''
+        lineups[side] = [{'name': row['athlete']['displayName'],
+                          'position': (row.get('position') or {}).get('abbreviation', '')}
+                         for row in players if (row.get('athlete') or {}).get('displayName')]
+        if len(lineups[side]) != 11:
+            return None
+    return {'league': league, 'kickoff': event['date'], 'espnEventId': str(event['id']),
+            'teams': teams, 'names': names, 'logos': logos, 'lineups': lineups,
+            'injuries': {}, 'statuses': {'home': 'confirmed', 'away': 'confirmed'},
+            'source': 'https://www.espn.com/soccer/match/_/gameId/' + str(event['id'])}
+
+
+def scrape_espn_international(league, path, target_days):
+    start = datetime.combine(min(target_days), datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).date()
+    end = datetime.combine(max(target_days) + timedelta(days=1), datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).date()
+    entries = []
+    now = datetime.now(timezone.utc)
+    boards_read = 0
+    for offset in range((end - start).days + 1):
+        day = start.fromordinal(start.toordinal() + offset).strftime('%Y%m%d')
+        try:
+            board = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard?dates={day}&limit=500')
+            boards_read += 1
+        except Exception as error:
+            print(league, day, 'scoreboard unavailable:', error)
+            continue
+        for event in board.get('events', []):
+            kickoff = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
+            if kickoff.astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days or kickoff - now > timedelta(hours=12):
+                continue
+            try:
+                summary = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event["id"]}')
+            except Exception as error:
+                print(league, event['id'], 'lineup unavailable:', error)
+                continue
+            item = international_item(event, summary, league)
+            if item:
+                entries.append(item)
+    if not boards_read:
+        raise OSError('All international scoreboards unavailable')
+    return entries
 
 
 def injury_name_key(value):
@@ -1364,6 +1460,16 @@ def main():
         source_status['uel'] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get('uel', {}).get('checkedAt')}
     all_results.extend(europa)
     print('uel', len(europa))
+    for league, (path, _) in ESPN_INTERNATIONAL.items():
+        try:
+            national = scrape_espn_international(league, path, target_days)
+            source_status[league] = {'fresh': True, 'checkedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')}
+        except Exception as error:
+            print(league, 'source unavailable:', error)
+            national = [item for item in previous.get('items', []) if item.get('league') == league and within_window(item, 'kickoff')]
+            source_status[league] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get(league, {}).get('checkedAt')}
+        all_results.extend(national)
+        print(league, len(national))
     try:
         nhl = scrape_nhl_dailyfaceoff()
         all_results.extend(nhl)

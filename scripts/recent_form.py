@@ -32,6 +32,10 @@ ESPN_PATHS = {
     'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
     'scottish': 'soccer/sco.1', 'j1': 'soccer/jpn.1', 'mls': 'soccer/usa.1', 'ligamx': 'soccer/mex.1',
     'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa',
+    'uefa_nl': 'soccer/uefa.nations', 'intl_friendly': 'soccer/fifa.friendly',
+    'fifa_world': 'soccer/fifa.world', 'afc_asian_cup': 'soccer/afc.asian.cup',
+    'caf_nations': 'soccer/caf.nations', 'uefa_euro': 'soccer/uefa.euro',
+    'uefa_u21': 'soccer/uefa.euro_u21',
 }
 REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 hours keeps calls low
 KEEP_STALE_SECONDS = 12 * 3600  # if ESPN fails, previous values younger than this are kept (they were read, not guessed)
@@ -310,7 +314,7 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
             stats['reused'] += 1
         else:
             try:
-                event_id = (old or {}).get('espnEventId')
+                event_id = item.get('espnEventId') or (old or {}).get('espnEventId')
                 event = None
                 if not event_id or needs_logos:
                     board_key = (path, espn_date(item['kickoff']))

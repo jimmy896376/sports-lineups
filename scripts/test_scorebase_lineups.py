@@ -1,13 +1,37 @@
 import base64
 import json
+import os
+import runpy
+import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from urllib.error import HTTPError
 from unittest.mock import patch
 
 from scorebase_lineups import parse_detail, board_rows, board_upcoming, board_leagues, records_from_page, html_rosters, KST, SPORTS
 
 
 class ScorebaseLineupTests(unittest.TestCase):
+    def test_403_keeps_only_recent_verified_snapshot(self):
+        original = Path.cwd()
+        with tempfile.TemporaryDirectory() as directory:
+            try:
+                os.chdir(directory)
+                Path('dist').mkdir()
+                target = Path('dist/scorebase-lineups.json')
+                blocked = HTTPError('https://www.scorebase.kr/scores', 403, 'Forbidden', {}, None)
+                with patch('urllib.request.urlopen', side_effect=blocked):
+                    target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': []}))
+                    with self.assertRaises(SystemExit) as result:
+                        runpy.run_module('scorebase_lineups', run_name='__main__')
+                    self.assertEqual(result.exception.code, 0)
+                    target.write_text(json.dumps({'asOf': (datetime.now(timezone.utc)-timedelta(days=2)).isoformat()}))
+                    with self.assertRaises(HTTPError):
+                        runpy.run_module('scorebase_lineups', run_name='__main__')
+            finally:
+                os.chdir(original)
+
     def test_only_complete_lineups_within_twelve_hours(self):
         now = datetime(2026, 11, 8, 12, tzinfo=KST)
         def page(hours, away_count=11):

@@ -3,6 +3,7 @@ import base64
 import json
 import re
 import urllib.request
+from urllib.error import HTTPError
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from html import unescape
@@ -286,7 +287,17 @@ def collect(now=None):
 if __name__ == '__main__':
     import pathlib
     target = pathlib.Path('dist/scorebase-lineups.json')
-    matches, leagues = collect()
+    try:
+        matches, leagues = collect()
+    except HTTPError as error:
+        if error.code != 403 or not target.exists():
+            raise
+        previous = json.loads(target.read_text())
+        age = datetime.now(timezone.utc) - datetime.fromisoformat(previous['asOf'].replace('Z', '+00:00'))
+        if age < timedelta(0) or age > timedelta(hours=24):
+            raise
+        print(f'::warning::Scorebase returned HTTP 403; keeping verified snapshot from {previous["asOf"]}')
+        raise SystemExit(0)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': matches,
                                   'leagues': leagues}, ensure_ascii=False) + '\n')

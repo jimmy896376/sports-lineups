@@ -25,4 +25,13 @@ row = module.parse_volley(source)[0]
 assert abs(row['values']['home']-51.3)<1e-8,'Use match probability, never set probability'
 briefing['homeTeamId']=14
 assert not module.parse_volley('<script id="volley-public-data">'+json.dumps(data)+'</script>')
+widget = '<li><span>11. 14. (토) 01:00</span><span>토르페도 니즈니노브고로드</span><span>vs</span><span>라다 톨리야티</span><span>홈 <!-- -->72<!-- -->%</span><span>원정 <!-- -->28<!-- -->%</span></li>'
+rows = module.parse_scorebase_widget(widget)
+assert len(rows)==1 and rows[0]['values']=={'home':72.0,'away':28.0,'draw':0},'Keep Scorebase home/away orientation'
+assert module.scorebase_key('HC 라다 톨리야티')==module.scorebase_key('라다 톨리야티')
+assert module.scorebase_key('로스앤젤레스 킹스')==module.scorebase_key('LA 킹스')
+assert module.parse_scorebase_widget(widget.replace('28<!-- -->%','38<!-- -->%'))==[], 'Reject probabilities that do not sum to 100'
+assert module.parse_scorebase_widget(widget.replace('홈 <!-- -->72<!-- -->%','AI 예측 준비 중'))==[], 'Do not invent missing predictions'
+football=widget.replace('홈 <!-- -->72<!-- -->%','홈 <!-- -->42<!-- -->%<span>무 <!-- -->30<!-- -->%</span>')
+assert module.parse_scorebase_widget(football)[0]['values']=={'home':42.0,'away':28.0,'draw':30.0}, 'Include football draw probability'
 print('Published probabilities: full-match parsing, home/away mapping, sum checks and rejected unrelated picks passed.')

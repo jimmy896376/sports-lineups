@@ -14,6 +14,7 @@ UTC = dt.timezone.utc
 KST = dt.timezone(dt.timedelta(hours=9))
 PATHS = dict(re.findall(r"(\w+): \{path:'([^']+)'", (ROOT/'dist/app.js').read_text()))
 HUBS = dict(ucl='champions-league', uel='europa-league', epl='premier-league', championship='championship', laliga='la-liga', bundesliga='bundesliga', seriea='serie-a', ligue1='ligue-1', eredivisie='eredivisie', jupiler='belgian-pro-league', primeira='primeira-liga', scottish='scottish-premiership', j1='j1-league', mls='mls')
+WIDGET_LEAGUES = dict(nhl='NHL',khl='KHL',nba='NBA',kbl='KBL',wkbl='WKBL',v_league='V_LEAGUE',v_league_w='V_LEAGUE_W',uefa_nl='UEFA_NL',ligamx='LIGA_MX')
 ALIASES = {'intermilan':'internazionale','sportinglisbon':'sportingcp','lasklinz':'lask','bayern':'bayernmunchen','bayernmunich':'bayernmunchen','fcbayernmunich':'bayernmunchen','fcbayernmunchen':'bayernmunchen','scfreiburg':'freiburg','manutd':'manchesterunited','vikingfk':'viking','realbetis':'betis','shakhtardonetsk':'shakhtardonetsk','yokohamamarinos':'yokohamafmarinos','vvarennagasaki':'vvarennagasaki'}
 
 def key(name):
@@ -72,6 +73,22 @@ def parse_volley(source):
         if briefing.get('homeTeamId') != match.get('homeTeamId') or briefing.get('awayTeamId') != match.get('awayTeamId'): continue
         rows.append(dict(eventId=str(match['id']), homeName=match['homeTeamName'], awayName=match['awayTeamName'], kickoff=match['matchDate'], sourceExpiresAt=expires, publishedAt=briefing.get('generatedAt'), values=dict(home=probability*100,away=(1-probability)*100,draw=0)))
     return rows
+
+def parse_scorebase_widget(source):
+    rows = []
+    for item in re.findall(r'<li\b[^>]*>(.*?)</li>', source, re.S|re.I):
+        line = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', item))).strip()
+        match = re.fullmatch(r'(\d{1,2})\.\s*(\d{1,2})\.\s*\([^)]+\)\s*(\d{1,2}):(\d{2})\s+(.+?)\s+vs\s+(.+?)\s+홈\s+(\d{1,3})\s*%\s+(?:무\s+(\d{1,3})\s*%\s+)?원정\s+(\d{1,3})\s*%', line)
+        if not match: continue
+        month, day, hour, minute, home, away, home_pct, draw_pct, away_pct = match.groups()
+        values = dict(home=float(home_pct), away=float(away_pct), draw=float(draw_pct or 0))
+        if not all(0 <= value <= 100 for value in values.values()) or abs(sum(values.values())-100) > .5: continue
+        rows.append(dict(month=int(month), day=int(day), hour=int(hour), minute=int(minute), homeName=home, awayName=away, values=values))
+    return rows
+
+def scorebase_key(name):
+    value = re.sub(r'[^a-z0-9가-힣]', '', unicodedata.normalize('NFC',re.sub(r'^HC\s+', '', name, flags=re.I)).lower())
+    return {'몬트리올캐네디언스':'몬트리올캐나디언스','로스앤젤레스킹스':'la킹스','밴쿠버커넉스':'밴쿠버캐넉스','내슈빌프레데터즈':'내슈빌프레데터스','아브토모빌리스트예카테린부르크':'아프토모빌리스트예카테린부르크','상하이드래곤즈':'상하이드래곤스','메탈루르그마그니토고르스크':'메탈루르크마그니토고르스크'}.get(value, value)
 
 def target(event, league):
     competition = event['competitions'][0]
@@ -143,6 +160,26 @@ def collect():
             # Stable match ID plus date and both sides guards rescheduled fixtures.
             if t['league']=='kovo' and t['eventId']==row['eventId'] and key(t['homeName'])==key(row['homeName']) and key(t['awayName'])==key(row['awayName']) and date(t['kickoff']).astimezone(KST).date()==date(row['kickoff']).astimezone(KST).date():
                 save(t,row['values'],'BK Volley',f"https://www.bkvolley.kr/matches/{row['eventId']}",'Publisher marks its model uncalibrated; probability is not a validated success rate.',dict(sourceExpiresAt=row.get('sourceExpiresAt'),publishedAt=row.get('publishedAt')))
+    feed = attempt('displayed lineups',lambda:json.loads((ROOT/'dist/nude-feed.json').read_text())) or {}
+    displayed = [m for m in feed.get('matches',[]) if m.get('league') in WIDGET_LEAGUES and m.get('eventId') and len(m.get('teams',[])) == 2 and start <= dt.datetime.fromtimestamp(m.get('kickoff',0)/1000,UTC) < end]
+    for league, widget_league in WIDGET_LEAGUES.items():
+        if not any(m['league']==league for m in displayed): continue
+        url = f'https://www.scorebase.kr/embed/fixtures?league={widget_league}&days=7&limit=100'
+        def widget():
+            request = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (compatible; NudeLineups/1.0)','Accept':'text/html'})
+            with urllib.request.urlopen(request,timeout=25) as response: return response.read().decode('utf-8')
+        source = attempt('Scorebase/'+league,widget)
+        if not source: continue
+        rows = parse_scorebase_widget(source)
+        if not rows: errors.append(dict(source='Scorebase/'+league,error='No published probabilities in widget')); continue
+        for m in displayed:
+            if m['league'] != league: continue
+            kickoff = dt.datetime.fromtimestamp(m['kickoff']/1000,KST)
+            home, away = m['teams']
+            matches = [r for r in rows if (r['month'],r['day'],r['hour'],r['minute']) == (kickoff.month,kickoff.day,kickoff.hour,kickoff.minute) and scorebase_key(r['homeName']) == scorebase_key(home['name']) and scorebase_key(r['awayName']) == scorebase_key(away['name'])]
+            if len(matches) != 1: continue
+            t = dict(league=league,eventId=str(m['eventId']),kickoff=kickoff.isoformat(),homeId=str(home['id']),awayId=str(away['id']),homeName=home['name'],awayName=away['name'])
+            save(t,matches[0]['values'],'Scorebase',url)
     unique = list({(r['league'],r['eventId']):r for r in forecasts}.values())
     output = dict(schemaVersion=1,asOf=checked,windowStart=start.isoformat(),windowEnd=end.isoformat(),items=unique,coverage=dict(scheduled=len(targets),external=len(unique)),errors=errors)
     path = ROOT/'dist/external-forecasts.json'

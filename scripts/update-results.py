@@ -34,9 +34,12 @@ def text(value):
 
 def parse_kbl_results(payload, start, now, checked_at):
     """Accept only ended regular-season games with an official ID and valid final score."""
-    if payload.get('resultCode') not in (None, '', 'Success', '00'):
-        raise ValueError('KBL official API rejected the results request')
-    rows = payload.get('object') or payload.get('data') or []
+    if isinstance(payload, list):
+        rows = payload
+    else:
+        if payload.get('resultCode') not in (None, '', 'Success', '00'):
+            raise ValueError('KBL official API rejected the results request')
+        rows = payload.get('object') or payload.get('data') or []
     if isinstance(rows, dict):
         rows = rows.get('list') or rows.get('matches') or []
     results = []

@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/update-external-forecasts.py'
+      - 'scripts/update-results.py'
       - 'scripts/publish-generated.sh'
       - 'scripts/check-external-forecasts.py'
       - 'scripts/check-win-probability.mjs'
@@ -42,6 +43,8 @@ jobs:
           node scripts/check-win-probability.mjs
       - name: Fetch original published match probabilities
         run: python3 scripts/update-external-forecasts.py
+      - name: Fetch completed ESPN match results
+        run: python3 scripts/update-results.py
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -50,6 +53,6 @@ jobs:
           retention-days: 3
       - name: Commit verified probability feed
         run: |
-          bash scripts/publish-generated.sh 'chore: refresh published match probabilities' dist/external-forecasts.json
+          bash scripts/publish-generated.sh 'chore: refresh published match probabilities and results' dist/external-forecasts.json dist/results.json
       - name: Publish lineup feed
         run: bash scripts/nude/publish.sh

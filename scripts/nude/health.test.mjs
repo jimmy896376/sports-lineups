@@ -8,8 +8,11 @@ const feed={schemaVersion:1,asOf:new Date(now).toISOString(),pollSeconds:60,matc
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).issues,[]);
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).missingStatsByLeague.kbo,{recentForm:0,seasonRecord:0,venueRecord:0});
 assert.deepEqual(inspect({...feed,matches:[{...match,recentForm:{},records:{}}]},{asOf:feed.asOf},now).missingStatsByLeague.kbo,{recentForm:2,seasonRecord:2,venueRecord:2});
-assert.match(inspect(feed,{asOf:feed.asOf},now+46*60000).issues.join(' '),/feed age/);
+assert.deepEqual(inspect(feed,{asOf:feed.asOf},now+60*60000).issues,[]);
+assert.match(inspect(feed,{asOf:feed.asOf},now+76*60000).issues.join(' '),/feed age/);
 assert.match(inspect({...feed,matches:[{...match,teams:[{...team('home'),logo:''},team('away')]}]},{asOf:feed.asOf},now).issues.join(' '),/logo/);
 assert.match(inspect({...feed,matches:[{...match,recentForm:{},records:{}}]},{asOf:feed.asOf},now).issues.join(' '),/KBO recent form/);
 assert.match(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:false,checkedAt:feed.asOf}}},now).issues.join(' '),/source unavailable or stale: kbo/);
+assert.deepEqual(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:true,checkedAt:new Date(now-75*60000).toISOString()}}},now).issues,[]);
+assert.match(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:true,checkedAt:new Date(now-91*60000).toISOString()}}},now).issues.join(' '),/source unavailable or stale: kbo/);
 console.log('PASS feed freshness, source status, logo, and KBO record checks');

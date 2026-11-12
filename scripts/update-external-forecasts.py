@@ -14,7 +14,7 @@ UTC = dt.timezone.utc
 KST = dt.timezone(dt.timedelta(hours=9))
 PATHS = dict(re.findall(r"(\w+): \{path:'([^']+)'", (ROOT/'dist/app.js').read_text()))
 HUBS = dict(ucl='champions-league', uel='europa-league', epl='premier-league', championship='championship', laliga='la-liga', bundesliga='bundesliga', seriea='serie-a', ligue1='ligue-1', eredivisie='eredivisie', jupiler='belgian-pro-league', primeira='primeira-liga', scottish='scottish-premiership', j1='j1-league', mls='mls')
-WIDGET_LEAGUES = dict(nhl='NHL',khl='KHL',nba='NBA',kbl='KBL',wkbl='WKBL',v_league='V_LEAGUE',v_league_w='V_LEAGUE_W',uefa_nl='UEFA_NL',ligamx='LIGA_MX')
+WIDGET_LEAGUES = dict(nhl='NHL',khl='KHL',nba='NBA',kbl='KBL',wkbl='WKBL',kbo='KBO',kleague1='K_LEAGUE_1',kleague2='K_LEAGUE_2',v_league='V_LEAGUE',v_league_w='V_LEAGUE_W',uefa_nl='UEFA_NL',ligamx='LIGA_MX')
 ALIASES = {'intermilan':'internazionale','sportinglisbon':'sportingcp','lasklinz':'lask','bayern':'bayernmunchen','bayernmunich':'bayernmunchen','fcbayernmunich':'bayernmunchen','fcbayernmunchen':'bayernmunchen','scfreiburg':'freiburg','manutd':'manchesterunited','vikingfk':'viking','realbetis':'betis','shakhtardonetsk':'shakhtardonetsk','yokohamamarinos':'yokohamafmarinos','vvarennagasaki':'vvarennagasaki'}
 
 def key(name):
@@ -88,7 +88,14 @@ def parse_scorebase_widget(source):
 
 def scorebase_key(name):
     value = re.sub(r'[^a-z0-9가-힣]', '', unicodedata.normalize('NFC',re.sub(r'^HC\s+', '', name, flags=re.I)).lower())
-    return {'몬트리올캐네디언스':'몬트리올캐나디언스','로스앤젤레스킹스':'la킹스','밴쿠버커넉스':'밴쿠버캐넉스','내슈빌프레데터즈':'내슈빌프레데터스','아브토모빌리스트예카테린부르크':'아프토모빌리스트예카테린부르크','상하이드래곤즈':'상하이드래곤스','메탈루르그마그니토고르스크':'메탈루르크마그니토고르스크'}.get(value, value)
+    aliases = {
+        '몬트리올캐네디언스':'몬트리올캐나디언스','로스앤젤레스킹스':'la킹스','밴쿠버커넉스':'밴쿠버캐넉스','내슈빌프레데터즈':'내슈빌프레데터스','아브토모빌리스트예카테린부르크':'아프토모빌리스트예카테린부르크','상하이드래곤즈':'상하이드래곤스','메탈루르그마그니토고르스크':'메탈루르크마그니토고르스크',
+        '부산kcc이지스':'부산kcc','창원lg세이커스':'창원lg','울산현대모비스피버스':'울산현대모비스','서울삼성썬더스':'서울삼성','고양소노스카이거너스':'고양소노',
+        '우리은행':'아산우리은행','bnk썸':'부산bnk썸','삼성생명':'용인삼성생명','kb스타즈':'청주kb스타즈','하나은행':'부천하나은행','신한은행':'인천신한은행',
+        '수원한국전력빅스톰':'한국전력빅스톰','kb손해보험':'kb손해보험스타즈','인천대한항공점보스':'대한항공점보스','대전삼성화재블루팡스':'삼성화재블루팡스','서울우리카드우리won':'우리카드우리won','현대캐피탈':'현대캐피탈스카이워커스','부산ok저축은행읏맨':'ok저축은행읏맨',
+        '흥국생명':'흥국생명핑크스파이더스','gs칼텍스서울kixx':'gs칼텍스kixx','soop수퍼스':'soop소퍼스','정관장':'정관장레드스파크스',
+    }
+    return aliases.get(value, value)
 
 def target(event, league):
     competition = event['competitions'][0]

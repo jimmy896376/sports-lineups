@@ -296,10 +296,14 @@ if __name__ == '__main__':
             raise
         previous = json.loads(target.read_text())
         age = datetime.now(timezone.utc) - datetime.fromisoformat(previous['asOf'].replace('Z', '+00:00'))
-        if age < timedelta(0) or age > timedelta(hours=24):
+        if age < timedelta(0):
             raise
-        print(f'::warning::Scorebase returned HTTP 403; keeping verified snapshot from {previous["asOf"]}')
-        raise SystemExit(0)
+        if age <= timedelta(hours=24):
+            print(f'::warning::Scorebase returned HTTP 403; keeping verified snapshot from {previous["asOf"]}')
+            raise SystemExit(0)
+        # A stale roster must not block publication of fresh lineups from other sources.
+        matches, leagues = [], previous.get('leagues', {})
+        print(f'::warning::Scorebase returned HTTP 403; dropping stale rosters from {previous["asOf"]}')
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': matches,
                                   'leagues': leagues}, ensure_ascii=False) + '\n')

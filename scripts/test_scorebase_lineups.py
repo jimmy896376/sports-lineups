@@ -26,9 +26,12 @@ class ScorebaseLineupTests(unittest.TestCase):
                     with self.assertRaises(SystemExit) as result:
                         runpy.run_module('scorebase_lineups', run_name='__main__')
                     self.assertEqual(result.exception.code, 0)
-                    target.write_text(json.dumps({'asOf': (datetime.now(timezone.utc)-timedelta(days=2)).isoformat()}))
-                    with self.assertRaises(HTTPError):
-                        runpy.run_module('scorebase_lineups', run_name='__main__')
+                    target.write_text(json.dumps({'asOf': (datetime.now(timezone.utc)-timedelta(days=2)).isoformat(),
+                                                  'matches': [{'id': 'stale'}], 'leagues': {'축구': [{'id': 'test', 'name': '테스트'}]}}))
+                    runpy.run_module('scorebase_lineups', run_name='__main__')
+                    refreshed = json.loads(target.read_text())
+                    self.assertEqual(refreshed['matches'], [])
+                    self.assertEqual(refreshed['leagues']['축구'][0]['id'], 'test')
             finally:
                 os.chdir(original)
 

@@ -27,4 +27,9 @@ jobs:
         if: failure() && steps.health.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run refresh-lineups.yml --repo "$GITHUB_REPOSITORY" --ref main
+        run: |
+          running=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow refresh-lineups.yml --status in_progress --json databaseId --jq length)
+          queued=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow refresh-lineups.yml --status queued --json databaseId --jq length)
+          if [ "$running" -eq 0 ] && [ "$queued" -eq 0 ]; then
+            gh workflow run refresh-lineups.yml --repo "$GITHUB_REPOSITORY" --ref main
+          fi

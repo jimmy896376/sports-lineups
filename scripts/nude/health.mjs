@@ -7,8 +7,8 @@ export function inspect(feed,snapshot,now=Date.now()){
  const issues=[];
  const checked=globalThis.NudeLineupContract.validate(feed);
  const age=(now-Date.parse(feed.asOf))/60000;
- // GitHub's scheduled collector has arrived roughly hourly; avoid duplicate retries before that run finishes.
- if(age>75||age< -5)issues.push(`feed age ${Math.round(age)} minutes`);
+ // Scheduled jobs can arrive late; the workflow avoids retrying while a collector is already running.
+ if(age>45||age< -5)issues.push(`feed age ${Math.round(age)} minutes`);
  if(!Number.isFinite(Date.parse(snapshot.asOf))||Math.abs(Date.parse(snapshot.asOf)-Date.parse(feed.asOf))>20*60000)issues.push('feed/source snapshot mismatch');
  for(const [league,status] of Object.entries(snapshot.sourceStatus||{}))
   if(status?.fresh!==true||!Number.isFinite(Date.parse(status.checkedAt))||now-Date.parse(status.checkedAt)>90*60000)

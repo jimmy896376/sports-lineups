@@ -508,8 +508,11 @@ def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
     pending = {normalize(row['name']): row for row in rows if row.get('league') == 'khl'}
     if not pending:
         return [], 0
-    league = get('https://www.scorebase.kr/leagues/KHL')
-    team_paths = list(dict.fromkeys(re.findall(r'href=["\'](/teams/[0-9]+)["\']', league.raw)))[:40]
+    try:
+        league = get('https://www.scorebase.kr/leagues/KHL')
+        team_paths = list(dict.fromkeys(re.findall(r'href=["\'](/teams/[0-9]+)["\']', league.raw)))[:40]
+    except (ValueError, OSError, urllib.error.URLError):
+        team_paths = []
     profiles = {}
     for path in team_paths:
         try:
@@ -523,7 +526,9 @@ def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
     checked = 0
     found = {}
     now = dt.datetime.now(dt.timezone.utc)
-    for url in profiles:
+    # A previously verified profile remains usable when the league's team links change.
+    # Only exact name order (or a provider middle initial) may match without a team link.
+    for url in dict.fromkeys([*profiles, *cache]):
         item = cache.get(url, {})
         if (url not in cache or item.get('retryAt', '9999') <= now.isoformat()) and checked < SCOREBASE_PROFILE_LIMIT:
             checked += 1
@@ -545,6 +550,12 @@ def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
         parts = english.split()
         if len(parts) == 2:
             forms.add(normalize(' '.join(reversed(parts))))
+        base_forms = forms.copy()
+        for key, row in pending.items():
+            provider = row['name'].split()
+            if len(provider) == 3 and re.fullmatch(r'[A-Za-z]{1,3}\.', provider[-1]):
+                if normalize(' '.join(provider[:-1])) in forms:
+                    forms.add(key)
         matches = forms & pending.keys()
         # Provider initials and Russian romanization vary; require the same club for near matches.
         if not matches and korean:
@@ -555,7 +566,7 @@ def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
                 if len(original) != 2 or len(parts) != 2:
                     continue
                 team_aliases = [row.get('team', ''), (team_dictionary or {}).get(row.get('team', ''), '')]
-                team_match = next(((path, title) for path, title in profiles[url] if title and
+                team_match = next(((path, title) for path, title in profiles.get(url, []) if title and
                                    any(len(alias) >= 4 and difflib.SequenceMatcher(None, normalize(alias), normalize(title)).ratio() >= .9
                                        for alias in team_aliases)), None)
                 if not team_match:
@@ -566,19 +577,21 @@ def scorebase_khl_profiles(rows, cache, get=fetch_page, team_dictionary=None):
                     matches.add(key)
         for key in matches:
             row = pending[key]
-            variant = key not in forms
-            team_match = next(((path, title) for path, title in profiles[url] if title and
+            variant = key not in base_forms
+            team_match = next(((path, title) for path, title in profiles.get(url, []) if title and
                                any(len(alias) >= 4 and difflib.SequenceMatcher(None, normalize(alias), normalize(title)).ratio() >= .9
                                    for alias in (row.get('team', ''), (team_dictionary or {}).get(row.get('team', ''), '')))), None)
-            if variant and not team_match:
+            if variant and not team_match and (url in profiles or not (len(row['name'].split()) == 3 and
+                                                   normalize(' '.join(row['name'].split()[:-1])) in
+                                                   base_forms)):
                 continue
             proof = {'url': url, 'domain': 'scorebase.kr', 'englishNameMatched': True,
                      'koreanNameMatched': True, 'leagueMatched': True, 'contentHash': item['contentHash']}
-            if variant:
+            if variant and team_match:
                 proof.update({'teamUrl': 'https://www.scorebase.kr' + team_match[0],
                               'teamMatched': True, 'providerNameVariantMatched': True})
             entry = {'name': row['name'], 'korean': korean, 'team': row.get('team'),
-                     'league': 'khl', 'method': 'scorebase-khl-roster-variant-v1' if variant else 'scorebase-khl-profile-v1', 'sources': [proof]}
+                     'league': 'khl', 'method': 'scorebase-khl-roster-variant-v1' if variant and team_match else 'scorebase-khl-profile-v1', 'sources': [proof]}
             if key in found:
                 if found[key] is None or found[key]['korean'] != korean:
                     found[key] = None

@@ -162,6 +162,17 @@ class NameVerification(unittest.TestCase):
         found,checked=r.scorebase_khl_profiles([{'name':'Kostin Denis','league':'khl'}],{},get)
         self.assertEqual((checked,found[0]['korean']),(2,'데니스 코스틴'))
 
+    def test_scorebase_khl_cached_profile_survives_missing_team_list(self):
+        url='https://www.scorebase.kr/players/abc123?league=KHL'
+        cache={url:{'korean':'니키타 미하일로프','english':'Nikita Mikhailov','contentHash':'verified'}}
+        def unavailable(_):
+            raise ValueError('league unavailable')
+        rows=[{'name':'Mikhailov Nikita V.','league':'khl','team':'HC 라다 톨리야티'}]
+        found,checked=r.scorebase_khl_profiles(rows,cache,unavailable)
+        self.assertEqual(checked,0)
+        self.assertEqual([(entry['name'],entry['korean'],entry['method']) for entry in found],
+                         [('Mikhailov Nikita V.','니키타 미하일로프','scorebase-khl-profile-v1')])
+
     def test_scorebase_khl_variant_requires_same_club(self):
         league=r.Page('<a href="/teams/1">아드미랄</a><a href="/teams/2">아방가르드</a>')
         clubs={'1':r.Page('<title>아드미랄 블라디보스토크 하키 팀</title>'

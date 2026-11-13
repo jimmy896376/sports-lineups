@@ -588,7 +588,7 @@ def scrape_khl():
     history = []
     season_start = datetime(today.year if today.month >= 7 else today.year - 1, 8, 1, tzinfo=timezone.utc).timestamp()
     for page in range(1, 31):
-        history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(season_start), 'q[start_at_lt_time_from_unixtime]': int(start), 'order_direction': 'desc', 'locale': 'en', 'page': page}, safe='[]')
+        history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(season_start), 'q[start_at_lt_time_from_unixtime]': int(datetime.now(timezone.utc).timestamp()), 'order_direction': 'desc', 'locale': 'en', 'page': page}, safe='[]')
         try:
             history_raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + history_query)
         except OSError as error:

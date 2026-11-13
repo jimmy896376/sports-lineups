@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 from datetime import datetime
 from io import BytesIO
+from urllib.parse import parse_qs, urlsplit
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 from unittest import TestCase, main
@@ -127,12 +128,14 @@ class KBLProjectedLineups(TestCase):
         teams = [{'id': 72, 'name': 'CSKA'}, {'id': 70, 'name': 'Sibir'}]
         kickoff = int(datetime(2026, 11, 10, 9, tzinfo=ZoneInfo('Asia/Seoul')).timestamp() * 1000)
         upcoming = {'id': 123, 'type_id': 18, 'start_at': kickoff, 'team_a': teams[0], 'team_b': teams[1]}
-        finished = {'id': 122, 'type_id': 18, 'start_at': kickoff - 86400000, 'score': '3:2', 'team_a': teams[0], 'team_b': teams[1]}
+        finished = {'id': 122, 'type_id': 18, 'start_at': int(datetime(2026, 11, 10, 3, tzinfo=ZoneInfo('Asia/Seoul')).timestamp() * 1000), 'score': '3:2', 'team_a': teams[0], 'team_b': teams[1]}
         table = [{'season': '2026/2027', 'stages': [{'type': 'regular', 'regular': [
             {'id': 72, 'w': 1, 'l': 0}, {'id': 70, 'w': 0, 'l': 1}]}]}]
         def fetch(url):
             if 'events_v2' in url:
-                return [upcoming] if 'order_direction=asc' in url else [finished]
+                if 'order_direction=asc' in url: return [upcoming]
+                history_end = int(parse_qs(urlsplit(url).query)['q[start_at_lt_time_from_unixtime]'][0])
+                return [finished] if finished['start_at'] / 1000 < history_end else []
             if 'tables_v2' in url:
                 return table
             return {'team': {'players': []}}

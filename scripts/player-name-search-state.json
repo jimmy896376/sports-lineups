@@ -1186,8 +1186,8 @@
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "nextBulkCheckAt": "2026-10-31T23:34:32.678372+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -14938,7 +14938,26 @@
     },
     "hwang in beom": {
       "nextBulkCheckAt": "2026-10-25T17:42:47.084380+00:00",
-      "bulkPolicy": "wikipedia-exact-sports-v4"
+      "bulkPolicy": "wikipedia-exact-sports-v4",
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Hwang+In-Beom+South+Korea+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Hwang+In-Beom",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Hwang+In-Beom+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "jan bednarek": {
       "status": "verified",
@@ -15233,12 +15252,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T01:44:26.541636+00:00",
-      "nextCheckAt": "2026-11-08T07:44:26.541636+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T00:22:31.729915+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T20:58:42.009848+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "sean zawadzki": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -15426,10 +15445,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=David+Ayala+Inter+Miami+CF+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=David+Ayala",
@@ -15443,12 +15459,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T02:36:04.249202+00:00",
-      "nextCheckAt": "2026-11-08T08:36:04.249202+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T20:12:17.891813+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T20:12:17.891813+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "dayne st clair": {
       "status": "verified",
@@ -15845,10 +15861,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Gabriel+Perreault+New+York+Rangers+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Gabriel+Perreault",
@@ -15862,8 +15875,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00"
     },
@@ -16189,8 +16202,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -16348,8 +16361,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -16546,12 +16559,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T03:31:05.704593+00:00",
-      "nextCheckAt": "2026-11-08T09:31:05.704593+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-09T03:31:05.704593+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "ilay feingold": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -16613,12 +16626,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T01:44:26.541636+00:00",
-      "nextCheckAt": "2026-11-08T07:44:26.541636+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T20:58:42.009848+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "jaime jaquez": {
       "nextBulkCheckAt": "2026-11-01T07:37:52.842038+00:00",
@@ -16887,12 +16900,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T01:44:26.541636+00:00",
-      "nextCheckAt": "2026-11-08T07:44:26.541636+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T20:58:42.009848+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "matt freese": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -17103,8 +17116,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -17411,12 +17424,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T01:44:26.541636+00:00",
-      "nextCheckAt": "2026-11-08T07:44:26.541636+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T21:40:27.165853+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "bilal coulibaly": {
       "status": "verified",
@@ -18062,16 +18075,23 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Joseph+Rosales+Austin+FC&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Joseph+Rosales+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Joseph+Rosales",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Joseph+Rosales+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-30T11:13:34.783384+00:00",
-      "nextCheckAt": "2026-10-30T17:13:34.783384+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "kelvin yeboah": {
       "nextBulkCheckAt": "2026-11-02T20:06:42.742971+00:00",
@@ -19800,8 +19820,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -27940,8 +27960,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-13T16:01:39.001861+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -32933,8 +32953,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T04:21:48.742912+00:00"
     },
@@ -34760,8 +34780,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-14T00:06:01.569321+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -34833,18 +34853,27 @@
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Luis+Ot%C3%A1vio+Orlando+City+SC&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError"
+          "url": "https://www.google.com/search?q=Luis+Otavio+Orlando+City+SC+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Luis+Otavio",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Luis+Otavio+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
-      "policy": "precollect-names-v3",
-      "checkedAt": "2026-10-31T16:20:14.009207+00:00",
-      "nextCheckAt": "2026-10-31T22:20:14.009207+00:00",
-      "namuPolicy": "namuwiki-team-roster-v1",
-      "nextNamuCheckAt": "2026-11-03T03:38:13.197207+00:00"
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
+      "namuPolicy": "namuwiki-team-roster-v2",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
+      "scorebasePolicy": "scorebase-club-punctuation-v2",
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "mamadou fofana": {
       "nextBulkCheckAt": "2026-10-25T17:45:14.240613+00:00",
@@ -34938,8 +34967,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "tyler bilodeau": {
       "nextBulkCheckAt": "2026-10-28T08:16:53.599008+00:00",
@@ -34966,7 +34995,7 @@
       "nextBulkCheckAt": "2026-10-31T20:12:34.041171+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Tyrese+Spicer+Orlando+City+SC+-site%3Awikipedia.org&hl=ko",
@@ -34984,10 +35013,10 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T03:31:05.704593+00:00",
-      "nextCheckAt": "2026-11-08T09:31:05.704593+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-09T03:31:05.704593+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "vinicius nogueira": {
       "nextBulkCheckAt": "2026-11-02T15:34:16.965246+00:00",
@@ -35003,18 +35032,18 @@
         },
         "bing": {
           "url": "https://www.bing.com/search?q=Vinicius+Nogueira+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
-          "status": "no-readable-trusted-results"
+          "status": "results"
         }
       },
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T04:29:49.728896+00:00",
-      "nextCheckAt": "2026-11-08T10:29:49.728896+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T19:28:54.906024+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T21:40:27.165853+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "william reilly": {
       "nextBulkCheckAt": "2026-11-02T20:39:07.893975+00:00",
@@ -36483,8 +36512,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T00:06:01.569321+00:00"
     },
@@ -37030,8 +37059,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-13T16:03:56.747910+00:00"
     },
@@ -37039,7 +37068,7 @@
       "nextBulkCheckAt": "2026-10-31T23:34:32.678372+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "nextNamuCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T06:35:37.018812+00:00",
       "searches": {
@@ -37059,8 +37088,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "florian grillitsch": {
       "status": "verified",
@@ -37168,7 +37197,7 @@
       "nextBulkCheckAt": "2026-10-31T23:34:32.678372+00:00",
       "bulkPolicy": "wikipedia-exact-sports-v4",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "nextNamuCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jorgen+Strand+Larsen+Crystal+Palace+-site%3Awikipedia.org&hl=ko",
@@ -37186,8 +37215,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T00:06:01.569321+00:00"
     },
@@ -37215,8 +37244,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "julian araujo": {
       "status": "verified",
@@ -37286,8 +37315,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-13T16:03:56.747910+00:00"
     },
@@ -37544,8 +37573,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-13T16:03:56.747910+00:00"
     },
@@ -41118,12 +41147,12 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T01:44:26.541636+00:00",
-      "nextCheckAt": "2026-11-08T07:44:26.541636+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-09T00:22:31.729915+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T20:58:42.009848+00:00"
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00"
     },
     "herman johansson": {
       "status": "verified",
@@ -46523,8 +46552,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-13T16:03:56.747910+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -51154,8 +51183,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
       "nextNamuCheckAt": "2026-11-13T17:58:18.187849+00:00"
     },
@@ -65050,7 +65079,7 @@
       "nextBulkCheckAt": "2026-11-02T16:09:26.846307+00:00",
       "searches": {
         "google": {
-          "url": "https://www.google.com/search?q=Oh+Hyeon-Gyu+Besiktas+-site%3Awikipedia.org&hl=ko",
+          "url": "https://www.google.com/search?q=Oh+Hyeon-Gyu+South+Korea+-site%3Awikipedia.org&hl=ko",
           "status": "disabled-after-block"
         },
         "daum": {
@@ -65065,8 +65094,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-05T17:17:34.116434+00:00",
-      "nextCheckAt": "2026-11-05T23:17:34.116434+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "oumar diakite": {
       "status": "verified",
@@ -80640,8 +80669,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -80714,8 +80743,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -81373,8 +81402,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -81440,8 +81469,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -81939,10 +81968,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Ali+Avila+Quer%C3%A9taro+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Ali+Avila",
@@ -81956,8 +81982,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -81967,10 +81993,7 @@
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Bernardo+Parra+Quer%C3%A9taro+-site%3Awikipedia.org&hl=ko",
-          "status": "unavailable",
-          "reason": "ValueError",
-          "detail": "search-results-unavailable",
-          "httpStatus": null
+          "status": "disabled-after-block"
         },
         "daum": {
           "url": "https://search.daum.net/search?w=tot&q=Bernardo+Parra",
@@ -81984,8 +82007,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -82033,8 +82056,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -82058,8 +82081,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -82104,8 +82127,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-14T01:15:47.339027+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -85460,9 +85483,9 @@
     },
     "telasco jose segovia": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
-      "nextScorebaseCheckAt": "2026-11-08T21:40:27.165853+00:00",
+      "nextScorebaseCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-08T21:40:27.165853+00:00",
+      "nextNamuCheckAt": "2026-11-14T14:28:03.797280+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Telasco+Jose+Segovia+Inter+Miami+CF+-site%3Awikipedia.org&hl=ko",
@@ -85480,8 +85503,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-08T04:29:49.728896+00:00",
-      "nextCheckAt": "2026-11-08T10:29:49.728896+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "aldo rocha": {
       "searches": {
@@ -86681,7 +86704,7 @@
       "scorebasePolicy": "scorebase-club-punctuation-v2",
       "nextScorebaseCheckAt": "2026-11-13T16:03:56.747910+00:00",
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "nextNamuCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Jefferson+Lerma+Crystal+Palace+-site%3Awikipedia.org&hl=ko",
@@ -86699,8 +86722,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "mathis mout": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -87915,8 +87938,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "nathan collins": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -87940,8 +87963,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "jack clarke": {
       "scorebasePolicy": "scorebase-club-punctuation-v2",
@@ -88201,8 +88224,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "oscar tshiebwe": {
       "searches": {
@@ -88507,7 +88530,7 @@
     },
     "noah hanifin": {
       "namuPolicy": "namuwiki-team-roster-v2",
-      "nextNamuCheckAt": "2026-11-13T13:55:58.268851+00:00",
+      "nextNamuCheckAt": "2026-11-13T20:28:03.797280+00:00",
       "searches": {
         "google": {
           "url": "https://www.google.com/search?q=Noah+Hanifin+Vegas+Golden+Knights+-site%3Awikipedia.org&hl=ko",
@@ -88525,8 +88548,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "roberto carlos de la rosa": {
       "searches": {
@@ -88622,8 +88645,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "cam christie": {
       "searches": {
@@ -89171,8 +89194,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "sousa": {
       "searches": {
@@ -92804,8 +92827,8 @@
       "sourceErrors": [],
       "status": "needs-verification",
       "policy": "precollect-names-v6",
-      "checkedAt": "2026-11-13T07:55:58.268851+00:00",
-      "nextCheckAt": "2026-11-13T13:55:58.268851+00:00"
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     },
     "andrew peeke": {
       "namuPolicy": "namuwiki-team-roster-v2",
@@ -93323,6 +93346,708 @@
       "policy": "precollect-names-v6",
       "checkedAt": "2026-11-13T11:58:03.902924+00:00",
       "nextCheckAt": "2026-11-13T17:58:03.902924+00:00"
+    },
+    "alaeddine zouhir": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Alaeddine+Zouhir+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Alaeddine+Zouhir",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Alaeddine+Zouhir+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "ali saleh amro": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Ali+Saleh+Amro+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Ali+Saleh+Amro",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ali+Saleh+Amro+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "bruno": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Bruno+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "unavailable",
+          "reason": "ValueError",
+          "detail": "search-results-unavailable",
+          "httpStatus": null
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Bruno",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Bruno+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "david ruiz": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=David+Ruiz+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=David+Ruiz",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=David+Ruiz+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "denil maldonado": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Denil+Maldonado+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Denil+Maldonado",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Denil+Maldonado+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "dereck moncada": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Dereck+Moncada+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Dereck+Moncada",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Dereck+Moncada+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "edrick menjivar": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Edrick+Menjivar+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Edrick+Menjivar",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Edrick+Menjivar+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "isam feiz": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Isam+Feiz+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Isam+Feiz",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Isam+Feiz+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "jonathan toro": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jonathan+Toro+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jonathan+Toro",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jonathan+Toro+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "jose reyes": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Jose+Reyes+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Jose+Reyes",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Jose+Reyes+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "julian martinez": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Juli%C3%A1n+Martinez+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Juli%C3%A1n+Martinez",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Juli%C3%A1n+Martinez+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "keyrol figueroa": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Keyrol+Figueroa+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Keyrol+Figueroa",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Keyrol+Figueroa+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "khalid eisa": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Khalid+Eisa+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Khalid+Eisa",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Khalid+Eisa+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "khalifa al hammadi": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Khalifa+Al-Hammadi+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Khalifa+Al-Hammadi",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Khalifa+Al-Hammadi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "luan pereira": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Luan+Pereira+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Luan+Pereira",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Luan+Pereira+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "luis palma": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Luis+Palma+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Luis+Palma",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Luis+Palma+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "marcus meloni": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Marcus+Meloni+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Marcus+Meloni",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Marcus+Meloni+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "rigoberto rivas": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Rigoberto+Rivas+Honduras+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Rigoberto+Rivas",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Rigoberto+Rivas+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "ruben canedo": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Ruben+Canedo+United+Arab+Emirates+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Ruben+Canedo",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Ruben+Canedo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "abdulelah al amri": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Abdulelah+Al-Amri+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Abdulelah+Al-Amri",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Abdulelah+Al-Amri+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "abdullah al hamdan": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Abdullah+Al-Hamdan+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Abdullah+Al-Hamdan",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Abdullah+Al-Hamdan+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "abdullah al khaibari": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Abdullah+Al-Khaibari+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Abdullah+Al-Khaibari",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Abdullah+Al-Khaibari+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "cho hyun taek": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Cho+Hyun-taek+South+Korea+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Cho+Hyun-taek",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Cho+Hyun-taek+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "hassan al tambakti": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Hassan+Al-Tambakti+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Hassan+Al-Tambakti",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Hassan+Al-Tambakti+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "marwan al sahafi": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Marwan+Al-Sahafi+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Marwan+Al-Sahafi",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Marwan+Al-Sahafi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "mohamed kanno": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mohamed+Kanno+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mohamed+Kanno",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohamed+Kanno+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "mohammed abu al shamat": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mohammed+Abu+Al-Shamat+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mohammed+Abu+Al-Shamat",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohammed+Abu+Al-Shamat+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "mohammed al owais": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mohammed+Al-Owais+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mohammed+Al-Owais",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohammed+Al-Owais+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "mohammed al qahtani": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Mohammed+Al-Qahtani+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Mohammed+Al-Qahtani",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Mohammed+Al-Qahtani+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "moteb al harbi": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Moteb+Al-Harbi+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Moteb+Al-Harbi",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Moteb+Al-Harbi+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "nasser al dawsari": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Nasser+Al-Dawsari+Saudi+Arabia+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Nasser+Al-Dawsari",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Nasser+Al-Dawsari+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "park jin seop": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Park+Jin-Seop+South+Korea+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Park+Jin-Seop",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Park+Jin-Seop+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
+    },
+    "seol young woo": {
+      "searches": {
+        "google": {
+          "url": "https://www.google.com/search?q=Seol+Young-Woo+South+Korea+-site%3Awikipedia.org&hl=ko",
+          "status": "disabled-after-block"
+        },
+        "daum": {
+          "url": "https://search.daum.net/search?w=tot&q=Seol+Young-Woo",
+          "status": "no-readable-trusted-results"
+        },
+        "bing": {
+          "url": "https://www.bing.com/search?q=Seol+Young-Woo+%ED%95%9C%EA%B8%80+%EC%9D%B4%EB%A6%84+-site%3Awikipedia.org&setlang=ko",
+          "status": "no-readable-trusted-results"
+        }
+      },
+      "sourceErrors": [],
+      "status": "needs-verification",
+      "policy": "precollect-names-v6",
+      "checkedAt": "2026-11-13T14:28:03.797280+00:00",
+      "nextCheckAt": "2026-11-13T20:28:03.797280+00:00"
     }
   }
 }

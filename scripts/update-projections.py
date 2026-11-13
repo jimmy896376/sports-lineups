@@ -586,8 +586,9 @@ def scrape_khl():
     upcoming_teams = {str(team.get('id')) for game in upcoming for team in (game.get('team_a', {}), game.get('team_b', {})) if team.get('id')}
     recent_starters = {}
     history = []
-    for page in range(1, 7):
-        history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(start - 35 * 86400), 'q[start_at_lt_time_from_unixtime]': int(start), 'order_direction': 'desc', 'locale': 'en', 'page': page}, safe='[]')
+    season_start = datetime(today.year if today.month >= 7 else today.year - 1, 8, 1, tzinfo=timezone.utc).timestamp()
+    for page in range(1, 31):
+        history_query = urlencode({'q[start_at_gt_time_from_unixtime]': int(season_start), 'q[start_at_lt_time_from_unixtime]': int(start), 'order_direction': 'desc', 'locale': 'en', 'page': page}, safe='[]')
         try:
             history_raw = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/events_v2.json?' + history_query)
         except OSError as error:
@@ -611,6 +612,7 @@ def scrape_khl():
                          'Dragons': '상하이 드래곤스', 'Lada': '라다 톨리야티',
                          'Metallurg Mg': '메탈루르크 마그니토고르스크'}
     results_by_team = {}
+    venue_by_team = {}
     for row in history:
         game = row.get('event', row)
         score = re.fullmatch(r'(\d+)\s*:\s*(\d+)', str(game.get('score', '')))
@@ -621,6 +623,8 @@ def scrape_khl():
             team_id = str(game.get('team_a' if side == 'home' else 'team_b', {}).get('id', ''))
             if team_id and own != other:
                 results_by_team.setdefault(team_id, []).append((game['start_at'], 'W' if own > other else 'L'))
+                side_record = venue_by_team.setdefault(team_id, {'home': [0, 0], 'away': [0, 0]})[side]
+                side_record[0 if own > other else 1] += 1
     for results in results_by_team.values():
         results.sort(reverse=True)
     for row in history:
@@ -678,6 +682,9 @@ def scrape_khl():
                 wins = sum(int(standing.get(key) or 0) for key in ('w', 'otw', 'sow'))
                 losses = sum(int(standing.get(key) or 0) for key in ('l', 'otl', 'sol'))
                 records[side] = {'record': f'{wins}-{losses}'}
+                venue = venue_by_team.get(str(team['id']))
+                if venue and [wins, losses] == [venue['home'][0] + venue['away'][0], venue['home'][1] + venue['away'][1]]:
+                    records[side]['sideRecord'] = '-'.join(map(str, venue[side]))
             source = scorebase_records.get(scorebase_aliases.get(names[side], korean_names.get(names[side], '')))
             if source and (side not in records or records[side]['record'] == source['record']):
                 records[side] = {'record': source['record'], 'sideRecord': source[side]}
@@ -1046,6 +1053,30 @@ def kbl_recent_and_records(detail):
     return result
 
 
+def kbl_official_records():
+    """Read current home/away records from the KBL public team ranking."""
+    import urllib.request
+    request = urllib.request.Request('https://api.kbl.or.kr/league/rank/team', headers={
+        'User-Agent': 'Mozilla/5.0', 'Origin': 'https://kbl.or.kr', 'Channel': 'WEB',
+        'TeamCode': 'XX', 'lang': 'ko', 'X-Requested-With': 'XMLHttpRequest'})
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            rows = json.load(response)
+    except (OSError, ValueError) as error:
+        print('KBL official venue records unavailable:', error)
+        return {}
+    records = {}
+    for row in rows if isinstance(rows, list) else []:
+        name = row.get('tname')
+        if name not in KBL_LOGO_CODES: continue
+        values = [row.get(key) for key in ('win', 'loss', 'hwin', 'hloss', 'awin', 'aloss')]
+        if not all(isinstance(value, int) and value >= 0 for value in values): continue
+        wins, losses, home_wins, home_losses, away_wins, away_losses = values
+        if wins != home_wins + away_wins or losses != home_losses + away_losses: continue
+        records[name] = {'record': f'{wins}-{losses}', 'home': f'{home_wins}-{home_losses}', 'away': f'{away_wins}-{away_losses}'}
+    return records
+
+
 def scrape_kbl_statgg():
     """Use KBL schedule and season player minutes as a transparent starter projection."""
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
@@ -1083,7 +1114,7 @@ def scrape_kbl_statgg():
         ]
         records = {side: {'record': rows[0]['summary']} for side, rows in comparison['records'].items() if rows}
         events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'logos': logos, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'records': records, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
-    scorebase_records = scorebase_venue_records('KBL')
+    scorebase_records = kbl_official_records() or scorebase_venue_records('KBL')
     for event in events:
         prediction = event['prediction']
         for side, name in prediction['names'].items():

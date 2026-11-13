@@ -93,7 +93,8 @@ def scorebase_key(name):
         '부산kcc이지스':'부산kcc','창원lg세이커스':'창원lg','울산현대모비스피버스':'울산현대모비스','서울삼성썬더스':'서울삼성','고양소노스카이거너스':'고양소노',
         '우리은행':'아산우리은행','bnk썸':'부산bnk썸','삼성생명':'용인삼성생명','kb스타즈':'청주kb스타즈','하나은행':'부천하나은행','신한은행':'인천신한은행',
         '수원한국전력빅스톰':'한국전력빅스톰','kb손해보험':'kb손해보험스타즈','인천대한항공점보스':'대한항공점보스','대전삼성화재블루팡스':'삼성화재블루팡스','서울우리카드우리won':'우리카드우리won','현대캐피탈':'현대캐피탈스카이워커스','부산ok저축은행읏맨':'ok저축은행읏맨',
-        '흥국생명':'흥국생명핑크스파이더스','gs칼텍스서울kixx':'gs칼텍스kixx','soop수퍼스':'soop소퍼스','정관장':'정관장레드스파크스',
+        '한국전력':'한국전력빅스톰','대한항공':'대한항공점보스','삼성화재':'삼성화재블루팡스','우리카드':'우리카드우리won','ok저축은행':'ok저축은행읏맨',
+        'ibk기업은행':'ibk기업은행알토스','흥국생명':'흥국생명핑크스파이더스','gs칼텍스서울kixx':'gs칼텍스kixx','gs칼텍스':'gs칼텍스kixx','soop수퍼스':'soop소퍼스','정관장':'정관장레드스파크스','현대건설':'현대건설힐스테이트','한국도로공사':'한국도로공사하이패스',
     }
     return aliases.get(value, value)
 
@@ -169,6 +170,14 @@ def collect():
                 save(t,row['values'],'BK Volley',f"https://www.bkvolley.kr/matches/{row['eventId']}",'Publisher marks its model uncalibrated; probability is not a validated success rate.',dict(sourceExpiresAt=row.get('sourceExpiresAt'),publishedAt=row.get('publishedAt')))
     feed = attempt('displayed lineups',lambda:json.loads((ROOT/'dist/nude-feed.json').read_text())) or {}
     displayed = [m for m in feed.get('matches',[]) if m.get('league') in WIDGET_LEAGUES and m.get('eventId') and len(m.get('teams',[])) == 2 and start <= dt.datetime.fromtimestamp(m.get('kickoff',0)/1000,UTC) < end]
+    for row in rows:
+        for m in displayed:
+            if m['league'] not in ('v_league','v_league_w'): continue
+            kickoff = dt.datetime.fromtimestamp(m['kickoff']/1000,KST)
+            home, away = m['teams']
+            if date(row['kickoff']).astimezone(KST) != kickoff or scorebase_key(row['homeName']) != scorebase_key(home['name']) or scorebase_key(row['awayName']) != scorebase_key(away['name']): continue
+            t = dict(league=m['league'],eventId=str(m['eventId']),kickoff=kickoff.isoformat(),homeId=str(home['id']),awayId=str(away['id']),homeName=home['name'],awayName=away['name'])
+            save(t,row['values'],'BK Volley',f"https://www.bkvolley.kr/matches/{row['eventId']}",'Publisher marks its model uncalibrated; probability is not a validated success rate.',dict(sourceExpiresAt=row.get('sourceExpiresAt'),publishedAt=row.get('publishedAt')))
     for league, widget_league in WIDGET_LEAGUES.items():
         if not any(m['league']==league for m in displayed): continue
         url = f'https://www.scorebase.kr/embed/fixtures?league={widget_league}&days=7&limit=100'

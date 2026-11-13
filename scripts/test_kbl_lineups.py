@@ -1,6 +1,7 @@
 import importlib.util
 from pathlib import Path
 from datetime import datetime
+from io import BytesIO
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 from unittest import TestCase, main
@@ -11,6 +12,13 @@ spec.loader.exec_module(module)
 
 
 class KBLProjectedLineups(TestCase):
+    def test_official_venue_records_require_consistent_totals(self):
+        from json import dumps
+        rows = [{'tname': '서울 SK', 'win': 6, 'loss': 4, 'hwin': 5, 'hloss': 2, 'awin': 1, 'aloss': 2},
+                {'tname': '수원 KT', 'win': 6, 'loss': 7, 'hwin': 3, 'hloss': 3, 'awin': 2, 'aloss': 4}]
+        with patch('urllib.request.urlopen', return_value=BytesIO(dumps(rows).encode())):
+            self.assertEqual(module.kbl_official_records(), {'서울 SK': {'record': '6-4', 'home': '5-2', 'away': '1-2'}})
+
     def test_wkbl_includes_five_days_only(self):
         class Clock(datetime):
             @classmethod
@@ -40,7 +48,7 @@ class KBLProjectedLineups(TestCase):
         comparison = {'recentForm': {}, 'records': {'home': [{'summary': '6-3'}]}}
         venue = {'서울 SK': {'record': '6-3', 'home': '5-2', 'away': '1-1'},
                  '수원 KT': {'record': '6-5', 'home': '3-2', 'away': '3-3'}}
-        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', side_effect=[schedule, '']), patch.object(module, 'kbl_projected_lineups', return_value={}), patch.object(module, 'kbl_recent_and_records', return_value=comparison), patch.object(module, 'scorebase_venue_records', return_value=venue):
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_text', side_effect=[schedule, '']), patch.object(module, 'kbl_projected_lineups', return_value={}), patch.object(module, 'kbl_recent_and_records', return_value=comparison), patch.object(module, 'kbl_official_records', return_value=venue):
             rows = module.scrape_kbl_statgg()
         self.assertEqual([row['event']['id'] for row in rows], ['KBL'])
         self.assertEqual(rows[0]['prediction']['records']['home']['sideRecord'], '5-2')
@@ -110,6 +118,28 @@ class KBLProjectedLineups(TestCase):
             result = module.scrape_khl()[0]['prediction']['records']
         self.assertEqual(result['home'], {'record': '3-1', 'sideRecord': '2-0'})
         self.assertEqual(result['away'], {'record': '1-3'})
+
+    def test_khl_venue_record_from_complete_official_results(self):
+        class Clock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 10, 6, tzinfo=ZoneInfo('Asia/Seoul'))
+        teams = [{'id': 72, 'name': 'CSKA'}, {'id': 70, 'name': 'Sibir'}]
+        kickoff = int(datetime(2026, 11, 10, 9, tzinfo=ZoneInfo('Asia/Seoul')).timestamp() * 1000)
+        upcoming = {'id': 123, 'type_id': 18, 'start_at': kickoff, 'team_a': teams[0], 'team_b': teams[1]}
+        finished = {'id': 122, 'type_id': 18, 'start_at': kickoff - 86400000, 'score': '3:2', 'team_a': teams[0], 'team_b': teams[1]}
+        table = [{'season': '2026/2027', 'stages': [{'type': 'regular', 'regular': [
+            {'id': 72, 'w': 1, 'l': 0}, {'id': 70, 'w': 0, 'l': 1}]}]}]
+        def fetch(url):
+            if 'events_v2' in url:
+                return [upcoming] if 'order_direction=asc' in url else [finished]
+            if 'tables_v2' in url:
+                return table
+            return {'team': {'players': []}}
+        with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_json', side_effect=fetch), patch.object(module, 'scorebase_venue_records', return_value={}):
+            result = module.scrape_khl()[0]['prediction']['records']
+        self.assertEqual(result['home'], {'record': '1-0', 'sideRecord': '1-0'})
+        self.assertEqual(result['away'], {'record': '0-1', 'sideRecord': '0-1'})
 
 
 if __name__ == '__main__':

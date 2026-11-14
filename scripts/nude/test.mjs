@@ -10,6 +10,7 @@ assert.equal(matchState(row('농구',now-30*60000,'scheduled'),now),'live');
 assert.equal(matchState(row('하키',now+30*60000,'scheduled'),now),'scheduled');
 assert.equal(matchState(row('야구',now-6*3600000,'unknown'),now),'live');
 assert.equal(matchState(row('야구',now-9*3600000,'live',now-2*3600000),now),'finished');
+assert.equal(matchState(row('야구',now-9*3600000,'live',now-60000),now),'live');
 const source=read('dist/projections.json'),catalog=read('dist/name-catalog.json'),teams=read('dist/team-ko.json'),config=read('scripts/nude/config.json');catalog.teamCodes=read('scripts/nude/team-codes.json');
 const feed=buildFeed(source,catalog,teams,config,'test'),validate=globalThis.NudeLineupContract.validate;
 assert.equal(feed.removalPolicy,'finished');

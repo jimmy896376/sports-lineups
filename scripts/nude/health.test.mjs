@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {inspect} from './health.mjs';
+import {inspect,inspectPublication,inspectLogoUrls} from './health.mjs';
 
 const now=Date.parse('2026-11-05T00:00:00Z');
 const team=side=>({side,id:side,name:side,logo:'https://example.com/logo.png',players:[{name:'선수',position:'',number:'',flag:''}],status:'predicted',injuries:[]});
@@ -15,4 +15,21 @@ assert.match(inspect({...feed,matches:[{...match,recentForm:{},records:{}}]},{as
 assert.match(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:false,checkedAt:feed.asOf}}},now).issues.join(' '),/source unavailable or stale: kbo/);
 assert.deepEqual(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:true,checkedAt:new Date(now-75*60000).toISOString()}}},now).issues,[]);
 assert.match(inspect(feed,{asOf:feed.asOf,sourceStatus:{kbo:{fresh:true,checkedAt:new Date(now-91*60000).toISOString()}}},now).issues.join(' '),/source unavailable or stale: kbo/);
+const yesterday={...match,kickoff:now-86400000,matchStatus:'finished'};
+assert.ok(!inspect({...feed,matches:[yesterday]},{asOf:feed.asOf},now).issues.some(issue=>issue.includes('outside five-day window')));
+const midnight=Date.parse('2026-11-04T15:30:00Z');
+const continuing={...match,sport:'야구',kickoff:midnight-3600000,checkedAt:new Date(midnight).toISOString(),matchStatus:'live'};
+const midnightFeed={...feed,asOf:new Date(midnight).toISOString(),matches:[continuing]};
+assert.ok(!inspect(midnightFeed,{asOf:midnightFeed.asOf},midnight).issues.some(issue=>issue.includes('outside five-day window')));
+const oldLive={...feed,asOf:new Date(now-11*60000).toISOString()};
+assert.match(inspectPublication(feed,oldLive,now).issues.join(' '),/published feed lags source/);
+assert.deepEqual(inspectPublication(feed,feed,now).issues,[]);
+const reviewed={...feed,matches:[{...match,teams:[{...team('home'),name:'홈팀',players:[{name:'검증 선수',originalName:'Example Player',position:'',number:'',flag:''}]},team('away')]}]};
+const stale={...reviewed,matches:[{...reviewed.matches[0],teams:[{...reviewed.matches[0].teams[0],name:'Home Team',players:[{name:'Example Player',originalName:'Example Player',position:'',number:'',flag:''}]},team('away')]}]};
+assert.match(inspectPublication(reviewed,stale,now).issues.join(' '),/lost 1 team names, 1 player names/);
+const image=status=>({status,headers:new Map([['content-type','image/png']])});
+assert.deepEqual((await inspectLogoUrls(feed,async()=>image(206),0)).issues,[]);
+assert.match((await inspectLogoUrls(feed,async()=>image(404),0)).issues.join(' '),/broken logo/);
+assert.match((await inspectLogoUrls(feed,async()=>({status:200,headers:new Map([['content-type','text/html']])}),0)).issues.join(' '),/broken logo/);
+assert.deepEqual((await inspectLogoUrls(feed,async()=>image(403),0)).issues,[]);
 console.log('PASS feed freshness, source status, logo, and KBO record checks');

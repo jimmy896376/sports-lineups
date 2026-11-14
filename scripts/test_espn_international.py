@@ -10,7 +10,7 @@ spec.loader.exec_module(source)
 
 
 def team(side, name, code):
-    return {'homeAway': side, 'team': {'displayName': name, 'abbreviation': code,
+    return {'homeAway': side, 'team': {'id': code, 'displayName': name, 'abbreviation': code,
                                        'logo': f'https://example.com/{code}.png'}}
 
 
@@ -34,6 +34,24 @@ assert item['matchStatus'] == 'live'
 assert source.international_item({**event, 'status': {'type': {'state': 'post', 'completed': True}}}, summary, 'uefa_nl')['matchStatus'] == 'finished'
 assert all(len(item['lineups'][side]) == 11 for side in ('home', 'away'))
 assert source.international_item(event, {'rosters': [roster('home')]}, 'uefa_nl') is None
+predicted = source.international_item(event, {'rosters': []}, 'uefa_nl',
+                                      {'TUR': roster('home')['roster'][:11],
+                                       'BEL': roster('away')['roster'][:11]})
+assert predicted['statuses'] == {'home': 'predicted', 'away': 'predicted'}
+assert all(len(predicted['lineups'][side]) == 11 for side in ('home', 'away'))
+assert source.international_item(event, {'rosters': [roster('home')]}, 'uefa_nl',
+                                 {'BEL': roster('away')['roster'][:11]})['statuses'] == {
+                                     'home': 'confirmed', 'away': 'predicted'}
+
+previous_game = {'id': '122', 'date': '2026-11-10T19:45Z',
+                 'competitions': [{'status': {'type': {'completed': True}}}]}
+with patch.object(source, 'fetch_json', side_effect=lambda url: (
+    {'events': [previous_game]} if '/schedule?' in url else
+    {'rosters': [{'team': {'id': 'TUR'}, **roster('home')},
+                 {'team': {'id': 'BEL'}, **roster('away')}]}
+)):
+    assert len(source.previous_international_starters('TUR', 'soccer/uefa.nations',
+               datetime(2026, 11, 12, tzinfo=timezone.utc), {})) == 11
 
 
 def fetch(url):

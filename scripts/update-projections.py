@@ -208,26 +208,30 @@ NATIONAL_TEAM_KO = {
 }
 
 
-def international_item(event, summary, league):
-    """Use ESPN's exact kickoff and published starting elevens only."""
+def international_item(event, summary, league, previous_starters=None):
+    """Use published starters, or mark the teams' previous elevens as predictions."""
     competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
     rosters = summary.get('rosters') or []
-    if len(competitors) != 2 or len(rosters) != 2:
+    if len(competitors) != 2:
         return None
     by_side = {entry.get('homeAway'): entry for entry in competitors}
     roster_by_side = {entry.get('homeAway'): entry for entry in rosters}
-    if set(by_side) != {'home', 'away'} or set(roster_by_side) != {'home', 'away'}:
+    if set(by_side) != {'home', 'away'}:
         return None
-    names, teams, logos, lineups = {}, {}, {}, {}
+    names, teams, logos, lineups, statuses = {}, {}, {}, {}, {}
     for side in ('home', 'away'):
         team = by_side[side].get('team') or {}
         name = team.get('displayName') or ''
-        players = [row for row in roster_by_side[side].get('roster', []) if row.get('starter') is True]
+        players = [row for row in roster_by_side.get(side, {}).get('roster', []) if row.get('starter') is True]
+        confirmed = len(players) == 11
+        if not confirmed:
+            players = (previous_starters or {}).get(str(team.get('id')), [])
         if not name or len(players) != 11:
             return None
         names[side] = NATIONAL_TEAM_KO.get(name, name)
         teams[side] = team.get('abbreviation') or name
         logos[side] = team.get('logo') or ''
+        statuses[side] = 'confirmed' if confirmed else 'predicted'
         lineups[side] = [{'name': row['athlete']['displayName'],
                           'position': (row.get('position') or {}).get('abbreviation', '')}
                          for row in players if (row.get('athlete') or {}).get('displayName')]
@@ -238,16 +242,42 @@ def international_item(event, summary, league):
     return {'league': league, 'kickoff': event['date'], 'espnEventId': str(event['id']),
             'matchStatus': match_status,
             'teams': teams, 'names': names, 'logos': logos, 'lineups': lineups,
-            'injuries': {}, 'statuses': {'home': 'confirmed', 'away': 'confirmed'},
+            'injuries': {}, 'statuses': statuses,
+            'note': '직전 경기 선발 11명 기준 예상' if 'predicted' in statuses.values() else '',
             'source': 'https://www.espn.com/soccer/match/_/gameId/' + str(event['id'])}
+
+
+def previous_international_starters(team_id, path, kickoff, cache):
+    if team_id in cache:
+        return cache[team_id]
+    cache[team_id] = []
+    schedule = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/teams/{team_id}/schedule?dates={kickoff.year}')
+    games = sorted(schedule.get('events', []), key=lambda game: game.get('date', ''), reverse=True)
+    for game in games:
+        if game.get('date', '') >= kickoff.isoformat().replace('+00:00', 'Z'):
+            continue
+        competition = (game.get('competitions') or [{}])[0]
+        if not ((competition.get('status') or {}).get('type') or {}).get('completed'):
+            continue
+        try:
+            summary = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={game["id"]}')
+        except Exception:
+            continue
+        for roster in summary.get('rosters', []):
+            if str((roster.get('team') or {}).get('id')) == team_id:
+                starters = [row for row in roster.get('roster', []) if row.get('starter') is True]
+                if len(starters) == 11:
+                    cache[team_id] = starters
+                    return starters
+    return []
 
 
 def scrape_espn_international(league, path, target_days):
     start = datetime.combine(min(target_days), datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).date()
     end = datetime.combine(max(target_days) + timedelta(days=1), datetime.min.time(), ZoneInfo('Asia/Seoul')).astimezone(timezone.utc).date()
     entries = []
-    now = datetime.now(timezone.utc)
     boards_read = 0
+    previous_starters = {}
     for offset in range((end - start).days + 1):
         day = start.fromordinal(start.toordinal() + offset).strftime('%Y%m%d')
         try:
@@ -258,14 +288,23 @@ def scrape_espn_international(league, path, target_days):
             continue
         for event in board.get('events', []):
             kickoff = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
-            if kickoff.astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days or kickoff - now > timedelta(hours=12):
+            if kickoff.astimezone(ZoneInfo('Asia/Seoul')).date() not in target_days:
                 continue
             try:
                 summary = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event["id"]}')
             except Exception as error:
                 print(league, event['id'], 'lineup unavailable:', error)
                 continue
-            item = international_item(event, summary, league)
+            fallback = {}
+            if not (event.get('status') or {}).get('type', {}).get('completed'):
+                for team in (event.get('competitions') or [{}])[0].get('competitors', []):
+                    team_id = str((team.get('team') or {}).get('id') or '')
+                    if team_id and not any(roster.get('homeAway') == team.get('homeAway') and sum(row.get('starter') is True for row in roster.get('roster', [])) == 11 for roster in summary.get('rosters', [])):
+                        try:
+                            fallback[team_id] = previous_international_starters(team_id, path, kickoff, previous_starters)
+                        except Exception as error:
+                            print(league, team_id, 'previous lineup unavailable:', error)
+            item = international_item(event, summary, league, fallback)
             if item:
                 entries.append(item)
     if not boards_read:

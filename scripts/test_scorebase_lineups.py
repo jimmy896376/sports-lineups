@@ -9,10 +9,27 @@ from pathlib import Path
 from urllib.error import HTTPError
 from unittest.mock import patch
 
-from scorebase_lineups import parse_detail, board_rows, board_upcoming, board_leagues, records_from_page, html_rosters, KST, SPORTS
+from scorebase_lineups import collect, parse_detail, board_rows, board_upcoming, board_leagues, records_from_page, html_rosters, KST, SPORTS
 
 
 class ScorebaseLineupTests(unittest.TestCase):
+    def test_finished_board_keeps_final_status_when_detail_loses_lineup(self):
+        original = Path.cwd()
+        now = datetime(2026, 11, 15, 12, tzinfo=KST)
+        with tempfile.TemporaryDirectory() as directory:
+            try:
+                os.chdir(directory)
+                Path('dist').mkdir()
+                Path('dist/scorebase-lineups.json').write_text(json.dumps({'matches': [{'id': 'scorebase:/live/TEST/1', 'kickoff': int(now.timestamp() * 1000), 'matchStatus': 'live'}]}))
+                board = '<div class="sb-row"><span class="sb-st-ft">종료</span><a href="/live/TEST/1"><span class="sb-team-home">홈</span><span class="sb-team-away">원정</span></a>'
+                def fake_fetch(path):
+                    return board if path.startswith('/scores?sport=soccer&date=2026-11-15') else '<html></html>'
+                with patch('scorebase_lineups.fetch', side_effect=fake_fetch):
+                    matches, _ = collect(now)
+                self.assertEqual(matches[0]['matchStatus'], 'finished')
+            finally:
+                os.chdir(original)
+
     def test_403_keeps_only_recent_verified_snapshot(self):
         original = Path.cwd()
         with tempfile.TemporaryDirectory() as directory:

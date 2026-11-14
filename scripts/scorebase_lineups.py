@@ -1,6 +1,7 @@
 """Collect published match lineups from Scorebase for the current five KST days."""
 import base64
 import json
+import pathlib
 import re
 import urllib.request
 from urllib.error import HTTPError
@@ -250,6 +251,8 @@ def parse_detail(page, path, sport, names, now):
 
 def collect(now=None):
     now = now or datetime.now(KST)
+    previous_path = pathlib.Path('dist/scorebase-lineups.json')
+    previous = {match['id']: match for match in json.loads(previous_path.read_text()).get('matches', [])} if previous_path.exists() else {}
     paths = {}
     leagues = {sport: {} for sport in SPORTS.values()}
     upcoming = {sport: {} for sport in SPORTS.values()}
@@ -275,11 +278,15 @@ def collect(now=None):
             path, sport, names, status = futures[future]
             try:
                 match = parse_detail(future.result(), path, sport, names, now)
-                if match:
-                    match['matchStatus'] = status
-                    matches.append(match)
             except (OSError, ValueError, KeyError, IndexError, TimeoutError) as error:
                 print(f'Scorebase detail unavailable: {path}: {error}')
+                match = None
+            if match:
+                match['matchStatus'] = status
+                matches.append(match)
+            elif status == 'finished' and 'scorebase:' + path in previous:
+                matches.append({**previous['scorebase:' + path], 'matchStatus': 'finished',
+                                'checkedAt': datetime.now(timezone.utc).isoformat()})
     return sorted(matches, key=lambda match: (match['kickoff'], match['id'])), {
         sport: [{'id': key, 'name': name, **({'lastScheduledKickoff': upcoming[sport][key]} if key in upcoming[sport] else {})}
                 for key, name in sorted(entries.items(), key=lambda item: item[1])]

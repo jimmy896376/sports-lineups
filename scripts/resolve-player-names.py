@@ -34,7 +34,7 @@ SCOREBASE_FOOTBALL_POLICY = 'scorebase-bilingual-candidate-v1'
 SCOREBASE_FOOTBALL_CHECK_POLICY = 'scorebase-club-punctuation-v2'
 FOOTBALL_LEAGUES = {'epl', 'championship', 'laliga', 'bundesliga', 'seriea', 'ligue1', 'primeira',
                     'eredivisie', 'jupiler', 'scottish', 'ucl', 'uel', 'uefa_wcl', 'brasileirao_2',
-                    'kleague1', 'kleague2', 'j1', 'mls', 'ligamx'}
+                    'kleague1', 'kleague2', 'j1', 'mls', 'ligamx', 'uefa_nl', 'intl_friendly'}
 KLEAGUE_POLICY = 'kleague-official-roster-v1'
 KLEAGUE_TEAM_IDS = {
     'FC Seoul': ('kleague1', 'K09'), 'Ulsan HD FC': ('kleague1', 'K01'),

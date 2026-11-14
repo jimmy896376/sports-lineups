@@ -9,6 +9,9 @@ r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 class NameVerification(unittest.TestCase):
+    def test_national_football_is_in_name_review(self):
+        self.assertTrue({'uefa_nl', 'intl_friendly'} <= r.FOOTBALL_LEAGUES)
+
     def test_scorebase_football_requires_independent_player_and_club_match(self):
         row={'name':'Daniel Heuer Fernandes','team':'Hamburger SV','league':'bundesliga'}
         search=r.Page('<a href="/transfers/abc123">다니엘 호이어 페르난드스 몸값·커리어 상세</a>')

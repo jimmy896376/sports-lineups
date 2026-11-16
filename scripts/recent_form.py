@@ -264,12 +264,46 @@ def read_summary(summary, kickoff=None):
     return result
 
 
+def venue_record(schedule, team_id, side, expected_total, kickoff):
+    """Count verified completed league games only when they reproduce ESPN's season total."""
+    if not re.fullmatch(r'\d+-\d+-\d+', str(expected_total or '')):
+        return None
+    total = {'W': 0, 'D': 0, 'L': 0}
+    venue = {'W': 0, 'D': 0, 'L': 0}
+    cutoff = datetime.fromisoformat(kickoff.replace('Z', '+00:00'))
+    for event in schedule.get('events', []):
+        competition = (event.get('competitions') or [{}])[0]
+        if not (competition.get('status') or {}).get('type', {}).get('completed'):
+            continue
+        try:
+            date = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
+            if date >= cutoff:
+                continue
+            competitors = competition['competitors']
+            own = next(c for c in competitors if str((c.get('team') or {}).get('id')) == str(team_id))
+            opponent = next(c for c in competitors if c is not own)
+            own_score = float(own['score']['value'])
+            other_score = float(opponent['score']['value'])
+            if own['homeAway'] not in ('home', 'away'):
+                return None
+        except (KeyError, TypeError, ValueError, StopIteration):
+            return None
+        result = 'W' if own_score > other_score else 'L' if own_score < other_score else 'D'
+        total[result] += 1
+        if own['homeAway'] == side and not competition.get('neutralSite'):
+            venue[result] += 1
+    if '-'.join(str(total[key]) for key in ('W', 'D', 'L')) != expected_total:
+        return None
+    return '-'.join(str(venue[key]) for key in ('W', 'D', 'L'))
+
+
 def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause=0.25):
     """Add recentForm/records to payload['items'] in place. Returns counts for the run log."""
     now = now or time.time()
     before = {item_key(item): item for item in (previous or {}).get('items', [])}
     stats = {'items': 0, 'withForm': 0, 'reused': 0, 'scoreboardCalls': 0, 'summaryCalls': 0, 'logoDirectoryCalls': 0, 'notFound': 0, 'failed': 0, 'blocked': False}
     boards = {}
+    schedules = {}
     calls = 0
 
     def get(url):
@@ -297,7 +331,7 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
         age = checked_age(old) if old else None
         if age is None or age > limit:
             return False
-        for field in ('espnEventId', 'recentForm', 'records', 'formCheckedAt', 'logos'):
+        for field in ('espnEventId', 'recentForm', 'records', 'formCheckedAt', 'venueCheckedAt', 'logos'):
             if old.get(field) is not None:
                 item[field] = old[field]
         return True
@@ -310,7 +344,10 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
         old = before.get(item_key(item))
         known_logos = {**((old or {}).get('logos') or {}), **(item.get('logos') or {})}
         needs_logos = not all(known_logos.get(side) for side in ('home', 'away')) and (checked_age(old) is None or checked_age(old) > REFRESH_SECONDS)
-        if not needs_logos and keep_previous(item, old, REFRESH_SECONDS):
+        needs_venue = bool(path.startswith('soccer/') and old and not old.get('venueCheckedAt') and any(
+            (old.get('records') or {}).get(side, {}).get('record') and not old['records'][side].get('sideRecord')
+            for side in ('home', 'away')))
+        if not needs_logos and not needs_venue and keep_previous(item, old, REFRESH_SECONDS):
             stats['reused'] += 1
         else:
             try:
@@ -330,7 +367,7 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                 if not event_id:
                     stats['notFound'] += 1
                     keep_previous(item, old, KEEP_STALE_SECONDS)
-                elif old and checked_age(old) is not None and checked_age(old) <= REFRESH_SECONDS:
+                elif old and not needs_venue and checked_age(old) is not None and checked_age(old) <= REFRESH_SECONDS:
                     current_logos = item.get('logos')
                     keep_previous(item, old, REFRESH_SECONDS)
                     item['logos'] = {**(item.get('logos') or {}), **(current_logos or {})}
@@ -344,6 +381,30 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                     item['formCheckedAt'] = datetime.fromtimestamp(now, timezone.utc).isoformat().replace('+00:00', 'Z')
                     form = {side: v['form'] for side, v in sides.items() if v.get('form')}
                     records = {side: {k: v[k] for k in ('record', 'sideRecord') if v.get(k)} for side, v in sides.items() if v.get('record') or v.get('sideRecord')}
+                    if path.startswith('soccer/') and summary.get('header', {}).get('season', {}).get('year'):
+                        competitors = ((summary.get('header') or {}).get('competitions') or [{}])[0].get('competitors') or []
+                        season = summary['header']['season']['year']
+                        for side in ('home', 'away'):
+                            if not records.get(side, {}).get('record') or records[side].get('sideRecord'):
+                                continue
+                            team = next((c.get('team') or {} for c in competitors if c.get('homeAway') == side), {})
+                            team_id = team.get('id')
+                            if not team_id:
+                                continue
+                            key = (path, str(team_id), season)
+                            if key not in schedules:
+                                if calls >= MAX_CALLS - 10:
+                                    continue
+                                item['venueCheckedAt'] = now_iso()
+                                try:
+                                    schedules[key] = get(f'https://site.api.espn.com/apis/site/v2/sports/{path}/teams/{team_id}/schedule?season={season}')
+                                except Exception:
+                                    continue
+                            else:
+                                item['venueCheckedAt'] = now_iso()
+                            record = venue_record(schedules[key], team_id, side, records[side]['record'], item['kickoff'])
+                            if record:
+                                records[side]['sideRecord'] = record
                     if form:
                         item['recentForm'] = form
                     if records:

@@ -51,6 +51,50 @@ class RecentForm(TestCase):
         self.assertEqual(sides['home']['record'], '6-1-2')                     # ESPN soccer total is W-D-L
         self.assertNotIn('sideRecord', sides['home'])
 
+    def test_soccer_venue_record_requires_complete_matching_season(self):
+        def game(date, own_side, own_score, other_score, neutral=False):
+            return {'date': date, 'competitions': [{'neutralSite': neutral, 'status': {'type': {'completed': True}},
+                'competitors': [{'team': {'id': '1'}, 'homeAway': own_side, 'score': {'value': own_score}},
+                                {'team': {'id': '2'}, 'homeAway': 'away' if own_side == 'home' else 'home', 'score': {'value': other_score}}]}]}
+        schedule = {'events': [game('2026-11-01T12:00:00Z', 'home', 2, 0),
+                               game('2026-11-02T12:00:00Z', 'away', 1, 1),
+                               game('2026-11-03T12:00:00Z', 'home', 1, 0, True)]}
+        cutoff = '2026-11-20T12:00:00Z'
+        self.assertEqual(module.venue_record(schedule, '1', 'home', '2-1-0', cutoff), '1-0-0')
+        self.assertIsNone(module.venue_record(schedule, '1', 'home', '3-0-0', cutoff))
+        self.assertIsNone(module.venue_record(schedule, '1', 'home', '2-1-0', '2026-11-02T00:00:00Z'))
+
+    def test_soccer_enrich_fills_verified_venue_record(self):
+        item = {'league': 'epl', 'kickoff': '2026-11-20T12:00:00Z', 'espnEventId': 'next',
+                'logos': {'home': 'home.png', 'away': 'away.png'}, 'teams': {'home': 'H', 'away': 'A'}}
+        summary = {'header': {'season': {'year': 2026}, 'competitions': [{'competitors': [
+            {'homeAway': 'home', 'team': {'id': '1'}, 'record': [{'type': 'total', 'summary': '1-0-0'}]},
+            {'homeAway': 'away', 'team': {'id': '2'}, 'record': [{'type': 'total', 'summary': '0-0-1'}]}]}]}}
+        schedule = {'events': [{'date': '2026-11-01T12:00:00Z', 'competitions': [{
+            'status': {'type': {'completed': True}}, 'neutralSite': False, 'competitors': [
+                {'team': {'id': '1'}, 'homeAway': 'home', 'score': {'value': 2}},
+                {'team': {'id': '2'}, 'homeAway': 'away', 'score': {'value': 0}}]}]}]}
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            return summary if '/summary?' in url else schedule
+        module.enrich_recent_form({'items': [item]}, {}, fetch, pause=0)
+        self.assertEqual(item['records']['home'], {'record': '1-0-0', 'sideRecord': '1-0-0'})
+        self.assertEqual(item['records']['away'], {'record': '0-0-1', 'sideRecord': '0-0-1'})
+        self.assertEqual(len(calls), 3)
+        old = dict(item, records={'home': {'record': '1-0-0'}, 'away': {'record': '0-0-1'}},
+                   formCheckedAt=module.now_iso())
+        old.pop('venueCheckedAt', None)
+        calls.clear()
+        renewed = dict(item, records={})
+        module.enrich_recent_form({'items': [renewed]}, {'items': [old]}, fetch, pause=0)
+        self.assertEqual(renewed['records']['home']['sideRecord'], '1-0-0')
+        self.assertIn('venueCheckedAt', renewed)
+        calls.clear()
+        reused = dict(item, records={})
+        module.enrich_recent_form({'items': [reused]}, {'items': [renewed]}, fetch, pause=0)
+        self.assertEqual(calls, [])
+
     def test_rotowire_codes_espn_spells_differently(self):
         board = fixture('espn-scoreboard-nba-20261102.json')['events']
         for home, away in (('SAS', 'UTA'), ('GSW', 'PHX'), ('NYK', 'BKN'), ('MEM', 'NOP')):

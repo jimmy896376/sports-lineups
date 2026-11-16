@@ -1,9 +1,11 @@
 import base64
+import io
 import json
 import os
 import runpy
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.error import HTTPError
@@ -40,12 +42,12 @@ class ScorebaseLineupTests(unittest.TestCase):
                 blocked = HTTPError('https://www.scorebase.kr/scores', 403, 'Forbidden', {}, None)
                 with patch('urllib.request.urlopen', side_effect=blocked):
                     target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': []}))
-                    with self.assertRaises(SystemExit) as result:
+                    with redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as result:
                         runpy.run_module('scorebase_lineups', run_name='__main__')
                     self.assertEqual(result.exception.code, 1)
                     target.write_text(json.dumps({'asOf': (datetime.now(timezone.utc)-timedelta(days=2)).isoformat(),
                                                   'matches': [{'id': 'stale'}], 'leagues': {'축구': [{'id': 'test', 'name': '테스트'}]}}))
-                    with self.assertRaises(SystemExit) as result:
+                    with redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as result:
                         runpy.run_module('scorebase_lineups', run_name='__main__')
                     self.assertEqual(result.exception.code, 1)
                     refreshed = json.loads(target.read_text())

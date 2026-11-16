@@ -296,6 +296,7 @@ def collect(now=None):
 if __name__ == '__main__':
     import pathlib
     target = pathlib.Path('dist/scorebase-lineups.json')
+    blocked = False
     try:
         matches, leagues = collect()
     except HTTPError as error:
@@ -305,13 +306,16 @@ if __name__ == '__main__':
         age = datetime.now(timezone.utc) - datetime.fromisoformat(previous['asOf'].replace('Z', '+00:00'))
         if age < timedelta(0):
             raise
+        blocked = True
         if age <= timedelta(hours=24):
-            print(f'::warning::Scorebase returned HTTP 403; keeping verified snapshot from {previous["asOf"]}')
-            raise SystemExit(0)
+            print(f'::error::Scorebase returned HTTP 403; keeping verified snapshot from {previous["asOf"]}')
+            raise SystemExit(1)
         # A stale roster must not block publication of fresh lineups from other sources.
         matches, leagues = [], previous.get('leagues', {})
-        print(f'::warning::Scorebase returned HTTP 403; dropping stale rosters from {previous["asOf"]}')
+        print(f'::error::Scorebase returned HTTP 403; dropping stale rosters from {previous["asOf"]}')
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps({'asOf': datetime.now(timezone.utc).isoformat(), 'matches': matches,
                                   'leagues': leagues}, ensure_ascii=False) + '\n')
     print(f'Scorebase lineups: {len(matches)}; leagues: {sum(map(len, leagues.values()))}')
+    if blocked:
+        raise SystemExit(1)

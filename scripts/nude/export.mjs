@@ -9,9 +9,9 @@ import './contract.cjs';
 export function matchState(match,now=Date.now()){
  const age=now-match.kickoff,checked=Date.parse(match.checkedAt);
  if(match.matchStatus==='finished')return 'finished';
- if(match.matchStatus==='live'&&now-checked<3600000)return 'live';
  // shortcut: when a provider omits final status, expire after a sport-specific maximum; replace with a verified final feed when available.
  if(age>({축구:4,야구:8,농구:5,배구:5,하키:5}[match.sport]||5)*3600000)return 'finished';
+ if(match.matchStatus==='live'&&now-checked<3600000)return 'live';
  return age>=0?'live':'scheduled';
 }
 

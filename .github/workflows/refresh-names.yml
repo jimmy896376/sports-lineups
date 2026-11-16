@@ -22,7 +22,7 @@ on:
       - 'scripts/check-player-names.mjs'
       - '.github/workflows/refresh-names.yml'
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    - cron: '13,28,43,58 * * * *'
   workflow_dispatch:
 
 permissions:

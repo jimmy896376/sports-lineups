@@ -23,7 +23,6 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  }
  const model=globalThis.NudeLineupData.normalize(snapshot,catalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
- if(!model.matches.length&&!config.allowEmptyFeed)throw Error('Empty feed blocked. Review collection or deliberately set allowEmptyFeed.');
  const key=name=>String(name||'').normalize('NFKD').toLowerCase().replace(/\b(?:fc|cf|sc|afc)\b/g,'').replace(/[^\p{L}\p{N}]/gu,'');
  const alike=(a,b)=>{const left=key(a),right=key(b);return left.length>=3&&right.length>=3&&(left===right||left.includes(right)||right.includes(left));};
  const sharedName=(a,b)=>String(a).split(/[^\p{L}\p{N}]+/u).some(word=>word.length>=3&&String(b).split(/[^\p{L}\p{N}]+/u).includes(word));
@@ -50,8 +49,10 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
  for(const match of model.matches)match.matchStatus=matchState(match);
+ const published=model.matches.filter(match=>match.teams.some(team=>team.players.length));
+ if(!published.length&&!config.allowEmptyFeed)throw Error('Empty feed blocked. Review collection or deliberately set allowEmptyFeed.');
  const feed={schemaVersion:1,asOf:model.asOf,pollSeconds:config.pollSeconds,revision,removalPolicy:'finished',
-  leagues:scorebase.leagues||{},matches:model.matches};
+  leagues:scorebase.leagues||{},matches:published};
  globalThis.NudeLineupContract.validate(feed);
  return feed;
 }

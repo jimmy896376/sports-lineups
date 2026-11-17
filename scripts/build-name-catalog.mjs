@@ -122,7 +122,7 @@ if (process.argv.includes('--queue')) {
   Object.assign(context,{fetch(){},atob,TextDecoder,Uint8Array});
   vm.runInContext(fs.readFileSync(new URL('dist/win-probability.js',root),'utf8'),context);
   vm.runInContext(fs.readFileSync(new URL('dist/app.js',root),'utf8').replace(/loadGames\(\);\s*$/,''),context);
-  const appNames={...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context)};
+  const appNames={...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context),...vm.runInContext('chinesePlayerKo',context)};
   for(const name of Object.keys(appNames)) if(previous.players?.[name]) appNames[name]=previous.players[name];
   const manual={...vm.runInContext('footballKo',context),...appNames,...vm.runInContext('playerKo',context),...read('scripts/player-name-review.json').userOverrides};
   const normalized=name=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');

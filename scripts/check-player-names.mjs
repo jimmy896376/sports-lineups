@@ -40,6 +40,7 @@ assert.equal(run("teamDisplayName({displayName:'Como'})"),'코모 1907');
 assert.equal(run("teamDisplayName({displayName:'Lille'})"),'LOSC 릴');
 assert.equal(run("teamDisplayName({displayName:'SC Freiburg'})"),'SC 프라이부르크');
 assert.equal(run("teamDisplayName({displayName:'Unreviewed United'})"),'Unreviewed United');
+assert.equal(approvedCatalog.players['李凱威'],'리카이웨이');
 for (const [name, expected] of [
   ['Abdulkerim Bardakci', '압둘케림 바르닥치'],
   ['Alisson Becker', '알리송 베커'], ['Alisson', '알리송 베커'],

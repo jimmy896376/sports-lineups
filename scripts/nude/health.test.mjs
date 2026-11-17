@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {inspect,inspectPublication,inspectLogoUrls} from './health.mjs';
 
 const now=Date.parse('2026-11-05T00:00:00Z');
-const team=side=>({side,id:side,name:side,logo:'https://example.com/logo.png',players:[{name:'선수',position:'',number:'',flag:''}],status:'predicted',injuries:[]});
+const team=side=>({side,id:side,name:side==='home'?'홈팀':'원정팀',logo:'https://example.com/logo.png',players:[{name:'선수',position:'',number:'',flag:''}],status:'predicted',injuries:[]});
 const match={id:'kbo-1',league:'kbo',leagueName:'KBO',sport:'야구',kickoff:now+3600000,checkedAt:new Date(now).toISOString(),teams:[team('home'),team('away')],recentForm:{home:['W'],away:['L']},records:{home:{record:'1-0',sideRecord:'1-0'},away:{record:'0-1',sideRecord:'0-1'}}};
 const feed={schemaVersion:1,asOf:new Date(now).toISOString(),pollSeconds:60,matches:[match]};
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).issues,[]);

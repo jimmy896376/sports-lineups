@@ -4,7 +4,7 @@ import vm from 'node:vm';
 const elements=new Map();
 const element=()=>({addEventListener(){},setAttribute(){},innerHTML:'',textContent:''});
 const context=vm.createContext({document:{documentElement:{dataset:{}},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},querySelector(){return element()},addEventListener(){}},localStorage:{getItem(){return null}},window:{setInterval(){}},atob,TextDecoder,Uint8Array});
-for(const file of ['football-ko.js','player-ko.js','win-probability.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
+for(const file of ['football-ko.js','player-ko.js','win-probability.js','player-name-fallback.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
 const run=code=>vm.runInContext(code,context);
 const estimate=input=>{context.input=input;return JSON.parse(JSON.stringify(run('winProbability.estimate(input)')))};
 const record=(wins,losses,draws=0)=>({wins,losses,draws});

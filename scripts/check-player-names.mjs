@@ -12,7 +12,7 @@ const context = vm.createContext({
   window: {setInterval() {}},
   atob,TextDecoder,Uint8Array
 });
-for (const file of ['football-ko.js', 'player-ko.js', 'win-probability.js', 'app.js']) {
+for (const file of ['football-ko.js', 'player-ko.js', 'win-probability.js', 'player-name-fallback.js', 'app.js']) {
   let source = fs.readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8');
   if (file === 'app.js') source = source.replace(/loadGames\(\);\s*$/, '');
   vm.runInContext(source, context, {filename: file});
@@ -90,9 +90,11 @@ assert.match(run(`teamCard({team:{displayName:'Liverpool'},homeAway:'home'},[{na
 run(`playerTeamNames={'["kleague2","Gyeongnam FC","Scoped Test Player"]':'테스트 선수'}`);
 run("sport='football';league='kleague2'");
 assert.match(run(`teamCard({team:{displayName:'Gyeongnam FC'},homeAway:'home'},[{name:'Scoped Test Player'}])`), /테스트 선수/);
-assert.match(run(`teamCard({team:{displayName:'Other FC'},homeAway:'home'},[{name:'Scoped Test Player'}])`), /Scoped Test Player/);
+assert.match(run(`teamCard({team:{displayName:'Other FC'},homeAway:'home'},[{name:'Scoped Test Player'}])`), /<li>[가-힣 ]+<\/li>/);
+assert.match(run("playerDisplayName('Ryan Yates')"),/^[가-힣 ]+$/);
 assert.match(run(`injuryPanel({injuryDetails:{home:[{name:'Alisson Becker',status:'out'}]}},{})`), /알리송 베커/);
 run(`language='en'`);
+assert.equal(run("playerDisplayName('Ryan Yates')"),'Ryan Yates');
 assert.match(run(`teamCard({team:{displayName:'Gyeongnam FC'},homeAway:'home'},[{name:'Scoped Test Player'}])`), /Scoped Test Player/);
 assert.equal(run(`translated('Alisson Becker')`), 'Alisson Becker');
 assert.match(run(`teamCard({team:{displayName:'Liverpool'},homeAway:'home'},[{name:'Alisson Becker'}])`), /Alisson Becker/);

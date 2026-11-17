@@ -17,7 +17,7 @@ const cachedFetch=async url=>{
 };
 const document={documentElement:{dataset:{}},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},querySelector(){return element()},addEventListener(){}};
 const ctx=vm.createContext({document,localStorage:{getItem(){return null}},window:{setInterval(){}},fetch:cachedFetch,atob,TextDecoder,Uint8Array,console});
-for(const file of ['football-ko.js','player-ko.js','win-probability.js','app.js'])vm.runInContext(fs.readFileSync(root+'/dist/'+file,'utf8').replace(/loadGames\(\);\s*$/,''),ctx);
+for(const file of ['football-ko.js','player-ko.js','win-probability.js','player-name-fallback.js','app.js'])vm.runInContext(fs.readFileSync(root+'/dist/'+file,'utf8').replace(/loadGames\(\);\s*$/,''),ctx);
 ctx.record=(player,kind,team)=>{const name=typeof player==='string'?player:player.name;if(name)records.push({name,eventDate:currentEvent?.date,eventId:currentEvent?.id,team:team?.team?.displayName,short:player.short,number:player?.number||player?.shirtNumber,league:currentLeague,kind,korean:vm.runInContext(`translated(${JSON.stringify(name)},${JSON.stringify(player.short)})`,ctx)});};
 ctx.setEvent=event=>{currentEvent=event};
 ctx.recordTeam=team=>{const name=team.team.displayName;teams.set(currentLeague+':'+name,{name,short:team.team.shortDisplayName,league:currentLeague,korean:vm.runInContext(`teamDisplayName(${JSON.stringify(team.team)})`,ctx)});};

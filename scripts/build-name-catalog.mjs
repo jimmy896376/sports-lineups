@@ -121,6 +121,7 @@ if (process.argv.includes('--queue')) {
   context.window={setInterval(){}};
   Object.assign(context,{fetch(){},atob,TextDecoder,Uint8Array});
   vm.runInContext(fs.readFileSync(new URL('dist/win-probability.js',root),'utf8'),context);
+  vm.runInContext(fs.readFileSync(new URL('dist/player-name-fallback.js',root),'utf8'),context);
   vm.runInContext(fs.readFileSync(new URL('dist/app.js',root),'utf8').replace(/loadGames\(\);\s*$/,''),context);
   const appNames={...vm.runInContext('extraKo',context),...vm.runInContext('nhlPlayerKo',context),...vm.runInContext('chinesePlayerKo',context)};
   for(const name of Object.keys(appNames)) if(previous.players?.[name]) appNames[name]=previous.players[name];

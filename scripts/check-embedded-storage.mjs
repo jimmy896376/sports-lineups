@@ -9,7 +9,7 @@ function check(storage, inaccessible = false) {
   const context = vm.createContext({document:{documentElement:{dataset:{}},getElementById:getElement,querySelector:element,addEventListener(){}},window:{setInterval(){}},atob,TextDecoder,Uint8Array});
   if(inaccessible)Object.defineProperty(context,'localStorage',{get(){throw new Error('SecurityError: sandboxed storage');}});
   else context.localStorage=storage;
-  for(const file of ['football-ko.js','player-ko.js','win-probability.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
+  for(const file of ['football-ko.js','player-ko.js','win-probability.js','player-name-fallback.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
   assert.equal(vm.runInContext('theme',context),storage?.getItem?.('sports-lineups-theme') || 'dark');
   assert.equal(typeof getElement('refresh').listeners.click,'function','Initialization must reach lineup event handlers');
   const before=context.document.documentElement.dataset.theme;

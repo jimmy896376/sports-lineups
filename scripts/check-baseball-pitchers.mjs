@@ -4,7 +4,7 @@ import vm from 'node:vm';
 const elements=new Map();
 const element=()=>({addEventListener(){},setAttribute(){},innerHTML:'',textContent:''});
 const context=vm.createContext({document:{documentElement:{dataset:{}},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id);},querySelector:element,addEventListener(){}},localStorage:{getItem(){return null;}},window:{setInterval(){}},atob,TextDecoder,Uint8Array});
-for(const file of ['football-ko.js','player-ko.js','win-probability.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
+for(const file of ['football-ko.js','player-ko.js','win-probability.js','player-name-fallback.js','app.js'])vm.runInContext(fs.readFileSync(new URL('../dist/'+file,import.meta.url),'utf8').replace(/loadGames\(\);\s*$/,''),context);
 const run=code=>vm.runInContext(code,context);
 run("sport='mlb'");
 context.event={id:'test',date:new Date(Date.now()+3600000).toISOString(),competitions:[{competitors:[{homeAway:'home',team:{id:'8',displayName:'Milwaukee Brewers'},probables:[{name:'probableStartingPitcher',athlete:{displayName:'Jacob Misiorowski'}}]},{homeAway:'away',team:{id:'30',displayName:'Tampa Bay Rays'},probables:[{name:'probableStartingPitcher',athlete:{displayName:'Nick Martinez'}}]}]}]};
@@ -28,8 +28,7 @@ assert.equal(run("fillMissingLineups({away:[{name:'Confirmed batter'}],home:[]},
 assert.equal(run("fillMissingLineups({away:[{name:'Confirmed batter'}],home:[]},{away:[{name:'Older batter'}],home:[{name:'Projected batter'}]}).home[0].name"),'Projected batter');
 assert.match(run("projectionCheckedLabel({asOf:'2026-10-24T12:00:00Z',sourceStatus:{npb:{fresh:false,checkedAt:null}}},'npb')"),/갱신 실패.*확인 불가/,'A failed first fetch must not appear freshly checked');
 const oneSided=run("gameCard(reversedEvent,{away:[{name:'Away batter'}]},{lineups:{home:[{name:'Home batter'}]},statuses:{home:'predicted'}},[])");
-assert.match(oneSided,/Away batter/);
-assert.match(oneSided,/Home batter/);
+assert.equal((oneSided.match(/<li>[가-힣 ]+<\/li>/g)||[]).length,2);
 for(const league of ['mlb','kbo','npb','cpbl']){run(`sport='${league}'`);assert.equal(run("baseballPitcher({homeAway:'home',probables:[]},null)"),null);assert.match(run("pitcherMarkup(baseballPitcher({homeAway:'home'},null))"),/예고 전/);}
 run("sport='nba'");assert.equal(run('baseballPitcher(event.competitions[0].competitors[0],null)'),undefined);assert.equal(run('pitcherMarkup(undefined)'),'');
 run("sport='kbl'");

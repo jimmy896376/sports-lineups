@@ -3,8 +3,10 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
 import './source-adapter.cjs';
 import './contract.cjs';
+const createPlayerNameFallback=createRequire(import.meta.url)('../../dist/player-name-fallback.js');
 
 export function matchState(match,now=Date.now()){
  const age=now-match.kickoff,checked=Date.parse(match.checkedAt);
@@ -53,7 +55,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
     (alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name)||
      key(match.teams[0].name)===key(extra.teams[0].name)&&sharedName(match.teams[1].name,extra.teams[1].name)||
      key(match.teams[1].name)===key(extra.teams[1].name)&&sharedName(match.teams[0].name,extra.teams[0].name)));
-  const translate=player=>({...player,name:playerNames[player.name]||player.name});
+  const translate=player=>({...player,originalName:player.originalName||player.name,name:playerNames[player.name]||player.name});
   if(duplicate){
    duplicate.league=extra.league;duplicate.leagueName=extra.leagueName;
    duplicate.scorebaseId=extra.id;
@@ -62,6 +64,13 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
    if(Object.keys(extra.recentForm||{}).length)duplicate.recentForm=extra.recentForm;
    if(Object.keys(extra.records||{}).length)duplicate.records=extra.records;
   }else model.matches.push({...extra,teams:extra.teams.map(team=>({...team,players:team.players.map(translate)}))});
+ }
+ const fallback=createPlayerNameFallback(playerNames);
+ for(const match of model.matches)for(const team of match.teams){
+  for(const player of team.players)player.name=fallback(player.name);
+  for(const player of team.injuries||[])player.name=fallback(player.name);
+  if(typeof team.pitcher==='string')team.pitcher=fallback(team.pitcher);
+  else if(team.pitcher?.name)team.pitcher.name=fallback(team.pitcher.name);
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
  for(const match of model.matches)match.matchStatus=matchState(match);

@@ -46,9 +46,24 @@ function hangulizeLatin(value) {
 function createPlayerNameFallback(reviewed){
   const words=new Map();
   const normalize=word=>word.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
+  const distance=(left,right)=>{
+    let row=Array.from({length:right.length+1},(_,index)=>index);
+    for(let i=0;i<left.length;i++){
+      const next=[i+1];
+      for(let j=0;j<right.length;j++)next.push(Math.min(next[j]+1,row[j+1]+1,row[j]+(left[i]!==right[j])));
+      row=next;
+    }
+    return row[right.length];
+  };
   for(const [original,korean] of Object.entries(reviewed||{})){
     const source=original.split(/[\s-]+/),target=korean.split(/[\s-]+/);
     if(source.length!==target.length)continue;
+    if(source.length===2){
+      const phonetic=source.map(hangulizeLatin);
+      const direct=distance(phonetic[0],target[0])+distance(phonetic[1],target[1]);
+      const reversed=distance(phonetic[0],target[1])+distance(phonetic[1],target[0]);
+      if(reversed+1<direct)target.reverse();
+    }
     source.forEach((word,index)=>{
       if(!/^[A-Za-zÀ-ž]+$/.test(word)||!/^[가-힣]+$/.test(target[index]))return;
       const key=normalize(word),existing=words.get(key);

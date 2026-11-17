@@ -27,6 +27,12 @@ assert.deepEqual(buildFeed(nationalNames,catalog,teams,config,'test').matches[0]
 assert.equal(catalog.players['Nathan MacKinnon'],'네이선 매키넌');
 const nameCheck={asOf:'2026-11-04T00:00:00Z',items:[{league:'nhl',kickoff:'2026-11-04T00:00:00Z',names:{home:'Colorado Avalanche',away:'Columbus Blue Jackets'},lineups:{home:[{name:'Nathan MacKinnon'}],away:[]}}],domestic:{}};
 assert.equal(buildFeed(nameCheck,catalog,teams,config,'test').matches[0].teams[0].players[0].name,'네이선 매키넌');
+const accented=structuredClone(nameCheck);
+accented.items[0].lineups.home=[{name:'João Gomes'}];
+assert.equal(buildFeed(accented,catalog,teams,config,'test').matches[0].teams[0].players[0].name,'주앙 고메스');
+const conflicting={...catalog,players:{...catalog.players,'João Gomes':'다른 선수'}};
+accented.items[0].lineups.home=[{name:'JOÃO GOMES'}];
+assert.equal(buildFeed(accented,conflicting,teams,config,'test').matches[0].teams[0].players[0].name,'JOÃO GOMES');
 const noLineup=structuredClone(nameCheck);noLineup.items[0].lineups.home=[];
 assert.equal(buildFeed(noLineup,catalog,teams,{...config,allowEmptyFeed:true},'test').matches.length,0,'양 팀 명단 없는 경기를 게시하지 않는다');
 assert.throws(()=>buildFeed(noLineup,catalog,teams,config,'test'),/Empty feed blocked/);

@@ -21,7 +21,23 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
   if(Number.isFinite(event)&&Number.isFinite(prediction)&&Math.abs(event-prediction)>60000)
    throw Error(`Schedule/lineup kickoff mismatch: ${row.prediction?.league||'domestic'} ${row.event?.id||''}`);
  }
- const model=globalThis.NudeLineupData.normalize(snapshot,catalog,teams);
+ const playerNames={...catalog.players};
+ const nameKey=name=>String(name||'').normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
+ const reviewed=new Map();
+ for(const [name,korean] of Object.entries(playerNames)){
+  const key=nameKey(name);
+  if(reviewed.has(key)&&reviewed.get(key)!==korean)reviewed.set(key,null);
+  else if(!reviewed.has(key))reviewed.set(key,korean);
+ }
+ const projections=[...(snapshot.items||[]),...Object.values(snapshot.domestic||{}).flat().map(row=>row.prediction||{})];
+ const observed=[...projections.flatMap(row=>Object.values(row.lineups||{}).flat().map(player=>player?.name||player)),
+  ...(scorebase.matches||[]).flatMap(match=>match.teams.flatMap(team=>team.players.map(player=>player.name)))];
+ for(const name of observed)if(typeof name==='string'&&!Object.hasOwn(playerNames,name)){
+  const korean=reviewed.get(nameKey(name));
+  if(korean)playerNames[name]=korean;
+ }
+ const reviewedCatalog={...catalog,players:playerNames};
+ const model=globalThis.NudeLineupData.normalize(snapshot,reviewedCatalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
  const key=name=>String(name||'').normalize('NFKD').toLowerCase().replace(/\b(?:fc|cf|sc|afc)\b/g,'').replace(/[^\p{L}\p{N}]/gu,'');
  const alike=(a,b)=>{const left=key(a),right=key(b);return left.length>=3&&right.length>=3&&(left===right||left.includes(right)||right.includes(left));};
@@ -37,7 +53,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
     (alike(match.teams[0].name,extra.teams[0].name)&&alike(match.teams[1].name,extra.teams[1].name)||
      key(match.teams[0].name)===key(extra.teams[0].name)&&sharedName(match.teams[1].name,extra.teams[1].name)||
      key(match.teams[1].name)===key(extra.teams[1].name)&&sharedName(match.teams[0].name,extra.teams[0].name)));
-  const translate=player=>({...player,name:catalog.players?.[player.name]||player.name});
+  const translate=player=>({...player,name:playerNames[player.name]||player.name});
   if(duplicate){
    duplicate.league=extra.league;duplicate.leagueName=extra.leagueName;
    duplicate.scorebaseId=extra.id;

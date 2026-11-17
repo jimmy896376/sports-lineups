@@ -10,7 +10,8 @@ for attempt in 1 2 3; do
   git reset --hard origin/main
   node scripts/nude/test.mjs
   node scripts/nude/export.mjs
-  git add -- dist/nude-feed.json
+  cp dist/nude-feed.json dist/bull-feed.json
+  git add -- dist/nude-feed.json dist/bull-feed.json
   if git diff --cached --quiet; then exit 0; fi
   git commit -m 'chore: publish Nude lineup feed'
   if git push origin HEAD:main; then exit 0; fi

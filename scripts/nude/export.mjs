@@ -67,6 +67,7 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  }
  const fallback=createPlayerNameFallback(playerNames);
  for(const match of model.matches)for(const team of match.teams){
+  team.name=teams[team.name]||team.name;
   for(const player of team.players)player.name=fallback(player.name);
   for(const player of team.injuries||[])player.name=fallback(player.name);
   if(typeof team.pitcher==='string')team.pitcher=fallback(team.pitcher);

@@ -4,15 +4,25 @@ const feedKey = 'lineup-feed-bridge:bull-feed';
 const cacheKey = name => `lineup-feed-bridge:${name}`;
 
 async function githubFile(name) {
-  const url = `https://api.github.com/repos/${repo}/contents/dist/${name}?ref=main`;
-  const response = await fetch(url, {
-    headers: { accept: 'application/vnd.github.raw+json', 'user-agent': 'bulltv24-lineup-feed-bridge' },
-    cache: 'no-store',
-  });
-  if (!response.ok) throw Error(`GitHub ${name}: ${response.status}`);
-  const body = await response.text();
-  JSON.parse(body);
-  return body;
+  const urls = [
+    `https://raw.githubusercontent.com/${repo}/main/dist/${name}`,
+    `https://api.github.com/repos/${repo}/contents/dist/${name}?ref=main`,
+  ];
+  let failure;
+  for (const url of urls) {
+    try {
+      const response = await fetch(url, {
+        headers: { accept: 'application/vnd.github.raw+json', 'user-agent': 'bulltv24-lineup-feed-bridge' },
+      });
+      if (!response.ok) throw Error(`GitHub ${name}: ${response.status}`);
+      const body = await response.text();
+      JSON.parse(body);
+      return body;
+    } catch (error) {
+      failure = error;
+    }
+  }
+  throw failure;
 }
 
 export async function refreshFeed(env) {
@@ -24,6 +34,7 @@ export async function refreshFeed(env) {
   if (current && Date.parse(JSON.parse(current).asOf) > Date.parse(next.asOf))
     throw Error('Refusing older lineup feed');
   await env.LINEUP_CACHE.put(feedKey, body);
+  await env.LINEUP_CACHE.put(`${feedKey}:synced`, String(Date.now()));
   return body;
 }
 
@@ -34,13 +45,16 @@ export default {
     try {
       const key = name === 'bull-feed.json' || name === 'nude-feed.json' ? feedKey : cacheKey(name);
       let body = await env.LINEUP_CACHE.get(key);
-      if (!body || (key !== feedKey && Date.now() - Date.parse(JSON.parse(body).cachedAt || 0) > 15 * 60_000)) {
-        if (key === feedKey) body = await refreshFeed(env);
-        else {
-          const value = await githubFile(name);
-          body = JSON.stringify({ cachedAt: new Date().toISOString(), value: JSON.parse(value) });
-          await env.LINEUP_CACHE.put(key, body);
+      if (key === feedKey && (!body || Date.now() - Number(await env.LINEUP_CACHE.get(`${feedKey}:synced`) || 0) > 15 * 60_000)) {
+        try { body = await refreshFeed(env); }
+        catch (error) {
+          if (!body) throw error;
+          console.error('Lineup bridge refresh failed', error.message);
         }
+      } else if (key !== feedKey && (!body || Date.now() - Date.parse(JSON.parse(body).cachedAt || 0) > 15 * 60_000)) {
+        const value = await githubFile(name);
+        body = JSON.stringify({ cachedAt: new Date().toISOString(), value: JSON.parse(value) });
+        await env.LINEUP_CACHE.put(key, body);
       }
       if (key !== feedKey) body = JSON.stringify(JSON.parse(body).value);
       return new Response(body, { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=30' } });

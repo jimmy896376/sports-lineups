@@ -120,6 +120,7 @@ for (const row of teamReview.entries) {
   const source = new URL(row.source);
   assert.ok(row.source.startsWith('https://www.google.com/search?') ||
     (source.hostname==='www.yagoonara.com' && row.identitySource?.startsWith('https://npb.jp/')) ||
+    (source.protocol==='https:' && source.hostname==='tv.apple.com' && source.pathname==='/kr/channel/mls/tvs.sbd.7000' && row.league==='mls') ||
     (source.protocol==='https:' && (['namu.moe','d.namu.moe','m.namu.moe','www.namu.moe'].includes(source.hostname) || reviewedTeamHosts.has(source.hostname))),row.name);
 }
 run(`nameReview={request:requestId,names:new Map()};teamDisplayName({displayName:'Manchester United'});playerDisplayName('Alisson Becker');playerDisplayName('Unreviewed Athlete');finishNameReview(requestId);`);

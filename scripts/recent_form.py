@@ -39,7 +39,7 @@ ESPN_PATHS = {
 }
 REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 hours keeps calls low
 KEEP_STALE_SECONDS = 12 * 3600  # if ESPN fails, previous values younger than this are kept (they were read, not guessed)
-MAX_CALLS = 80                  # per run — a ceiling so a bad day never hammers ESPN
+MAX_CALLS = 240                 # cover the full five-day lineup slate, including soccer venue records
 RESULT = {'W': 'W', 'L': 'L', 'D': 'D', 'T': 'D'}
 
 
@@ -381,11 +381,23 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                     item['formCheckedAt'] = datetime.fromtimestamp(now, timezone.utc).isoformat().replace('+00:00', 'Z')
                     form = {side: v['form'] for side, v in sides.items() if v.get('form')}
                     records = {side: {k: v[k] for k in ('record', 'sideRecord') if v.get(k)} for side, v in sides.items() if v.get('record') or v.get('sideRecord')}
+                    old_venue = (old or {}).get('venueCheckedAt')
+                    try:
+                        venue_age = now - datetime.fromisoformat(old_venue.replace('Z', '+00:00')).timestamp()
+                    except (AttributeError, ValueError):
+                        venue_age = None
+                    if venue_age is not None and 0 <= venue_age < 12 * 3600:
+                        item['venueCheckedAt'] = old_venue
                     if path.startswith('soccer/') and summary.get('header', {}).get('season', {}).get('year'):
                         competitors = ((summary.get('header') or {}).get('competitions') or [{}])[0].get('competitors') or []
                         season = summary['header']['season']['year']
                         for side in ('home', 'away'):
                             if not records.get(side, {}).get('record') or records[side].get('sideRecord'):
+                                continue
+                            old_record = ((old or {}).get('records') or {}).get(side) or {}
+                            if (venue_age is not None and 0 <= venue_age < 12 * 3600
+                                    and old_record.get('record') == records[side]['record'] and old_record.get('sideRecord')):
+                                records[side]['sideRecord'] = old_record['sideRecord']
                                 continue
                             team = next((c.get('team') or {} for c in competitors if c.get('homeAway') == side), {})
                             team_id = team.get('id')

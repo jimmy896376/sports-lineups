@@ -95,6 +95,37 @@ class RecentForm(TestCase):
         module.enrich_recent_form({'items': [reused]}, {'items': [renewed]}, fetch, pause=0)
         self.assertEqual(calls, [])
 
+    def test_soccer_reuses_venue_record_when_season_total_is_unchanged(self):
+        now = 1795348800
+        item = {'league': 'epl', 'kickoff': '2026-11-24T12:00:00Z', 'espnEventId': 'next',
+                'logos': {'home': 'home.png', 'away': 'away.png'}, 'teams': {'home': 'H', 'away': 'A'}}
+        old = dict(item, formCheckedAt='2026-11-22T00:00:00Z', venueCheckedAt='2026-11-22T11:00:00Z',
+                   records={'home': {'record': '1-0-0', 'sideRecord': '1-0-0'},
+                            'away': {'record': '0-0-1', 'sideRecord': '0-0-1'}})
+        summary = {'header': {'season': {'year': 2026}, 'competitions': [{'competitors': [
+            {'homeAway': 'home', 'team': {'id': '1'}, 'record': [{'type': 'total', 'summary': '1-0-0'}]},
+            {'homeAway': 'away', 'team': {'id': '2'}, 'record': [{'type': 'total', 'summary': '0-0-1'}]}]}]}}
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            return summary
+        module.enrich_recent_form({'items': [item]}, {'items': [old]}, fetch, now=now, pause=0)
+        self.assertEqual(len(calls), 1)
+        self.assertIn('/summary?', calls[0])
+        self.assertEqual(item['records']['home']['sideRecord'], '1-0-0')
+        self.assertEqual(item['records']['away']['sideRecord'], '0-0-1')
+
+    def test_more_than_80_matches_reach_summary(self):
+        items = [dict(NBA_ITEM, espnEventId=str(index), logos={'home': 'home.png', 'away': 'away.png'},
+                      teams={'home': f'H{index}', 'away': f'A{index}'}) for index in range(81)]
+        calls = []
+        def fetch(url):
+            calls.append(url)
+            return {}
+        stats = module.enrich_recent_form({'items': items}, {}, fetch, pause=0)
+        self.assertEqual(stats['summaryCalls'], 81)
+        self.assertEqual(len(calls), 81)
+
     def test_rotowire_codes_espn_spells_differently(self):
         board = fixture('espn-scoreboard-nba-20261102.json')['events']
         for home, away in (('SAS', 'UTA'), ('GSW', 'PHX'), ('NYK', 'BKN'), ('MEM', 'NOP')):

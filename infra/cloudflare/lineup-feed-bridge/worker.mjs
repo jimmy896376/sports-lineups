@@ -5,10 +5,9 @@ const cacheKey = name => `lineup-feed-bridge:${name}`;
 const dispatchKey = 'lineup-feed-bridge:refresh-dispatched';
 
 async function githubFile(name) {
-  const urls = [
-    `https://raw.githubusercontent.com/${repo}/main/dist/${name}`,
-    `https://api.github.com/repos/${repo}/contents/dist/${name}?ref=main`,
-  ];
+  const raw = `https://raw.githubusercontent.com/${repo}/main/dist/${name}`;
+  const api = `https://api.github.com/repos/${repo}/contents/dist/${name}?ref=main`;
+  const urls = name === 'bull-feed.json' ? [api, raw] : [raw, api];
   let failure;
   for (const url of urls) {
     try {

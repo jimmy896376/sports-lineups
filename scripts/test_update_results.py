@@ -22,5 +22,33 @@ class KBLResults(TestCase):
         self.assertEqual(rows[0]['winner'], 'away')
 
 
+    def test_fotmob_final_result_uses_fixture_id(self):
+        start = datetime(2026, 11, 20, tzinfo=timezone.utc)
+        now = datetime(2026, 11, 23, tzinfo=timezone.utc)
+        payload = {'fixtures': {'allMatches': [
+            {'id': 6503838, 'status': {'finished': True, 'utcTime': '2026-11-21T05:00:00Z'},
+             'home': {'name': 'Jeonbuk Hyundai Motors FC', 'score': 0}, 'away': {'name': 'FC Seoul', 'score': 1}},
+            {'id': 6503839, 'status': {'finished': False, 'utcTime': '2026-11-21T07:30:00Z'},
+             'home': {'name': 'Gangwon FC', 'score': 0}, 'away': {'name': 'Daejeon Hana Citizen', 'score': 0}},
+        ]}}
+        rows = module.parse_fotmob_results(payload, 'kleague1', start, now, 'checked')
+        self.assertEqual([row['eventId'] for row in rows], ['6503838'])
+        self.assertEqual(rows[0]['winner'], 'away')
+
+    def test_wkbl_final_uses_official_result_page(self):
+        now = datetime(2026, 11, 23, tzinfo=timezone.utc)
+        page = '<li class="list_schedule"><span class="date">11.22</span><div class="team_name">KB스타즈</div><em>70</em><div class="team_name">삼성생명</div><em>44</em><a href="/m/game/result.asp?game_no=19"></a></li>'
+        detail = '<strong class="txt_time">2026.11.22(일) 16:00</strong><div class="score_block"><em>70</em><em>44</em></div>'
+        original = module.fetch_text
+        module.fetch_text = lambda url: detail
+        try:
+            rows = module.parse_wkbl_schedule(page, '202611', datetime(2026, 11, 19, tzinfo=timezone.utc), now, 'checked')
+        finally:
+            module.fetch_text = original
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['eventId'], 'wkbl-2026-11-22-KB스타즈-삼성생명')
+        self.assertEqual(rows[0]['homeScore'], 70)
+
+
 if __name__ == '__main__':
     main()

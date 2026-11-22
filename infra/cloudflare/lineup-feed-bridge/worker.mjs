@@ -2,6 +2,7 @@ const repo = 'jimmy896376/sports-lineups';
 const allowed = new Set(['bull-feed.json', 'nude-feed.json', 'projections.json', 'name-catalog.json', 'team-ko.json', 'external-forecasts.json', 'results.json']);
 const feedKey = 'lineup-feed-bridge:bull-feed';
 const cacheKey = name => `lineup-feed-bridge:${name}`;
+const dispatchKey = 'lineup-feed-bridge:refresh-dispatched';
 
 async function githubFile(name) {
   const urls = [
@@ -38,6 +39,27 @@ export async function refreshFeed(env) {
   return body;
 }
 
+export async function ensureFreshCollection(env, body, now = Date.now()) {
+  const age = now - Date.parse(JSON.parse(body).asOf);
+  if (age <= 20 * 60_000) return false;
+  const last = Number(await env.LINEUP_CACHE.get(dispatchKey) || 0);
+  if (now - last < 20 * 60_000) return false;
+  if (!env.GITHUB_WORKFLOW_TOKEN) throw Error('Missing GitHub workflow token');
+  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/refresh-lineups.yml/dispatches`, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${env.GITHUB_WORKFLOW_TOKEN}`,
+      accept: 'application/vnd.github+json',
+      'content-type': 'application/json',
+      'user-agent': 'bulltv24-lineup-feed-bridge',
+    },
+    body: JSON.stringify({ ref: 'main' }),
+  });
+  if (response.status !== 204) throw Error(`GitHub lineup refresh: HTTP ${response.status}`);
+  await env.LINEUP_CACHE.put(dispatchKey, String(now));
+  return true;
+}
+
 export default {
   async fetch(request, env) {
     const name = new URL(request.url).pathname.slice(1);
@@ -64,6 +86,15 @@ export default {
     }
   },
   async scheduled(_event, env, ctx) {
-    ctx.waitUntil(refreshFeed(env));
+    ctx.waitUntil((async () => {
+      let body;
+      try { body = await refreshFeed(env); }
+      catch (error) {
+        body = await env.LINEUP_CACHE.get(feedKey);
+        if (!body) throw error;
+        console.error('Lineup bridge refresh failed', error.message);
+      }
+      await ensureFreshCollection(env, body);
+    })());
   },
 };

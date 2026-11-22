@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import worker from './worker.mjs';
+import worker, { ensureFreshCollection } from './worker.mjs';
 
 test('stale feed recovers through GitHub API when raw download fails', async () => {
   const oldFetch = globalThis.fetch;
@@ -22,6 +22,60 @@ test('stale feed recovers through GitHub API when raw download fails', async () 
     assert.equal((await response.json()).asOf, '2026-11-20T13:00:00Z');
     assert.equal(calls.length, 2);
     assert.ok(Number(values.get('lineup-feed-bridge:bull-feed:synced')) > 0);
+  } finally {
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test('stale published feed dispatches one collection run per 20 minutes', async () => {
+  const oldFetch = globalThis.fetch;
+  const values = new Map();
+  const now = Date.parse('2026-11-22T14:00:00Z');
+  const env = {
+    GITHUB_WORKFLOW_TOKEN: 'test-token',
+    LINEUP_CACHE: {
+      get: async key => values.get(key),
+      put: async (key, value) => values.set(key, value),
+    },
+  };
+  const calls = [];
+  globalThis.fetch = async (url, options) => {
+    calls.push({ url, options });
+    return new Response(null, { status: 204 });
+  };
+  try {
+    const stale = JSON.stringify({ asOf: '2026-11-22T13:30:00Z', matches: [{}] });
+    assert.equal(await ensureFreshCollection(env, stale, now), true);
+    assert.equal(await ensureFreshCollection(env, stale, now + 5 * 60_000), false);
+    assert.equal(calls.length, 1);
+    assert.match(calls[0].url, /refresh-lineups\.yml\/dispatches$/);
+    assert.equal(JSON.parse(calls[0].options.body).ref, 'main');
+    assert.equal(await ensureFreshCollection(env, stale, now + 21 * 60_000), true);
+    assert.equal(calls.length, 2);
+  } finally {
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test('fresh feed never dispatches collection', async () => {
+  const env = { LINEUP_CACHE: { get: async () => undefined } };
+  assert.equal(await ensureFreshCollection(env, JSON.stringify({ asOf: '2026-11-22T13:50:00Z' }), Date.parse('2026-11-22T14:00:00Z')), false);
+});
+
+test('failed dispatch does not block the next retry', async () => {
+  const oldFetch = globalThis.fetch;
+  const values = new Map();
+  const env = {
+    GITHUB_WORKFLOW_TOKEN: 'test-token',
+    LINEUP_CACHE: {
+      get: async key => values.get(key),
+      put: async (key, value) => values.set(key, value),
+    },
+  };
+  globalThis.fetch = async () => new Response('', { status: 503 });
+  try {
+    await assert.rejects(ensureFreshCollection(env, JSON.stringify({ asOf: '2026-11-22T13:30:00Z' }), Date.parse('2026-11-22T14:00:00Z')), /HTTP 503/);
+    assert.equal(values.has('lineup-feed-bridge:refresh-dispatched'), false);
   } finally {
     globalThis.fetch = oldFetch;
   }

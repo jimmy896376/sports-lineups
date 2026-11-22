@@ -20,6 +20,7 @@ previous snapshot are reused in between, so a 15-minute schedule does not re-rea
 import re
 import time
 import unicodedata
+from collections import defaultdict, Counter
 from html.parser import HTMLParser
 from datetime import datetime, timezone
 from datetime import timedelta
@@ -468,6 +469,27 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
             standing = get(f'https://site.api.espn.com/apis/v2/sports/soccer/usa.1/standings?season={year}')
             entries = [entry for group in standing.get('children', [])
                        for entry in (group.get('standings') or {}).get('entries', [])]
+            season = get(f'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard?dates={year}&limit=1000')
+            results = defaultdict(Counter)
+            for event in season.get('events', []):
+                if event.get('season', {}).get('slug') != 'regular-season' or not event.get('status', {}).get('type', {}).get('completed'):
+                    continue
+                competitors = (event.get('competitions') or [{}])[0].get('competitors') or []
+                if len(competitors) != 2:
+                    continue
+                try:
+                    scores = [float(competitor['score'] if not isinstance(competitor['score'], dict)
+                                    else competitor['score']['value']) for competitor in competitors]
+                except (KeyError, TypeError, ValueError):
+                    continue
+                for competitor, own, opponent in zip(competitors, scores, scores[::-1]):
+                    team_id = str((competitor.get('team') or {}).get('id') or '')
+                    venue = competitor.get('homeAway')
+                    if not team_id or venue not in ('home', 'away'):
+                        continue
+                    result = 'W' if own > opponent else 'L' if own < opponent else 'D'
+                    results[team_id][result] += 1
+                    results[team_id][venue + result] += 1
             for item in payload.get('items', []):
                 if item.get('league') != 'mls' or not item['kickoff'].startswith(str(year)):
                     continue
@@ -480,7 +502,11 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                     overall = next((stat.get('displayValue') for stat in matches[0].get('stats', [])
                                     if stat.get('name') == 'overall'), None)
                     if overall and re.fullmatch(r'\d+-\d+-\d+', overall):
-                        item.setdefault('records', {}).setdefault(side, {})['record'] = overall
+                        record = item.setdefault('records', {}).setdefault(side, {})
+                        record['record'] = overall
+                        counts = results[str((matches[0].get('team') or {}).get('id') or '')]
+                        if overall == f"{counts['W']}-{counts['D']}-{counts['L']}":
+                            record['sideRecord'] = '-'.join(str(counts[side + result]) for result in ('W', 'D', 'L'))
         except Blocked:
             break
         except Exception as error:

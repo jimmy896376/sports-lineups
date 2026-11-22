@@ -135,15 +135,38 @@ class RecentForm(TestCase):
             {'homeAway': 'home', 'team': {'displayName': 'Nashville SC'}, 'record': []},
             {'homeAway': 'away', 'team': {'displayName': 'FC Cincinnati'}, 'record': []}]}]}}
         standings = {'children': [{'standings': {'entries': [
-            {'team': {'displayName': 'Nashville SC'}, 'stats': [{'name': 'overall', 'displayValue': '18-7-9'}]},
-            {'team': {'displayName': 'FC Cincinnati'}, 'stats': [{'name': 'overall', 'displayValue': '17-8-9'}]}]}}]}
+            {'team': {'id': '1', 'displayName': 'Nashville SC'}, 'stats': [{'name': 'overall', 'displayValue': '1-0-0'}]},
+            {'team': {'id': '2', 'displayName': 'FC Cincinnati'}, 'stats': [{'name': 'overall', 'displayValue': '0-0-1'}]}]}}]}
+        season = {'events': [{'season': {'slug': 'regular-season'}, 'status': {'type': {'completed': True}},
+                              'competitions': [{'competitors': [
+                                  {'homeAway': 'home', 'team': {'id': '1'}, 'score': '2'},
+                                  {'homeAway': 'away', 'team': {'id': '2'}, 'score': '1'}]}]}]}
         urls = []
         def fetch(url):
             urls.append(url)
-            return standings if '/standings?' in url else summary
+            return standings if '/standings?' in url else season if '/scoreboard?' in url else summary
         module.enrich_recent_form({'items': [item]}, {}, fetch, pause=0)
-        self.assertEqual(item['records'], {'home': {'record': '18-7-9'}, 'away': {'record': '17-8-9'}})
-        self.assertEqual(len(urls), 2)
+        self.assertEqual(item['records'], {'home': {'record': '1-0-0', 'sideRecord': '1-0-0'},
+                                           'away': {'record': '0-0-1', 'sideRecord': '0-0-1'}})
+        self.assertEqual(len(urls), 3)
+
+    def test_mls_venue_record_requires_standings_match(self):
+        item = {'league': 'mls', 'kickoff': '2026-11-23T00:00:00Z', 'espnEventId': 'playoff',
+                'logos': {'home': 'home.png', 'away': 'away.png'},
+                'teams': {'home': 'NSH', 'away': 'CIN'},
+                'names': {'home': 'Nashville SC', 'away': 'FC Cincinnati'}}
+        summary = {'header': {'competitions': [{'competitors': []}]}}
+        standings = {'children': [{'standings': {'entries': [
+            {'team': {'id': '1', 'displayName': 'Nashville SC'}, 'stats': [{'name': 'overall', 'displayValue': '2-0-0'}]},
+            {'team': {'id': '2', 'displayName': 'FC Cincinnati'}, 'stats': [{'name': 'overall', 'displayValue': '0-0-2'}]}]}}]}
+        season = {'events': [{'season': {'slug': 'regular-season'}, 'status': {'type': {'completed': True}},
+                              'competitions': [{'competitors': [
+                                  {'homeAway': 'home', 'team': {'id': '1'}, 'score': '2'},
+                                  {'homeAway': 'away', 'team': {'id': '2'}, 'score': '1'}]}]}]}
+        module.enrich_recent_form({'items': [item]}, {},
+                                  lambda url: standings if '/standings?' in url else season if '/scoreboard?' in url else summary,
+                                  pause=0)
+        self.assertEqual(item['records'], {'home': {'record': '2-0-0'}, 'away': {'record': '0-0-2'}})
 
     def test_rotowire_codes_espn_spells_differently(self):
         board = fixture('espn-scoreboard-nba-20261102.json')['events']

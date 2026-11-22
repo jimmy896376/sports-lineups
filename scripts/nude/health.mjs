@@ -19,6 +19,7 @@ export function inspect(feed,snapshot,now=Date.now()){
  const allowed=new Set(Array.from({length:5},(_,offset)=>day(now+offset*86400000)));
  let missingLogos=0,emptyLineups=0,latinPlayers=0,nonKoreanPlayers=0,nonKoreanTeams=0,missingKboForms=0,missingKboRecords=0;
  const missingStatsByLeague={};
+ let activeMissingStats=0;
  for(const match of checked.matches){
   if(match.matchStatus!=='finished'&&!(match.matchStatus==='live'&&matchState(match,now)==='live')&&!allowed.has(day(match.kickoff)))issues.push(`outside five-day window: ${match.id}`);
   const coverage=missingStatsByLeague[match.league]??={recentForm:0,seasonRecord:0,venueRecord:0};
@@ -26,6 +27,7 @@ export function inspect(feed,snapshot,now=Date.now()){
    if(!match.recentForm?.[side]?.length)coverage.recentForm++;
    if(!match.records?.[side]?.record)coverage.seasonRecord++;
    if(!match.records?.[side]?.sideRecord)coverage.venueRecord++;
+   if(matchState(match,now)!=='finished'&&(!match.recentForm?.[side]?.length||!match.records?.[side]?.record||!match.records?.[side]?.sideRecord))activeMissingStats++;
   }
   for(const team of match.teams){
    if(!/[가-힣]/.test(team.name))nonKoreanTeams++;
@@ -43,9 +45,10 @@ export function inspect(feed,snapshot,now=Date.now()){
  }
  if(missingKboForms)issues.push(`KBO recent form missing for ${missingKboForms} teams`);
  if(missingKboRecords)issues.push(`KBO season/venue records missing for ${missingKboRecords} teams`);
+ if(activeMissingStats)issues.push(`active team results or records missing for ${activeMissingStats} teams`);
  if(nonKoreanPlayers)issues.push(`${nonKoreanPlayers} lineup names contain non-Korean letters`);
  if(nonKoreanTeams)issues.push(`${nonKoreanTeams} team names lack Korean`);
- return {asOf:feed.asOf,ageMinutes:Math.round(age),matches:checked.matches.length,missingLogos,emptyLineups,latinPlayers,nonKoreanPlayers,nonKoreanTeams,missingKboForms,missingKboRecords,missingStatsByLeague,issues};
+ return {asOf:feed.asOf,ageMinutes:Math.round(age),matches:checked.matches.length,missingLogos,emptyLineups,latinPlayers,nonKoreanPlayers,nonKoreanTeams,missingKboForms,missingKboRecords,activeMissingStats,missingStatsByLeague,issues};
 }
 
 export function inspectPublication(source,live,now=Date.now()){

@@ -8,6 +8,9 @@ const feed={schemaVersion:1,asOf:new Date(now).toISOString(),pollSeconds:60,matc
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).issues,[]);
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now).missingStatsByLeague.kbo,{recentForm:0,seasonRecord:0,venueRecord:0});
 assert.deepEqual(inspect({...feed,matches:[{...match,recentForm:{},records:{}}]},{asOf:feed.asOf},now).missingStatsByLeague.kbo,{recentForm:2,seasonRecord:2,venueRecord:2});
+const incompleteSoccer={...match,id:'soccer-1',league:'ucl',sport:'축구',recentForm:{},records:{}};
+assert.match(inspect({...feed,matches:[incompleteSoccer]},{asOf:feed.asOf},now).issues.join(' '),/active team results or records missing for 2 teams/);
+assert.equal(inspect({...feed,matches:[{...incompleteSoccer,matchStatus:'finished'}]},{asOf:feed.asOf},now).activeMissingStats,0);
 assert.deepEqual(inspect(feed,{asOf:feed.asOf},now+45*60000).issues,[]);
 assert.match(inspect(feed,{asOf:feed.asOf},now+46*60000).issues.join(' '),/feed age/);
 assert.match(inspect({...feed,matches:[{...match,teams:[{...team('home'),logo:''},team('away')]}]},{asOf:feed.asOf},now).issues.join(' '),/logo/);

@@ -655,7 +655,7 @@ def scrape_khl():
     for row in history:
         game = row.get('event', row)
         score = re.fullmatch(r'(\d+)\s*:\s*(\d+)', str(game.get('score', '')))
-        if game.get('type_id') not in (18, 24) or not score:
+        if game.get('type_id') not in (18, 24) or game.get('game_state_key') != 'finished' or not score:
             continue
         home_score, away_score = map(int, score.groups())
         for side, own, other in (('home', home_score, away_score), ('away', away_score, home_score)):

@@ -28,12 +28,17 @@ class KBLResults(TestCase):
         payload = {'fixtures': {'allMatches': [
             {'id': 6503838, 'status': {'finished': True, 'utcTime': '2026-11-21T05:00:00Z', 'scoreStr': '0 - 1'},
              'home': {'name': 'Jeonbuk Hyundai Motors FC'}, 'away': {'name': 'FC Seoul'}},
+            {'id': 6503954, 'status': {'finished': True, 'utcTime': '2026-11-21T05:00:00Z', 'scoreStr': '1 - 1'},
+             'home': {'name': 'Pohang Steelers'}, 'away': {'name': 'FC Anyang'}},
+            {'id': 123, 'status': {'finished': True, 'cancelled': True, 'utcTime': '2026-11-21T05:00:00Z', 'scoreStr': '0 - 0'},
+             'home': {'name': 'A'}, 'away': {'name': 'B'}},
             {'id': 6503839, 'status': {'finished': False, 'utcTime': '2026-11-21T07:30:00Z', 'scoreStr': '0 - 0'},
              'home': {'name': 'Gangwon FC', 'score': 0}, 'away': {'name': 'Daejeon Hana Citizen', 'score': 0}},
         ]}}
         rows = module.parse_fotmob_results(payload, 'kleague1', start, now, 'checked')
-        self.assertEqual([row['eventId'] for row in rows], ['6503838'])
+        self.assertEqual([row['eventId'] for row in rows], ['6503838', '6503954'])
         self.assertEqual(rows[0]['winner'], 'away')
+        self.assertEqual((rows[1]['homeScore'], rows[1]['awayScore'], rows[1]['winner']), (1, 1, 'draw'))
 
     def test_wkbl_final_uses_official_result_page(self):
         now = datetime(2026, 11, 23, tzinfo=timezone.utc)

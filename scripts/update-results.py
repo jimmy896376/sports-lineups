@@ -69,7 +69,7 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
     results = []
     for match in (payload.get('fixtures') or {}).get('allMatches', []):
         status = match.get('status') or {}
-        if status.get('finished') is not True:
+        if status.get('finished') is not True or status.get('cancelled') or status.get('awarded'):
             continue
         try:
             kickoff = datetime.fromisoformat(str(status['utcTime']).replace('Z', '+00:00'))
@@ -79,11 +79,11 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
         home = str((match.get('home') or {}).get('name') or '').strip()
         away = str((match.get('away') or {}).get('name') or '').strip()
         event_id = str(match.get('id') or '')
-        if not event_id or not home or not away or home == away or home_score == away_score or not start <= kickoff <= now:
+        if not event_id or not home or not away or home == away or not start <= kickoff <= now:
             continue
         results.append({'eventId': event_id, 'league': league, 'kickoff': kickoff.isoformat(), 'status': 'final',
                         'homeName': home, 'awayName': away, 'homeScore': home_score, 'awayScore': away_score,
-                        'winner': 'home' if home_score > away_score else 'away', 'checkedAt': checked_at, 'note': ''})
+                        'winner': 'draw' if home_score == away_score else 'home' if home_score > away_score else 'away', 'checkedAt': checked_at, 'note': ''})
     return results
 
 

@@ -56,7 +56,7 @@ test('stale published feed dispatches one collection run per 20 minutes', async 
   const values = new Map();
   const now = Date.parse('2026-11-22T14:00:00Z');
   const env = {
-    LINEUP_GITHUB_TOKEN: 'test-token',
+    LINEUP_GITHUB_TOKEN: 'github_pat_testtoken',
     LINEUP_CACHE: {
       get: async key => values.get(key),
       put: async (key, value) => values.set(key, value),
@@ -90,7 +90,7 @@ test('failed dispatch does not block the next retry', async () => {
   const oldFetch = globalThis.fetch;
   const values = new Map();
   const env = {
-    LINEUP_GITHUB_TOKEN: 'test-token',
+    LINEUP_GITHUB_TOKEN: 'github_pat_testtoken',
     LINEUP_CACHE: {
       get: async key => values.get(key),
       put: async (key, value) => values.set(key, value),
@@ -103,4 +103,15 @@ test('failed dispatch does not block the next retry', async () => {
   } finally {
     globalThis.fetch = oldFetch;
   }
+});
+
+test('invalid token is rejected before building an Authorization header', async () => {
+  const env = {
+    LINEUP_GITHUB_TOKEN: '잘못된 값',
+    LINEUP_CACHE: { get: async () => undefined },
+  };
+  await assert.rejects(
+    ensureFreshCollection(env, JSON.stringify({ asOf: '2026-11-22T13:30:00Z' }), Date.parse('2026-11-22T14:00:00Z')),
+    /Invalid GitHub workflow token format/,
+  );
 });

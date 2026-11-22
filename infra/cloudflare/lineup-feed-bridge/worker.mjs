@@ -44,6 +44,8 @@ export async function ensureFreshCollection(env, body, now = Date.now()) {
   const last = Number(await env.LINEUP_CACHE.get(dispatchKey) || 0);
   if (now - last < 20 * 60_000) return false;
   if (!env.LINEUP_GITHUB_TOKEN) throw Error('Missing GitHub workflow token');
+  if (!/^github_pat_[A-Za-z0-9_]+$/.test(env.LINEUP_GITHUB_TOKEN))
+    throw Error('Invalid GitHub workflow token format');
   const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/refresh-lineups.yml/dispatches`, {
     method: 'POST',
     headers: {

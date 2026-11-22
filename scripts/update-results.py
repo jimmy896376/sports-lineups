@@ -235,13 +235,17 @@ def main():
             items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KBL results unavailable: {error}')
-    # BKVolley publishes completed KOVO results with the same stable IDs used by prediction fixtures.
+    # KOVO official schedule publishes final scores and gnum used by prediction event IDs.
     try:
-        page = fetch_text('https://bkvolley.kr/matches')
-        public_match = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)
-        public_data = json.loads(public_match.group(1)).get('data', {}) if public_match else {}
-        for row in parse_kovo_results(public_data, start, now, now.isoformat()):
-            items[row['eventId']] = row
+        season_payload = fetch('https://user-api.kovo.co.kr/stat/season-list?gcode=001')
+        season_year = now.astimezone(kst).year if now.astimezone(kst).month >= 7 else now.astimezone(kst).year - 1
+        season = next((item for item in (season_payload.get('payload') or [])
+                       if str(item.get('ryear') or '').startswith(str(season_year) + '-')), None)
+        if season:
+            query = urllib.parse.urlencode({'gcode': '001', 'seasonCode': season['seasonCode'], 'leagueCode': '201'})
+            schedule = fetch('https://user-api.kovo.co.kr/stat/game-schedule?' + query)
+            for row in parse_kovo_results(schedule, season_year, start, now, now.isoformat()):
+                items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KOVO results unavailable: {error}')
 

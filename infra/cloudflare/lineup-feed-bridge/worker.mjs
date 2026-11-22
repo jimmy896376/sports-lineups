@@ -1,7 +1,10 @@
 const repo = 'jimmy896376/sports-lineups';
 const allowed = new Set(['bull-feed.json', 'nude-feed.json', 'projections.json', 'name-catalog.json', 'team-ko.json', 'external-forecasts.json', 'results.json']);
 const feedKey = 'lineup-feed-bridge:bull-feed';
+const dispatchKey = 'lineup-feed-bridge:refresh-dispatch:last-attempt';
 const cacheKey = name => `lineup-feed-bridge:${name}`;
+const staleAfterMs = 60 * 60_000;
+const dispatchCooldownMs = 30 * 60_000;
 
 async function githubFile(name) {
   const urls = [
@@ -38,6 +41,37 @@ export async function refreshFeed(env) {
   return body;
 }
 
+async function dispatchLineupRefresh(env) {
+  if (!env.LINEUP_GITHUB_TOKEN) throw Error('Missing LINEUP_GITHUB_TOKEN');
+  const lastAttempt = Number(await env.LINEUP_CACHE.get(dispatchKey) || 0);
+  if (Date.now() - lastAttempt < dispatchCooldownMs) return false;
+
+  await env.LINEUP_CACHE.put(dispatchKey, String(Date.now()), { expirationTtl: 24 * 60 * 60 });
+  const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/refresh-lineups.yml/dispatches`, {
+    method: 'POST',
+    headers: {
+      accept: 'application/vnd.github+json',
+      authorization: `Bearer ${env.LINEUP_GITHUB_TOKEN}`,
+      'content-type': 'application/json',
+      'user-agent': 'bulltv24-lineup-feed-bridge',
+      'x-github-api-version': '2022-11-28',
+    },
+    body: JSON.stringify({ ref: 'main' }),
+  });
+  if (!response.ok) throw Error(`GitHub workflow dispatch: ${response.status}`);
+  return true;
+}
+
+function feedIsStale(body) {
+  if (!body) return true;
+  try {
+    const asOf = Date.parse(JSON.parse(body).asOf);
+    return !Number.isFinite(asOf) || Date.now() - asOf > staleAfterMs;
+  } catch {
+    return true;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const name = new URL(request.url).pathname.slice(1);
@@ -64,6 +98,18 @@ export default {
     }
   },
   async scheduled(_event, env, ctx) {
-    ctx.waitUntil(refreshFeed(env));
+    ctx.waitUntil((async () => {
+      try { await refreshFeed(env); }
+      catch (error) { console.error('Lineup bridge refresh failed', error.message); }
+
+      const body = await env.LINEUP_CACHE.get(feedKey);
+      if (!feedIsStale(body)) return;
+      try {
+        const dispatched = await dispatchLineupRefresh(env);
+        if (dispatched) console.log('Dispatched stale lineup refresh workflow');
+      } catch (error) {
+        console.error('Lineup recovery dispatch failed', error.message);
+      }
+    })());
   },
 };

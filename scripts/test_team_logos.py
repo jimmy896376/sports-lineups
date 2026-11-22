@@ -69,7 +69,7 @@ class TeamLogos(TestCase):
         game = {'event': {'id': 1, 'type_id': 24, 'start_at': 1793635200000,
                           'team_a': {'id': 40, 'name': 'Ak Bars', 'image': 'https://example.com/ak.png'},
                           'team_b': {'id': 44, 'name': 'SKA', 'image': 'https://example.com/ska.png'}}}
-        past = {'event': {'id': 2, 'type_id': 24, 'start_at': 1793548800000, 'score': '3:2',
+        past = {'event': {'id': 2, 'type_id': 24, 'game_state_key': 'finished', 'start_at': 1793548800000, 'score': '3:2',
                           'team_a': {'id': 40}, 'team_b': {'id': 44}}}
         today = projections.datetime.now(ZoneInfo('Asia/Seoul')).date()
         season = f'{today.year}/{today.year + 1}' if today.month >= 7 else f'{today.year - 1}/{today.year}'

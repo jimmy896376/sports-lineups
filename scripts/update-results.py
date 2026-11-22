@@ -73,7 +73,7 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
             continue
         try:
             kickoff = datetime.fromisoformat(str(status['utcTime']).replace('Z', '+00:00'))
-            home_score, away_score = int(match['home']['score']), int(match['away']['score'])
+            home_score, away_score = map(int, str(status['scoreStr']).split(' - '))
         except (KeyError, TypeError, ValueError):
             continue
         home = str((match.get('home') or {}).get('name') or '').strip()

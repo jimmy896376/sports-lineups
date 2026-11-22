@@ -87,6 +87,56 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
     return results
 
 
+def parse_kovo_results(payload, feed_matches, start, now, checked_at):
+    """Match completed official KOVO schedule rows to prediction feed fixtures."""
+    team_ids = {
+        '1001': '대한항공', '1002': '삼성화재', '1004': 'KB손해보험', '1005': '현대캐피탈',
+        '1006': '한국전력', '1008': 'OK저축은행', '1009': '우리카드', '2001': '현대건설',
+        '2002': '한국도로공사', '2003': '정관장', '2004': '흥국생명', '2005': 'GS칼텍스',
+        '2006': 'IBK기업은행', '2008': 'SOOP 수퍼스',
+    }
+    content = (payload.get('payload') or {}).get('content') or []
+    results = []
+    for row in content:
+        if row.get('result') not in ('W', 'L'):
+            continue
+        try:
+            kickoff_local = datetime.strptime(f"{row['gdate']} {row['gstime']}", '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
+            ended_local = datetime.strptime(f"{row['gdate']} {row['getime']}", '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
+            home_score, away_score = int(row['hspoint']), int(row['aspoint'])
+            home_id, away_id = team_ids[str(row['hcode'])], team_ids[str(row['acode'])]
+        except (KeyError, TypeError, ValueError):
+            continue
+        kickoff = kickoff_local.astimezone(timezone.utc)
+        ended = ended_local.astimezone(timezone.utc)
+        if not start <= kickoff <= ended <= now or home_score == away_score:
+            continue
+        league = 'v_league' if str(row.get('gender')) == '1' else 'v_league_w' if str(row.get('gender')) == '2' else ''
+        if not league:
+            continue
+        matches = []
+        for fixture in feed_matches:
+            if fixture.get('league') != league or not str(fixture.get('eventId') or ''):
+                continue
+            try:
+                fixture_time = datetime.fromtimestamp(int(fixture['kickoff']) / 1000, timezone.utc)
+            except (KeyError, TypeError, ValueError, OSError):
+                continue
+            teams = {str(team.get('side')): str(team.get('id') or '') for team in fixture.get('teams', [])}
+            if fixture_time.date() == kickoff.date() and teams.get('home') == home_id and teams.get('away') == away_id:
+                matches.append(fixture)
+        if len(matches) != 1:
+            continue
+        fixture = matches[0]
+        results.append({'eventId': str(fixture['eventId']), 'league': league, 'kickoff': kickoff.isoformat(),
+                        'status': 'final', 'homeId': home_id, 'awayId': away_id,
+                        'homeName': str(row.get('hname') or home_id), 'awayName': str(row.get('aname') or away_id),
+                        'homeScore': home_score, 'awayScore': away_score,
+                        'winner': 'home' if home_score > away_score else 'away',
+                        'checkedAt': checked_at, 'note': '세트 점수 · KOVO 공식 기록'})
+    return results
+
+
 def parse_wkbl_schedule(page, year_month, start, now, checked_at):
     """Read completed games from WKBL's official monthly schedule and result pages."""
     results = []
@@ -196,28 +246,20 @@ def main():
             items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KBL results unavailable: {error}')
-    # KOVO's public match data includes final set scores and feed-matching match IDs.
+    # KOVO official schedule publishes completed match scores and set counts.
     try:
-        page = fetch_text('https://bkvolley.kr/matches')
-        source = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)
-        public = json.loads(source.group(1)).get('data', {}) if source else {}
-        for match in public.get('recentMatches', []):
-            if match.get('status') != 'finished' or not match.get('matchDate'):
-                continue
-            kickoff = datetime.fromisoformat(match['matchDate'].replace('Z', '+00:00'))
-            home, away = match.get('homeSets'), match.get('awaySets')
-            event_id = str(match.get('id') or '')
-            if not event_id or not start <= kickoff <= now or not isinstance(home, int) or not isinstance(away, int) or home == away:
-                continue
-            division = str(match.get('league') or match.get('division') or '').lower()
-            league = 'v_league_w' if '여' in division or 'women' in division else 'v_league'
-            items[event_id] = {'eventId': event_id, 'league': league, 'kickoff': kickoff.isoformat(), 'status': 'final',
-                               'homeId': str(match.get('homeTeamId') or ''), 'awayId': str(match.get('awayTeamId') or ''),
-                               'homeName': str(match.get('homeTeamName') or ''), 'awayName': str(match.get('awayTeamName') or ''),
-                               'homeScore': home, 'awayScore': away, 'winner': 'home' if home > away else 'away',
-                               'checkedAt': now.isoformat(), 'note': '세트 점수'}
+        season_payload = fetch('https://user-api.kovo.co.kr/stat/season-list?gcode=001')
+        season_year = now.astimezone(kst).year if now.astimezone(kst).month >= 7 else now.astimezone(kst).year - 1
+        season = next((item for item in (season_payload.get('payload') or [])
+                       if str(item.get('ryear') or '').startswith(str(season_year) + '-')), None)
+        if season:
+            query = urllib.parse.urlencode({'gcode': '001', 'seasonCode': season['seasonCode'], 'leagueCode': '201'})
+            schedule = fetch('https://user-api.kovo.co.kr/stat/game-schedule?' + query)
+            for row in parse_kovo_results(schedule, feed.get('matches', []), start, now, now.isoformat()):
+                items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KOVO results unavailable: {error}')
+
     # KHL marks completed events with end_at and supplies final score in the same event feed.
     try:
         query = urllib.parse.urlencode({'q[start_at_gt_time_from_unixtime]': int(start.timestamp()),

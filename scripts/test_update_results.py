@@ -55,5 +55,31 @@ class KBLResults(TestCase):
         self.assertEqual(rows[0]['homeScore'], 70)
 
 
+class KovoResults(TestCase):
+    def test_matches_official_final_by_feed_teams_and_day(self):
+        start = datetime(2026, 11, 19, tzinfo=timezone.utc)
+        now = datetime(2026, 11, 23, tzinfo=timezone.utc)
+        feed = [{'eventId': '2026271034', 'league': 'v_league', 'kickoff': 1795168800000,
+                 'teams': [{'side': 'home', 'id': '현대캐피탈'}, {'side': 'away', 'id': '한국전력'}]},
+                {'eventId': '2026270006', 'league': 'v_league_w', 'kickoff': 1795244400000,
+                 'teams': [{'side': 'home', 'id': 'SOOP 수퍼스'}, {'side': 'away', 'id': '정관장'}]}]
+        schedule = {'payload': {'content': [
+            {'gender': '1', 'result': 'L', 'gdate': '2026-11-20', 'gstime': '19:00', 'getime': '21:10',
+             'hspoint': 1, 'aspoint': 3, 'hcode': '1005', 'acode': '1006',
+             'hname': '천안 현대캐피탈 스카이워커스', 'aname': '수원 한국전력 VIXTORM'},
+            {'gender': '1', 'result': None, 'gdate': '2026-11-23', 'gstime': '19:00', 'getime': None,
+             'hspoint': None, 'aspoint': None, 'hcode': '1005', 'acode': '1006'},
+            {'gender': '2', 'result': 'L', 'gdate': '2026-11-21', 'gstime': '16:00', 'getime': '18:21',
+             'hspoint': 2, 'aspoint': 3, 'hcode': '2008', 'acode': '2003',
+             'hname': 'SOOP SOOPers', 'aname': '정관장 레드스파크스 프로배구단'},
+        ]}}
+        rows = module.parse_kovo_results(schedule, feed, start, now, 'checked')
+        self.assertEqual(len(rows), 2)
+        by_id = {row['eventId']: row for row in rows}
+        self.assertEqual((by_id['2026271034']['homeScore'], by_id['2026271034']['awayScore']), (1, 3))
+        self.assertEqual(by_id['2026271034']['winner'], 'away')
+        self.assertEqual((by_id['2026270006']['homeScore'], by_id['2026270006']['awayScore']), (2, 3))
+
+
 if __name__ == '__main__':
     main()

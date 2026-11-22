@@ -87,8 +87,8 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
     return results
 
 
-def parse_kovo_results(payload, feed_matches, start, now, checked_at):
-    """Match completed official KOVO schedule rows to prediction feed fixtures."""
+def parse_kovo_results(payload, season_start_year, start, now, checked_at):
+    """Use official KOVO final scores and its schedule-number event ID mapping."""
     team_ids = {
         '1001': '대한항공', '1002': '삼성화재', '1004': 'KB손해보험', '1005': '현대캐피탈',
         '1006': '한국전력', '1008': 'OK저축은행', '1009': '우리카드', '2001': '현대건설',
@@ -97,6 +97,7 @@ def parse_kovo_results(payload, feed_matches, start, now, checked_at):
     }
     content = (payload.get('payload') or {}).get('content') or []
     results = []
+    season_prefix = f"{season_start_year}{(season_start_year + 1) % 100:02d}"
     for row in content:
         if row.get('result') not in ('W', 'L'):
             continue
@@ -105,30 +106,18 @@ def parse_kovo_results(payload, feed_matches, start, now, checked_at):
             ended_local = datetime.strptime(f"{row['gdate']} {row['getime']}", '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
             home_score, away_score = int(row['hspoint']), int(row['aspoint'])
             home_id, away_id = team_ids[str(row['hcode'])], team_ids[str(row['acode'])]
+            game_number = int(row['gnum'])
         except (KeyError, TypeError, ValueError):
             continue
         kickoff = kickoff_local.astimezone(timezone.utc)
         ended = ended_local.astimezone(timezone.utc)
-        if not start <= kickoff <= ended <= now or home_score == away_score:
+        if not start <= kickoff <= ended <= now or home_score == away_score or game_number < 1:
             continue
         league = 'v_league' if str(row.get('gender')) == '1' else 'v_league_w' if str(row.get('gender')) == '2' else ''
         if not league:
             continue
-        matches = []
-        for fixture in feed_matches:
-            if fixture.get('league') != league or not str(fixture.get('eventId') or ''):
-                continue
-            try:
-                fixture_time = datetime.fromtimestamp(int(fixture['kickoff']) / 1000, timezone.utc)
-            except (KeyError, TypeError, ValueError, OSError):
-                continue
-            teams = {str(team.get('side')): str(team.get('id') or '') for team in fixture.get('teams', [])}
-            if fixture_time.date() == kickoff.date() and teams.get('home') == home_id and teams.get('away') == away_id:
-                matches.append(fixture)
-        if len(matches) != 1:
-            continue
-        fixture = matches[0]
-        results.append({'eventId': str(fixture['eventId']), 'league': league, 'kickoff': kickoff.isoformat(),
+        event_id = season_prefix + f'{999 + game_number:04d}'
+        results.append({'eventId': event_id, 'league': league, 'kickoff': kickoff.isoformat(),
                         'status': 'final', 'homeId': home_id, 'awayId': away_id,
                         'homeName': str(row.get('hname') or home_id), 'awayName': str(row.get('aname') or away_id),
                         'homeScore': home_score, 'awayScore': away_score,
@@ -246,17 +235,13 @@ def main():
             items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KBL results unavailable: {error}')
-    # KOVO official schedule publishes completed match scores and set counts.
+    # BKVolley publishes completed KOVO results with the same stable IDs used by prediction fixtures.
     try:
-        season_payload = fetch('https://user-api.kovo.co.kr/stat/season-list?gcode=001')
-        season_year = now.astimezone(kst).year if now.astimezone(kst).month >= 7 else now.astimezone(kst).year - 1
-        season = next((item for item in (season_payload.get('payload') or [])
-                       if str(item.get('ryear') or '').startswith(str(season_year) + '-')), None)
-        if season:
-            query = urllib.parse.urlencode({'gcode': '001', 'seasonCode': season['seasonCode'], 'leagueCode': '201'})
-            schedule = fetch('https://user-api.kovo.co.kr/stat/game-schedule?' + query)
-            for row in parse_kovo_results(schedule, feed.get('matches', []), start, now, now.isoformat()):
-                items[row['eventId']] = row
+        page = fetch_text('https://bkvolley.kr/matches')
+        public_match = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)
+        public_data = json.loads(public_match.group(1)).get('data', {}) if public_match else {}
+        for row in parse_kovo_results(public_data, start, now, now.isoformat()):
+            items[row['eventId']] = row
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KOVO results unavailable: {error}')
 

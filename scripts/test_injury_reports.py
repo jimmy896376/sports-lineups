@@ -9,6 +9,16 @@ spec.loader.exec_module(module)
 
 
 class InjuryReports(TestCase):
+    def test_game_specific_questionable_update_overrides_generic_out(self):
+        report = {'injuries': [{'displayName': 'Atlanta Hawks', 'abbreviation': 'ATL', 'injuries': [{
+            'date': '2026-11-21T22:16Z', 'status': 'Out',
+            'shortComment': 'Flemings (back) is questionable to play Sunday against the Pistons.',
+            'athlete': {'displayName': 'Kingston Flemings'},
+        }]}]}
+        with patch.object(module, 'fetch_json', return_value=report):
+            result = module.fetch_espn_injury_reports('basketball/nba')
+        self.assertEqual(result['ATL']['records'][0]['status'], 'Questionable')
+
     def test_team_nested_under_athlete_is_indexed(self):
         response = {'injuries': [{'id': '1', 'displayName': 'Atlanta Hawks', 'injuries': [{
             'date': '2026-10-24T12:00Z', 'status': 'Out',

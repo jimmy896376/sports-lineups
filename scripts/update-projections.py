@@ -339,6 +339,16 @@ def injury_name_key(value):
     return re.sub(r'[^a-z0-9]', '', value)
 
 
+def injury_report_status(item):
+    """Prefer an explicit game availability update over a stale generic status."""
+    comment = str(item.get('shortComment') or '')
+    if re.search(r'\bquestionable (?:to play|for|against|to face)\b|\blisted as questionable\b', comment, re.I):
+        return 'Questionable'
+    if re.search(r'\bprobable (?:to play|for|against|to face)\b|\blisted as probable\b', comment, re.I):
+        return 'Probable'
+    return item.get('status') or (item.get('type') or {}).get('description', '')
+
+
 def fetch_espn_injury_reports(path):
     """Return current ESPN injury details indexed by team abbreviation."""
     data = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/injuries')
@@ -356,10 +366,9 @@ def fetch_espn_injury_reports(path):
             if not name:
                 continue
             details = item.get('details') or {}
-            injury_type = item.get('type') or {}
             record = {
                 'name': name,
-                'status': item.get('status') or injury_type.get('description', ''),
+                'status': injury_report_status(item),
                 'part': details.get('type', ''),
                 'location': details.get('location', ''),
                 'side': details.get('side', ''),

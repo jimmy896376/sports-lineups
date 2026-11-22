@@ -21,6 +21,7 @@ test('lineup feed reads the current GitHub API before a stale raw mirror', async
     assert.equal((await response.json()).asOf, '2026-11-20T13:00:00Z');
     assert.equal(calls.length, 1);
     assert.match(calls[0], /api\.github\.com/);
+    assert.match(calls[0], /[?&]v=\d+/);
     assert.ok(Number(values.get('lineup-feed-bridge:bull-feed:synced')) > 0);
   } finally {
     globalThis.fetch = oldFetch;
@@ -46,6 +47,7 @@ test('lineup feed falls back to raw file when GitHub API fails', async () => {
     assert.equal(response.status, 200);
     assert.equal((await response.json()).asOf, '2026-11-20T13:00:00Z');
     assert.equal(calls.length, 2);
+    assert.match(calls[1], /[?&]v=\d+/);
   } finally {
     globalThis.fetch = oldFetch;
   }

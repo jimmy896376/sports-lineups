@@ -43,11 +43,11 @@ export async function ensureFreshCollection(env, body, now = Date.now()) {
   if (age <= 20 * 60_000) return false;
   const last = Number(await env.LINEUP_CACHE.get(dispatchKey) || 0);
   if (now - last < 20 * 60_000) return false;
-  if (!env.GITHUB_WORKFLOW_TOKEN) throw Error('Missing GitHub workflow token');
+  if (!env.LINEUP_GITHUB_TOKEN) throw Error('Missing GitHub workflow token');
   const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/refresh-lineups.yml/dispatches`, {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${env.GITHUB_WORKFLOW_TOKEN}`,
+      authorization: `Bearer ${env.LINEUP_GITHUB_TOKEN}`,
       accept: 'application/vnd.github+json',
       'content-type': 'application/json',
       'user-agent': 'bulltv24-lineup-feed-bridge',

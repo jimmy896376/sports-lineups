@@ -56,7 +56,7 @@ test('stale published feed dispatches one collection run per 20 minutes', async 
   const values = new Map();
   const now = Date.parse('2026-11-22T14:00:00Z');
   const env = {
-    GITHUB_WORKFLOW_TOKEN: 'test-token',
+    LINEUP_GITHUB_TOKEN: 'test-token',
     LINEUP_CACHE: {
       get: async key => values.get(key),
       put: async (key, value) => values.set(key, value),
@@ -90,7 +90,7 @@ test('failed dispatch does not block the next retry', async () => {
   const oldFetch = globalThis.fetch;
   const values = new Map();
   const env = {
-    GITHUB_WORKFLOW_TOKEN: 'test-token',
+    LINEUP_GITHUB_TOKEN: 'test-token',
     LINEUP_CACHE: {
       get: async key => values.get(key),
       put: async (key, value) => values.set(key, value),

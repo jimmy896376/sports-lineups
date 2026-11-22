@@ -91,33 +91,11 @@ kblRecord.domestic.kleague2[0].event.recentForm={home:['W','L']};
 const transferred=buildFeed(kblRecord,scoped,teams,config,'test').matches[0];
 assert.equal(transferred.records.home.record,'5-3');
 assert.deepEqual(transferred.recentForm.home,['W','L']);
-const scorebaseMatch={id:'scorebase:/live/TEST/1',eventId:'1',league:'test',leagueName:'테스트 리그',sport:'축구',kickoff:Date.parse('2026-11-04T00:00:00Z'),
- teams:['home','away'].map((side,index)=>({side,id:side,name:scopedTeams[index].name,logo:'https://example.com/'+side+'.png',players:Array.from({length:11},(_,player)=>({name:`선수 ${player}`,position:'',number:'',flag:''})),status:'confirmed',injuries:[],pitcher:null})),
- recentForm:{home:['W','W','L','W','D'],away:['L','L','W','L','D']},records:{home:{record:'4-2-1',sideRecord:'3-1-0'},away:{record:'2-3-2',sideRecord:'0-2-2'}},checkedAt:'2026-11-04T00:00:00Z'};
-const merged=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch],leagues:{축구:[{id:'test',name:'테스트 리그'}]}});
-assert.equal(merged.matches.length,1);
-assert.equal(merged.matches[0].scorebaseId,scorebaseMatch.id);
-assert.equal(merged.matches[0].league,'test');
-assert.equal(merged.leagues.축구[0].name,'테스트 리그');
-assert.equal(merged.matches[0].teams[0].status,'confirmed');
-assert.equal(merged.matches[0].teams[0].players.length,11);
-assert.deepEqual(merged.matches[0].recentForm.home,scorebaseMatch.recentForm.home);
-const added=structuredClone(scorebaseMatch);added.id='scorebase:/live/TEST/2';added.teams[0].name='Pachuca';added.teams[1].name='Toluca';
-const withAdded=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseMatch,added]});
-assert.equal(withAdded.matches.length,2);
-assert.deepEqual(withAdded.matches.find(match=>match.id===added.id).teams.map(team=>team.name),['파추카','톨루카']);
-const scorebaseBasketball=structuredClone(scorebaseMatch);
-scorebaseBasketball.id='scorebase:/live/NBA/3';scorebaseBasketball.sport='농구';scorebaseBasketball.league='nba';scorebaseBasketball.leagueName='NBA';
-scorebaseBasketball.teams.forEach(team=>{team.players=team.players.slice(0,5)});
-scorebaseBasketball.recentForm={};scorebaseBasketball.records={};
-const withBasketball=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[scorebaseBasketball]});
-assert.equal(withBasketball.matches.length,2);
-assert.equal(withBasketball.matches.find(m=>m.id===scorebaseBasketball.id).teams[0].players.length,5);
-for(const [home,away,alternate] of [['밀워키 벅스','로스앤젤레스 레이커스','LA 레이커스'],['포틀랜드 트레일블레이저스','오클라호마시티 선더','오클라호마시티 썬더']]){
- const native={asOf:'2026-11-04T00:00:00Z',domestic:{},items:[{league:'nba',kickoff:'2026-11-04T01:00:00Z',names:{home,away},teams:{home,away},lineups:{home:Array.from({length:5},(_,i)=>({name:`홈선수${i}`})),away:Array.from({length:5},(_,i)=>({name:`원정선수${i}`}))}}]};
- const other={...scorebaseBasketball,id:'scorebase:/live/NBA/'+home,kickoff:Date.parse('2026-11-04T01:00:00Z'),teams:scorebaseBasketball.teams.map((team,i)=>({...team,name:i?alternate:home}))};
- assert.equal(buildFeed(native,scoped,teams,config,'test',{matches:[other]}).matches.length,1,home+' 중복 경기');
-}
+const ignored=buildFeed(scopedGame,scoped,teams,config,'test',{matches:[{id:'scorebase-only'}],leagues:{축구:[{id:'test',name:'테스트 리그'}]}});
+assert.equal(ignored.matches.length,1,'Scorebase 경기 자료는 게시하지 않는다');
+assert.equal(ignored.matches[0].league,'kleague2');
+assert.equal(ignored.matches[0].scorebaseId,undefined);
+assert.equal(ignored.leagues.축구[0].name,'테스트 리그');
 const wrongTime=structuredClone(scopedGame);wrongTime.domestic.kleague2[0].prediction.kickoff='2026-11-04T01:00:00Z';
 assert.throws(()=>buildFeed(wrongTime,scoped,teams,config,'test'),/kickoff mismatch/);
 assert.equal(feed.matches.length,new Set(feed.matches.map(m=>m.id)).size);

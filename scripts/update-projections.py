@@ -645,11 +645,6 @@ def scrape_khl():
         table = []
     stage = next((stage for year in table if year.get('season') == season for stage in year.get('stages', []) if stage.get('type') == 'regular'), {})
     standings = {str(team['id']): team for team in stage.get('regular', [])}
-    scorebase_records = scorebase_venue_records('KHL')
-    korean_names = json.loads((ROOT / 'dist/team-ko.json').read_text())
-    scorebase_aliases = {'Avtomobilist': '아프토모빌리스트 예카테린부르크',
-                         'Dragons': '상하이 드래곤스', 'Lada': '라다 톨리야티',
-                         'Metallurg Mg': '메탈루르크 마그니토고르스크'}
     results_by_team = {}
     venue_by_team = {}
     for row in history:
@@ -724,9 +719,6 @@ def scrape_khl():
                 venue = venue_by_team.get(str(team['id']))
                 if venue and [wins, losses] == [venue['home'][0] + venue['away'][0], venue['home'][1] + venue['away'][1]]:
                     records[side]['sideRecord'] = '-'.join(map(str, venue[side]))
-            source = scorebase_records.get(scorebase_aliases.get(names[side], korean_names.get(names[side], '')))
-            if source and (side not in records or records[side]['record'] == source['record']):
-                records[side] = {'record': source['record'], 'sideRecord': source[side]}
         prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
             'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}
@@ -1153,11 +1145,11 @@ def scrape_kbl_statgg():
         ]
         records = {side: {'record': rows[0]['summary']} for side, rows in comparison['records'].items() if rows}
         events.append({'event': {'id': event_id, 'date': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'competitions': [{'competitors': competitors}], 'recentForm': comparison['recentForm']}, 'prediction': {'league': 'kbl', 'kickoff': kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00','Z'), 'names': {'home': names[0], 'away': names[1]}, 'teams': {'home': names[0], 'away': names[1]}, 'logos': logos, 'lineups': lineups, 'recentForm': comparison['recentForm'], 'records': records, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'}, 'note': 'StatGG 시즌 경기당 출장시간 상위 5명 기준 예상 선발', 'source': 'https://statgg.com' + path}})
-    scorebase_records = kbl_official_records() or scorebase_venue_records('KBL')
+    official_records = kbl_official_records()
     for event in events:
         prediction = event['prediction']
         for side, name in prediction['names'].items():
-            source = scorebase_records.get(name)
+            source = official_records.get(name)
             record = prediction['records'].get(side)
             if source and (not record or record['record'] == source['record']):
                 prediction['records'][side] = {'record': source['record'], 'sideRecord': source[side]}

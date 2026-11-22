@@ -97,7 +97,7 @@ class KBLProjectedLineups(TestCase):
         self.assertEqual(module.scorebase_venue_records('KBL', page),
                          {'서울 SK': {'record': '6-3', 'home': '5-2', 'away': '1-1'}})
 
-    def test_khl_venue_record_requires_matching_official_season_total(self):
+    def test_khl_missing_official_venue_results_keeps_season_total(self):
         class Clock(datetime):
             @classmethod
             def now(cls, tz=None):
@@ -117,7 +117,7 @@ class KBLProjectedLineups(TestCase):
                    '시비르 노보시비르스크': {'record': '2-2', 'home': '1-1', 'away': '1-1'}}
         with patch.object(module, 'datetime', Clock), patch.object(module, 'fetch_json', side_effect=fetch), patch.object(module, 'scorebase_venue_records', return_value=records):
             result = module.scrape_khl()[0]['prediction']['records']
-        self.assertEqual(result['home'], {'record': '3-1', 'sideRecord': '2-0'})
+        self.assertEqual(result['home'], {'record': '3-1'})
         self.assertEqual(result['away'], {'record': '1-3'})
 
     def test_khl_venue_record_from_complete_official_results(self):

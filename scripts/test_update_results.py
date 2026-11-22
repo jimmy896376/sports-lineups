@@ -26,9 +26,9 @@ class KBLResults(TestCase):
         start = datetime(2026, 11, 20, tzinfo=timezone.utc)
         now = datetime(2026, 11, 23, tzinfo=timezone.utc)
         payload = {'fixtures': {'allMatches': [
-            {'id': 6503838, 'status': {'finished': True, 'utcTime': '2026-11-21T05:00:00Z'},
-             'home': {'name': 'Jeonbuk Hyundai Motors FC', 'score': 0}, 'away': {'name': 'FC Seoul', 'score': 1}},
-            {'id': 6503839, 'status': {'finished': False, 'utcTime': '2026-11-21T07:30:00Z'},
+            {'id': 6503838, 'status': {'finished': True, 'utcTime': '2026-11-21T05:00:00Z', 'scoreStr': '0 - 1'},
+             'home': {'name': 'Jeonbuk Hyundai Motors FC'}, 'away': {'name': 'FC Seoul'}},
+            {'id': 6503839, 'status': {'finished': False, 'utcTime': '2026-11-21T07:30:00Z', 'scoreStr': '0 - 0'},
              'home': {'name': 'Gangwon FC', 'score': 0}, 'away': {'name': 'Daejeon Hana Citizen', 'score': 0}},
         ]}}
         rows = module.parse_fotmob_results(payload, 'kleague1', start, now, 'checked')
@@ -37,8 +37,8 @@ class KBLResults(TestCase):
 
     def test_wkbl_final_uses_official_result_page(self):
         now = datetime(2026, 11, 23, tzinfo=timezone.utc)
-        page = '<li class="list_schedule"><span class="date">11.22</span><div class="team_name">KB스타즈</div><em>70</em><div class="team_name">삼성생명</div><em>44</em><a href="/m/game/result.asp?game_no=19"></a></li>'
-        detail = '<strong class="txt_time">2026.11.22(일) 16:00</strong><div class="score_block"><em>70</em><em>44</em></div>'
+        page = '<li><a class="link_detail" href="/m/game/result.asp?game_no=19"><span class="date">11.22</span><strong class="team_name">KB스타즈</strong><em>70</em><strong class="team_name">삼성생명</strong><em>44</em></a></li>'
+        detail = '<strong class="txt_time">2026.11.22(일)&nbsp;16:00&nbsp;청주체육관</strong><div class="score_block"><em>70</em></div><div class="score_block"><em>44</em></div>'
         original = module.fetch_text
         module.fetch_text = lambda url: detail
         try:

@@ -13,6 +13,12 @@ spec.loader.exec_module(projections)
 
 
 class TeamLogos(TestCase):
+    def test_khl_venue_record_uses_standings_cutoff(self):
+        games = [(1, 'home', 'W'), (2, 'away', 'L'), (3, 'home', 'W')]
+        self.assertEqual(projections.khl_venue_record(games, 1, 1, 'home'), '1-0')
+        self.assertEqual(projections.khl_venue_record(games, 2, 1, 'home'), '2-0')
+        self.assertIsNone(projections.khl_venue_record(games, 2, 0, 'home'))
+
     def test_soccer_kickoff_resolves_new_year_without_changing_local_time(self):
         now = datetime(2026, 12, 31, 18, tzinfo=timezone.utc)
         self.assertEqual(projections.soccer_kickoff('January 1 2:45 PM ET', now), '2027-01-01T19:45:00Z')

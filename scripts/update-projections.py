@@ -628,6 +628,16 @@ def scorebase_venue_records(league, page=None):
     return records
 
 
+def khl_venue_record(games, wins, losses, side):
+    """Use the completed-game prefix that matches the published standings."""
+    ordered = sorted(games, key=lambda game: game[0])
+    for length in range(len(ordered), -1, -1):
+        played = ordered[:length]
+        if sum(result == 'W' for _, _, result in played) == wins and sum(result == 'L' for _, _, result in played) == losses:
+            return '-'.join(str(sum(venue == side and result == outcome for _, venue, result in played)) for outcome in ('W', 'L'))
+    return None
+
+
 def scrape_khl():
     """Import five-day KHL fixtures from the public KHL mobile API."""
     from urllib.parse import urlencode
@@ -668,7 +678,7 @@ def scrape_khl():
     stage = next((stage for year in table if year.get('season') == season for stage in year.get('stages', []) if stage.get('type') == 'regular'), {})
     standings = {str(team['id']): team for team in stage.get('regular', [])}
     results_by_team = {}
-    venue_by_team = {}
+    venue_games_by_team = {}
     for row in history:
         game = row.get('event', row)
         score = re.fullmatch(r'(\d+)\s*:\s*(\d+)', str(game.get('score', '')))
@@ -679,8 +689,7 @@ def scrape_khl():
             team_id = str(game.get('team_a' if side == 'home' else 'team_b', {}).get('id', ''))
             if team_id and own != other:
                 results_by_team.setdefault(team_id, []).append((game['start_at'], 'W' if own > other else 'L'))
-                side_record = venue_by_team.setdefault(team_id, {'home': [0, 0], 'away': [0, 0]})[side]
-                side_record[0 if own > other else 1] += 1
+                venue_games_by_team.setdefault(team_id, []).append((game['start_at'], side, 'W' if own > other else 'L'))
     for results in results_by_team.values():
         results.sort(reverse=True)
     for row in history:
@@ -738,9 +747,9 @@ def scrape_khl():
                 wins = sum(int(standing.get(key) or 0) for key in ('w', 'otw', 'sow'))
                 losses = sum(int(standing.get(key) or 0) for key in ('l', 'otl', 'sol'))
                 records[side] = {'record': f'{wins}-{losses}'}
-                venue = venue_by_team.get(str(team['id']))
-                if venue and [wins, losses] == [venue['home'][0] + venue['away'][0], venue['home'][1] + venue['away'][1]]:
-                    records[side]['sideRecord'] = '-'.join(map(str, venue[side]))
+                venue = khl_venue_record(venue_games_by_team.get(str(team['id']), []), wins, losses, side)
+                if venue:
+                    records[side]['sideRecord'] = venue
         prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
             'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records, 'statuses': {'home': 'predicted', 'away': 'predicted'},
             'note': 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}

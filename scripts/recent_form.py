@@ -459,6 +459,33 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
         except Exception as error:
             stats['failed'] += 1
             log('logo directory', path, 'failed:', error)
+    # Playoff summaries omit regular-season totals; the league standings still publishes them.
+    mls_years = {datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00')).year
+                 for item in payload.get('items', []) if item.get('league') == 'mls' and
+                 any(not (item.get('records') or {}).get(side, {}).get('record') for side in ('home', 'away'))}
+    for year in mls_years:
+        try:
+            standing = get(f'https://site.api.espn.com/apis/v2/sports/soccer/usa.1/standings?season={year}')
+            entries = [entry for group in standing.get('children', [])
+                       for entry in (group.get('standings') or {}).get('entries', [])]
+            for item in payload.get('items', []):
+                if item.get('league') != 'mls' or not item['kickoff'].startswith(str(year)):
+                    continue
+                for side in ('home', 'away'):
+                    if (item.get('records') or {}).get(side, {}).get('record'):
+                        continue
+                    matches = [entry for entry in entries if side_matches(item, side, {'team': entry.get('team') or {}})]
+                    if len(matches) != 1:
+                        continue
+                    overall = next((stat.get('displayValue') for stat in matches[0].get('stats', [])
+                                    if stat.get('name') == 'overall'), None)
+                    if overall and re.fullmatch(r'\d+-\d+-\d+', overall):
+                        item.setdefault('records', {}).setdefault(side, {})['record'] = overall
+        except Blocked:
+            break
+        except Exception as error:
+            stats['failed'] += 1
+            log('MLS standings', year, 'failed:', error)
     return stats
 
 

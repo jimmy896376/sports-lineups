@@ -126,6 +126,25 @@ class RecentForm(TestCase):
         self.assertEqual(stats['summaryCalls'], 81)
         self.assertEqual(len(calls), 81)
 
+    def test_mls_playoff_records_fall_back_to_regular_season_standings(self):
+        item = {'league': 'mls', 'kickoff': '2026-11-23T00:00:00Z', 'espnEventId': 'playoff',
+                'logos': {'home': 'home.png', 'away': 'away.png'},
+                'teams': {'home': 'NSH', 'away': 'CIN'},
+                'names': {'home': 'Nashville SC', 'away': 'FC Cincinnati'}}
+        summary = {'header': {'competitions': [{'competitors': [
+            {'homeAway': 'home', 'team': {'displayName': 'Nashville SC'}, 'record': []},
+            {'homeAway': 'away', 'team': {'displayName': 'FC Cincinnati'}, 'record': []}]}]}}
+        standings = {'children': [{'standings': {'entries': [
+            {'team': {'displayName': 'Nashville SC'}, 'stats': [{'name': 'overall', 'displayValue': '18-7-9'}]},
+            {'team': {'displayName': 'FC Cincinnati'}, 'stats': [{'name': 'overall', 'displayValue': '17-8-9'}]}]}}]}
+        urls = []
+        def fetch(url):
+            urls.append(url)
+            return standings if '/standings?' in url else summary
+        module.enrich_recent_form({'items': [item]}, {}, fetch, pause=0)
+        self.assertEqual(item['records'], {'home': {'record': '18-7-9'}, 'away': {'record': '17-8-9'}})
+        self.assertEqual(len(urls), 2)
+
     def test_rotowire_codes_espn_spells_differently(self):
         board = fixture('espn-scoreboard-nba-20261102.json')['events']
         for home, away in (('SAS', 'UTA'), ('GSW', 'PHX'), ('NYK', 'BKN'), ('MEM', 'NOP')):

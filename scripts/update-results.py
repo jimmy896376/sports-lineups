@@ -90,10 +90,10 @@ def parse_fotmob_results(payload, league, start, now, checked_at):
 def parse_wkbl_schedule(page, year_month, start, now, checked_at):
     """Read completed games from WKBL's official monthly schedule and result pages."""
     results = []
-    for block in re.findall(r'<li\\b[^>]*class=[\"\'][^\"\']*list_schedule[^\"\']*[\"\'][^>]*>(.*?)</li>', page, re.S | re.I):
-        link = re.search(r'href=[\"\']([^\"\']*result\\.asp[^\"\']*)', block, re.I)
+    for block in re.findall(r'<li\b[^>]*class=[\"\'][^\"\']*list_schedule[^\"\']*[\"\'][^>]*>(.*?)</li>', page, re.S | re.I):
+        link = re.search(r'href=[\"\']([^\"\']*result\.asp[^\"\']*)', block, re.I)
         teams = [text(value) for value in re.findall(r'<[^>]*class=[\"\'][^\"\']*team_name[^\"\']*[\"\'][^>]*>(.*?)</[^>]+>', block, re.S | re.I)]
-        scores = [int(value) for value in re.findall(r'<em[^>]*>\\s*(\\d+)\\s*</em>', block, re.I)]
+        scores = [int(value) for value in re.findall(r'<em[^>]*>\s*(\d+)\s*</em>', block, re.I)]
         if not link or len(teams) < 2 or len(scores) < 2:
             continue
         detail_url = urllib.parse.urljoin('https://www.wkbl.or.kr', html.unescape(link.group(1)))
@@ -101,9 +101,9 @@ def parse_wkbl_schedule(page, year_month, start, now, checked_at):
             detail = fetch_text(detail_url)
         except (OSError, urllib.error.URLError):
             continue
-        stamp = re.search(r'<strong[^>]*class=[\"\'][^\"\']*txt_time[^\"\']*[\"\'][^>]*>\\s*(\\d{4})\\.(\\d{2})\\.(\\d{2}).*?(\\d{2}:\\d{2})', detail, re.S | re.I)
+        stamp = re.search(r'<strong[^>]*class=[\"\'][^\"\']*txt_time[^\"\']*[\"\'][^>]*>\s*(\d{4})\.(\d{2})\.(\d{2}).*?(\d{2}:\d{2})', detail, re.S | re.I)
         score_blocks = re.findall(r'<div[^>]*class=[\"\'][^\"\']*score_block[^\"\']*[\"\'][^>]*>(.*?)</div>', detail, re.S | re.I)
-        detail_scores = [int(v) for block2 in score_blocks for v in re.findall(r'<em[^>]*>\\s*(\\d+)\\s*</em>', block2, re.I)]
+        detail_scores = [int(v) for block2 in score_blocks for v in re.findall(r'<em[^>]*>\s*(\d+)\s*</em>', block2, re.I)]
         if not stamp:
             continue
         try:

@@ -63,6 +63,66 @@ def parse_kbl_results(payload, start, now, checked_at):
     return results
 
 
+
+def parse_fotmob_results(payload, league, start, now, checked_at):
+    """Accept completed K League fixtures with FotMob's stable match ID."""
+    results = []
+    for match in (payload.get('fixtures') or {}).get('allMatches', []):
+        status = match.get('status') or {}
+        if status.get('finished') is not True:
+            continue
+        try:
+            kickoff = datetime.fromisoformat(str(status['utcTime']).replace('Z', '+00:00'))
+            home_score, away_score = int(match['home']['score']), int(match['away']['score'])
+        except (KeyError, TypeError, ValueError):
+            continue
+        home = str((match.get('home') or {}).get('name') or '').strip()
+        away = str((match.get('away') or {}).get('name') or '').strip()
+        event_id = str(match.get('id') or '')
+        if not event_id or not home or not away or home == away or home_score == away_score or not start <= kickoff <= now:
+            continue
+        results.append({'eventId': event_id, 'league': league, 'kickoff': kickoff.isoformat(), 'status': 'final',
+                        'homeName': home, 'awayName': away, 'homeScore': home_score, 'awayScore': away_score,
+                        'winner': 'home' if home_score > away_score else 'away', 'checkedAt': checked_at, 'note': ''})
+    return results
+
+
+def parse_wkbl_schedule(page, year_month, start, now, checked_at):
+    """Read completed games from WKBL's official monthly schedule and result pages."""
+    results = []
+    for block in re.findall(r'<li\\b[^>]*class=[\"\'][^\"\']*list_schedule[^\"\']*[\"\'][^>]*>(.*?)</li>', page, re.S | re.I):
+        link = re.search(r'href=[\"\']([^\"\']*result\\.asp[^\"\']*)', block, re.I)
+        teams = [text(value) for value in re.findall(r'<[^>]*class=[\"\'][^\"\']*team_name[^\"\']*[\"\'][^>]*>(.*?)</[^>]+>', block, re.S | re.I)]
+        scores = [int(value) for value in re.findall(r'<em[^>]*>\\s*(\\d+)\\s*</em>', block, re.I)]
+        if not link or len(teams) < 2 or len(scores) < 2:
+            continue
+        detail_url = urllib.parse.urljoin('https://www.wkbl.or.kr', html.unescape(link.group(1)))
+        try:
+            detail = fetch_text(detail_url)
+        except (OSError, urllib.error.URLError):
+            continue
+        stamp = re.search(r'<strong[^>]*class=[\"\'][^\"\']*txt_time[^\"\']*[\"\'][^>]*>\\s*(\\d{4})\\.(\\d{2})\\.(\\d{2}).*?(\\d{2}:\\d{2})', detail, re.S | re.I)
+        score_blocks = re.findall(r'<div[^>]*class=[\"\'][^\"\']*score_block[^\"\']*[\"\'][^>]*>(.*?)</div>', detail, re.S | re.I)
+        detail_scores = [int(v) for block2 in score_blocks for v in re.findall(r'<em[^>]*>\\s*(\\d+)\\s*</em>', block2, re.I)]
+        if not stamp:
+            continue
+        try:
+            kickoff = datetime.strptime(''.join(stamp.groups()), '%Y%m%d%H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul')).astimezone(timezone.utc)
+        except ValueError:
+            continue
+        if not start <= kickoff <= now:
+            continue
+        hs, aws = (detail_scores[:2] if len(detail_scores) >= 2 else scores[:2])
+        if hs == aws or [hs, aws] != scores[:2]:
+            continue
+        home = teams[0]
+        away = teams[1]
+        event_id = f'wkbl-{kickoff.astimezone(ZoneInfo("Asia/Seoul")).date().isoformat()}-{home}-{away}'
+        results.append({'eventId': event_id, 'league': 'wkbl', 'kickoff': kickoff.isoformat(), 'status': 'final',
+                        'homeName': home, 'awayName': away, 'homeScore': hs, 'awayScore': aws,
+                        'winner': 'home' if hs > aws else 'away', 'checkedAt': checked_at, 'note': ''})
+    return results
+
 def main():
     now = datetime.now(timezone.utc)
     start = now - timedelta(days=3)
@@ -72,7 +132,7 @@ def main():
     leagues = {str(match.get('league')) for match in feed.get('matches', []) if match.get('league') in ESPN_PATHS}
     leagues.update(str(item.get('league')) for item in previous.get('items', []) if item.get('league') in ESPN_PATHS)
     dates = [(now.date() - timedelta(days=offset)).strftime('%Y%m%d') for offset in range(4)]
-    supported = set(ESPN_PATHS) | {'kbl', 'khl', 'v_league', 'v_league_w'}
+    supported = set(ESPN_PATHS) | {'kbl', 'khl', 'v_league', 'v_league_w', 'wkbl', 'kleague1', 'kleague2'}
     items = {str(item.get('eventId')): item for item in previous.get('items', [])
              if item.get('eventId') and item.get('league') in supported and
              start <= datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00')) <= now}
@@ -183,6 +243,25 @@ def main():
                                'checkedAt': now.isoformat(), 'note': ''}
     except (OSError, ValueError, urllib.error.URLError) as error:
         print(f'KHL results unavailable: {error}')
+
+    # WKBL official monthly schedule links each final row to its official score page.
+    for offset in range(4):
+        month = (now.astimezone(kst).date() - timedelta(days=offset)).strftime('%Y%m')
+        try:
+            page = fetch_text('https://www.wkbl.or.kr/m/game/schedule.asp?' + urllib.parse.urlencode({'sch_ym': month}))
+            for row in parse_wkbl_schedule(page, month, start, now, now.isoformat()):
+                items[row['eventId']] = row
+        except (OSError, ValueError, urllib.error.URLError) as error:
+            print(f'WKBL results unavailable: {month}: {error}')
+    # FotMob exposes completed K League fixtures and IDs used by the prediction feed.
+    for league_id, league in ((9080, 'kleague1'), (9116, 'kleague2')):
+        try:
+            query = urllib.parse.urlencode({'id': league_id, 'ccode3': 'KOR', 'season': str(now.astimezone(kst).year)})
+            payload = fetch('https://www.fotmob.com/api/data/leagues?' + query)
+            for row in parse_fotmob_results(payload, league, start, now, now.isoformat()):
+                items[row['eventId']] = row
+        except (OSError, ValueError, urllib.error.URLError) as error:
+            print(f'K League results unavailable: {league}: {error}')
     payload = {'schemaVersion': 1, 'asOf': now.isoformat(), 'windowStart': start.isoformat(),
                'windowEnd': now.isoformat(), 'items': sorted(items.values(), key=lambda item: item['kickoff'])}
     previous_path.write_text(json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n')

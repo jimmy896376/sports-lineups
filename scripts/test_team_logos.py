@@ -1,7 +1,7 @@
 import importlib.util
 import json
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import TestCase, main
 from unittest.mock import patch
@@ -13,6 +13,14 @@ spec.loader.exec_module(projections)
 
 
 class TeamLogos(TestCase):
+    def test_soccer_kickoff_resolves_new_year_without_changing_local_time(self):
+        now = datetime(2026, 12, 31, 18, tzinfo=timezone.utc)
+        self.assertEqual(projections.soccer_kickoff('January 1 2:45 PM ET', now), '2027-01-01T19:45:00Z')
+        now = datetime(2027, 1, 1, 2, tzinfo=timezone.utc)
+        self.assertEqual(projections.soccer_kickoff('December 31 7:00 PM ET', now), '2027-01-01T00:00:00Z')
+        with self.assertRaises(ValueError):
+            projections.soccer_kickoff('March 10 2:45 PM ET', now)
+
     def test_kleague_results_use_only_completed_games_before_kickoff(self):
         upcoming = {'home': {'id': 'A'}, 'away': {'id': 'B'}, 'status': {'utcTime': '2026-11-08T05:00:00Z'}}
         def played(day, home, away, score, **status):
@@ -57,7 +65,8 @@ class TeamLogos(TestCase):
             return (f'<a class="lineup__team is-{side}">' + (f'<img class="lineup__logo" src="https://assets.rotowire.com/images/teamlogo/soccer/Sporting-CP.png?v=11">' if code == 'LIS' else '') + f'<div class="lineup__abbr">{code}</div></a>'
                     f'<div class="lineup__mteam is-{side}">{name}</div>'
                     f'<ul class="lineup__list is-{side}">{players}</ul>')
-        page = ('<div class="lineup is-soccer"><div class="lineup__time">November 3 12:45 PM ET</div>'
+        today = datetime.now(ZoneInfo('America/New_York'))
+        page = (f'<div class="lineup is-soccer"><div class="lineup__time">{today:%B} {today.day} 12:45 PM ET</div>'
                 + team('home', 'DON', 'FC Shakhtar Donetsk') + team('visit', 'LIS', 'Sporting CP'))
         response = BytesIO(page.encode())
         with patch('urllib.request.urlopen', return_value=response):

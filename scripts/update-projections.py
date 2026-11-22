@@ -44,6 +44,25 @@ def source_url(league, code, kind):
     return 'https://www.rotowire.com/baseball/daily-lineups.php'
 
 
+def soccer_kickoff(time_text, now=None):
+    """Resolve an ET date without a year against the current lineup window."""
+    now = now or datetime.now(timezone.utc)
+    value = time_text.replace(' ET', '').strip()
+    candidates = []
+    for year in (now.year - 1, now.year, now.year + 1):
+        try:
+            local = datetime.strptime(f'{value} {year}', '%B %d %I:%M %p %Y')
+        except ValueError:
+            continue
+        candidates.append(local.replace(tzinfo=ZoneInfo('America/New_York')).astimezone(timezone.utc))
+    if not candidates:
+        raise ValueError(f'Invalid soccer kickoff: {time_text}')
+    closest = min(candidates, key=lambda value: abs(value - now))
+    if abs(closest - now) > timedelta(days=7):
+        raise ValueError(f'Soccer kickoff outside lineup window: {time_text}')
+    return closest.isoformat().replace('+00:00', 'Z')
+
+
 def scrape_page(league, code, kind):
     import urllib.request
     request = urllib.request.Request(source_url(league, code, kind), headers={'User-Agent': 'Mozilla/5.0'})
@@ -71,11 +90,14 @@ def scrape_page(league, code, kind):
                 continue
             time_text = date_match.group(0).replace(',', '') + ' ' + time_text
         else:
-            time_text = time_text + f' {datetime.now(timezone.utc).year}'
-            time_text = re.sub(r' ET (\d{4})$', r' \1 ET', time_text)
+            try:
+                kickoff = soccer_kickoff(time_text)
+            except ValueError:
+                continue
         try:
-            moment = datetime.strptime(time_text.replace(' ET', ''), '%B %d %I:%M %p %Y' if kind == 'soccer' else '%B %d %Y %I:%M %p')
-            kickoff = moment.replace(tzinfo=ZoneInfo('America/New_York')).astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
+            if kind != 'soccer':
+                moment = datetime.strptime(time_text.replace(' ET', ''), '%B %d %Y %I:%M %p')
+                kickoff = moment.replace(tzinfo=ZoneInfo('America/New_York')).astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
         except ValueError:
             continue
         rosters = {}

@@ -3,6 +3,7 @@ const allowed = new Set(['bull-feed.json', 'nude-feed.json', 'projections.json',
 const feedKey = 'lineup-feed-bridge:bull-feed';
 const cacheKey = name => `lineup-feed-bridge:${name}`;
 const dispatchKey = 'lineup-feed-bridge:refresh-dispatched';
+const cacheLifetime = 5 * 60_000;
 
 async function githubFile(name) {
   const nonce = Date.now();
@@ -69,13 +70,13 @@ export default {
     try {
       const key = name === 'bull-feed.json' || name === 'nude-feed.json' ? feedKey : cacheKey(name);
       let body = await env.LINEUP_CACHE.get(key);
-      if (key === feedKey && (!body || Date.now() - Number(await env.LINEUP_CACHE.get(`${feedKey}:synced`) || 0) > 15 * 60_000)) {
+      if (key === feedKey && (!body || Date.now() - Number(await env.LINEUP_CACHE.get(`${feedKey}:synced`) || 0) > cacheLifetime)) {
         try { body = await refreshFeed(env); }
         catch (error) {
           if (!body) throw error;
           console.error('Lineup bridge refresh failed', error.message);
         }
-      } else if (key !== feedKey && (!body || Date.now() - Date.parse(JSON.parse(body).cachedAt || 0) > 15 * 60_000)) {
+      } else if (key !== feedKey && (!body || Date.now() - Date.parse(JSON.parse(body).cachedAt || 0) > cacheLifetime)) {
         const value = await githubFile(name);
         body = JSON.stringify({ cachedAt: new Date().toISOString(), value: JSON.parse(value) });
         await env.LINEUP_CACHE.put(key, body);

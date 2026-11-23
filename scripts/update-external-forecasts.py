@@ -3,9 +3,12 @@
 import concurrent.futures as futures
 import datetime as dt
 import html
+import http.client
 import json
 from pathlib import Path
 import re
+import time
+import urllib.error
 import urllib.request
 import unicodedata
 
@@ -24,10 +27,28 @@ def key(name):
 def date(value):
     return dt.datetime.fromisoformat(value.replace('Z','+00:00'))
 
+RETRYABLE_HTTP = {429, 500, 502, 503, 504}
+
+def _open_text(url, headers, timeout=25, retries=3):
+    last_error = None
+    for idx in range(retries):
+        req = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                return response.read().decode('utf-8')
+        except urllib.error.HTTPError as err:
+            if err.code not in RETRYABLE_HTTP or idx + 1 >= retries:
+                raise
+            last_error = err
+        except (urllib.error.URLError, TimeoutError, http.client.HTTPException, OSError) as err:
+            if idx + 1 >= retries:
+                raise
+            last_error = err
+        time.sleep(1.5 * (idx + 1))
+    raise last_error
+
 def fetch(url):
-    req = urllib.request.Request(url, headers={'User-Agent':'SportsLineups/1.0 (public match probability verification)'})
-    with urllib.request.urlopen(req, timeout=25) as response:
-        return response.read().decode('utf-8')
+    return _open_text(url, {'User-Agent':'SportsLineups/1.0 (public match probability verification)'})
 
 def json_fetch(url):
     return json.loads(fetch(url))
@@ -182,8 +203,7 @@ def collect():
         if not any(m['league']==league for m in displayed): continue
         url = f'https://www.scorebase.kr/embed/fixtures?league={widget_league}&days=7&limit=100'
         def widget():
-            request = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (compatible; NudeLineups/1.0)','Accept':'text/html'})
-            with urllib.request.urlopen(request,timeout=25) as response: return response.read().decode('utf-8')
+            return _open_text(url, {'User-Agent':'Mozilla/5.0 (compatible; NudeLineups/1.0)','Accept':'text/html'})
         source = attempt('Scorebase/'+league,widget)
         if not source: continue
         rows = parse_scorebase_widget(source)

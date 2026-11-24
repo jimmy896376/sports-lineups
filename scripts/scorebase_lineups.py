@@ -188,7 +188,7 @@ def html_rosters(page):
         headings = [node_text(node).strip() for node in descendants(section)
                     if node['tag'] == 'h2' or
                     (node['tag'] == 'div' and all(isinstance(child, str) for child in node['children']))]
-        if not any(label in {'예상 선발 라인업', '예상 출전 명단'} for label in headings):
+        if not any(label in {'예상 선발 라인업', '예상 출전 명단', '확정 라인업', '선발 라인업', '출전 명단'} for label in headings):
             continue
         for grid in descendants(section):
             if grid['tag'] != 'div' or 'sm:grid-cols-2' not in grid['attrs'].get('class', '').split():
@@ -228,7 +228,7 @@ def parse_detail(page, path, sport, names, now):
         rosters = html_rosters(page)
     if not rosters or any(len(players) not in STARTERS[sport] for players in rosters):
         return None
-    confirmed = until_kickoff <= timedelta(hours=2) and bool(re.search(r'확정 라인업', page))
+    confirmed = until_kickoff <= timedelta(hours=2) and bool(re.search(r'확정\s*라인업', page))
     stats = records_from_page(page) if sport == '축구' else None
     if sport == '축구' and not stats:
         return None

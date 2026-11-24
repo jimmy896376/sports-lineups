@@ -545,3 +545,74 @@ def refresh_match_status(payload, fetch_json, now=None, log=print):
             item['matchStatus'] = 'scheduled'
         checked += bool(status)
     return {'boards': len(boards), 'checked': checked}
+
+
+def enrich_confirmed_lineups(payload, fetch_json, now=None, log=print):
+    """Upgrade near-kickoff/live ESPN soccer & NBA matches to official confirmed starters."""
+    now = now or time.time()
+    upgraded = 0
+    checked = 0
+    for item in payload.get('items', []):
+        path, event_id = ESPN_PATHS.get(item.get('league')), str(item.get('espnEventId') or '')
+        if not path or not event_id:
+            continue
+        if not (path.startswith('soccer/') or path == 'basketball/nba'):
+            continue
+        statuses = item.setdefault('statuses', {})
+        if statuses.get('home') == 'confirmed' and statuses.get('away') == 'confirmed':
+            continue
+        try:
+            kickoff = datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00')).timestamp()
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not kickoff - 5400 <= now <= kickoff + 4 * 3600:
+            continue
+        checked += 1
+        try:
+            summary = fetch_json(f'https://site.api.espn.com/apis/site/v2/sports/{path}/summary?event={event_id}')
+        except Exception as error:
+            log('confirmed lineup summary unavailable:', path, event_id, error)
+            continue
+        lineups = item.setdefault('lineups', {})
+        changed_any = False
+        if path.startswith('soccer/'):
+            roster_by_side = {entry.get('homeAway'): entry for entry in (summary.get('rosters') or []) if isinstance(entry, dict)}
+            for side in ('home', 'away'):
+                if statuses.get(side) == 'confirmed':
+                    continue
+                starters = [row for row in (roster_by_side.get(side, {}).get('roster') or []) if row.get('starter') is True]
+                parsed = [
+                    {'name': (row.get('athlete') or {}).get('displayName', ''),
+                     'position': (row.get('position') or {}).get('abbreviation', ''),
+                     'flag': ''}
+                    for row in starters if (row.get('athlete') or {}).get('displayName')
+                ]
+                if len(parsed) == 11:
+                    lineups[side] = parsed
+                    statuses[side] = 'confirmed'
+                    changed_any = True
+        elif path == 'basketball/nba':
+            comp = ((summary.get('header') or {}).get('competitions') or [{}])[0]
+            id_to_side = {str((c.get('team') or {}).get('id') or ''): c.get('homeAway')
+                          for c in (comp.get('competitors') or []) if isinstance(c, dict)}
+            for team_box in (summary.get('boxscore', {}).get('players') or []):
+                side = id_to_side.get(str((team_box.get('team') or {}).get('id') or ''))
+                if side not in ('home', 'away') or statuses.get(side) == 'confirmed':
+                    continue
+                athletes = ((team_box.get('statistics') or [{}])[0]).get('athletes') or []
+                starters = [row for row in athletes if row.get('starter') is True]
+                parsed = [
+                    {'name': (row.get('athlete') or {}).get('displayName', ''),
+                     'position': ((row.get('athlete') or {}).get('position') or {}).get('abbreviation', ''),
+                     'flag': ''}
+                    for row in starters if (row.get('athlete') or {}).get('displayName')
+                ]
+                if len(parsed) == 5:
+                    lineups[side] = parsed
+                    statuses[side] = 'confirmed'
+                    changed_any = True
+        if changed_any:
+            upgraded += 1
+            if statuses.get('home') == 'confirmed' and statuses.get('away') == 'confirmed':
+                item['note'] = ''
+    return {'checked': checked, 'upgraded': upgraded}

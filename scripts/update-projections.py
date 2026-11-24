@@ -563,11 +563,14 @@ def scrape_fotmob_kleague(league_id, key):
             {'homeAway': 'home', 'team': {'id': home['id'], 'displayName': names['home'], 'shortDisplayName': names['home'], 'abbreviation': str(home['id']), 'logo': logos['home']}},
             {'homeAway': 'away', 'team': {'id': away['id'], 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id']), 'logo': logos['away']}}
         ]
+        started = bool(status.get('started'))
+        is_confirmed = len(rosters['home']) == 11 and len(rosters['away']) == 11 and (started or lineup.get('lineupType') in ('confirmed', 'official'))
         prediction = {'league': key, 'kickoff': utc, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])},
-            'logos': logos, 'lineups': rosters, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
-            'note': 'FotMob 최근 선발 11명 기준 예상', 'source': 'https://www.fotmob.com'}
+            'logos': logos, 'lineups': rosters, 'injuries': {},
+            'statuses': {'home': 'confirmed' if is_confirmed else 'predicted', 'away': 'confirmed' if is_confirmed else 'predicted'},
+            'note': 'FotMob 공식 선발 11명' if is_confirmed else 'FotMob 최근 선발 11명 기준 예상', 'source': 'https://www.fotmob.com'}
         prediction['recentForm'], prediction['records'] = fotmob_records(fixture_list, match)
-        events.append({'event': {'id': str(match['id']), 'date': utc, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
+        events.append({'event': {'id': str(match['id']), 'date': utc, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': is_confirmed})
     return events
 
 
@@ -736,6 +739,7 @@ def scrape_khl():
                 recent_starters[team_id] = [{'name': p.get('name', ''), 'position': p.get('role_key', ''), 'flag': ''} for p in lineup]
         except Exception:
             continue
+    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
     for game in upcoming:
         home, away = game.get('team_a', {}), game.get('team_b', {})
         names = {'home': home.get('name', ''), 'away': away.get('name', '')}
@@ -748,6 +752,27 @@ def scrape_khl():
             {'homeAway': 'away', 'team': {'id': str(away['id']), 'displayName': names['away'], 'shortDisplayName': names['away'], 'abbreviation': str(away['id']), 'logo': logos['away']}}
         ]
         lineups = {'home': recent_starters.get(str(home['id']), []), 'away': recent_starters.get(str(away['id']), [])}
+        statuses = {'home': 'predicted', 'away': 'predicted'}
+        game_state = game.get('game_state_key')
+        if game['start_at'] <= now_ms + 2 * 3600 * 1000:
+            try:
+                detail = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/event_v2.json?' + urlencode({'id': game['id'], 'locale': 'en'}))
+                detail = detail.get('event', detail)
+                game_state = detail.get('game_state_key') or game_state
+                for side, team in (('home', detail.get('team_a', {})), ('away', detail.get('team_b', {}))):
+                    players = team.get('start_fives') or team.get('starting_five') or []
+                    if isinstance(players, dict):
+                        players = players.get('players', players.get('items', []))
+                    confirmed_lineup = [
+                        {'name': p.get('name') or p.get('player_name'), 'position': p.get('role_key') or p.get('position', ''), 'flag': ''}
+                        for p in players if isinstance(p, dict) and (p.get('name') or p.get('player_name'))
+                    ]
+                    if len(confirmed_lineup) >= 6:
+                        lineups[side] = confirmed_lineup[:6]
+                        statuses[side] = 'confirmed'
+            except OSError:
+                pass
+        both_confirmed = statuses['home'] == 'confirmed' and statuses['away'] == 'confirmed'
         recent_form = {side: [result for _, result in results_by_team.get(str(team['id']), [])[:5]] for side, team in (('home', home), ('away', away))}
         records = {}
         for side, team in (('home', home), ('away', away)):
@@ -759,10 +784,11 @@ def scrape_khl():
                 venue = khl_venue_record(venue_games_by_team.get(str(team['id']), []), wins, losses, side)
                 if venue:
                     records[side]['sideRecord'] = venue
-        prediction = {'league': 'khl', 'kickoff': kickoff, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
-            'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records, 'statuses': {'home': 'predicted', 'away': 'predicted'},
-            'note': 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}
-        events.append({'event': {'id': str(game['id']), 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
+        match_status = 'finished' if game_state == 'finished' else 'live' if game_state == 'in_progress' else 'scheduled'
+        prediction = {'league': 'khl', 'kickoff': kickoff, 'matchStatus': match_status, 'names': names, 'teams': {'home': str(home['id']), 'away': str(away['id'])}, 'logos': logos,
+            'lineups': lineups, 'injuries': {}, 'recentForm': recent_form, 'records': records, 'statuses': statuses,
+            'note': 'KHL 공식 선발 라인업' if both_confirmed else 'KHL 직전 선발 또는 팀 등록 선수 기록 기준 예상', 'source': 'https://khl.api.webcaster.pro'}
+        events.append({'event': {'id': str(game['id']), 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': both_confirmed})
     return events
 
 
@@ -1634,6 +1660,7 @@ def main():
         spec.loader.exec_module(recent_form)
         print('recent form', recent_form.enrich_recent_form(payload, previous, fetch_json))
         print('match status', recent_form.refresh_match_status(payload, fetch_json))
+        print('confirmed lineups', recent_form.enrich_confirmed_lineups(payload, fetch_json))
         print('KBO recent form', recent_form.enrich_kbo_form(
             payload, previous,
             lambda day: post_json('https://www.koreabaseball.com/ws/Main.asmx/GetKboGameList',

@@ -754,7 +754,7 @@ def scrape_khl():
         lineups = {'home': recent_starters.get(str(home['id']), []), 'away': recent_starters.get(str(away['id']), [])}
         statuses = {'home': 'predicted', 'away': 'predicted'}
         game_state = game.get('game_state_key')
-        if game['start_at'] <= now_ms + 2 * 3600 * 1000:
+        if now_ms - 8 * 3600 * 1000 <= game['start_at'] <= now_ms + 2 * 3600 * 1000:
             try:
                 detail = fetch_json('https://khl.api.webcaster.pro/api/khl_mobile/event_v2.json?' + urlencode({'id': game['id'], 'locale': 'en'}))
                 detail = detail.get('event', detail)

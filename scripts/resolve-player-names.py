@@ -51,6 +51,7 @@ KLEAGUE_TEAM_IDS = {
     'Suwon Samsung Bluewings': ('kleague2', 'K02'), 'Busan I\'Park': ('kleague2', 'K06'),
     'Chungnam Asan FC': ('kleague2', 'K34'), 'Paju Frontier': ('kleague2', 'K40'),
     'Yongin FC': ('kleague2', 'K42'), 'Cheonan City': ('kleague2', 'K38'),
+    'Cheongju FC': ('kleague2', 'K37'),
 }
 MAX_NAMU_TEAMS = 24
 MAX_INDIVIDUAL_SEARCHES = 100

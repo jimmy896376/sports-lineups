@@ -512,6 +512,73 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
         except Exception as error:
             stats['failed'] += 1
             log('MLS standings', year, 'failed:', error)
+    # Liga MX playoff (Liguilla) summaries also omit regular-season totals; read tournament standings + team schedule.
+    ligamx_seasons = set()
+    for item in payload.get('items', []):
+        if item.get('league') != 'ligamx':
+            continue
+        if not any(not (item.get('records') or {}).get(side, {}).get('record')
+                   or not (item.get('records') or {}).get(side, {}).get('sideRecord')
+                   for side in ('home', 'away')):
+            continue
+        try:
+            dt = datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00'))
+        except (KeyError, TypeError, ValueError):
+            continue
+        ligamx_seasons.add(dt.year if dt.month >= 7 else dt.year - 1)
+    for season_year in sorted(ligamx_seasons):
+        try:
+            standing = get(f'https://site.api.espn.com/apis/v2/sports/soccer/mex.1/standings?season={season_year}')
+            children = [group for group in standing.get('children', []) if (group.get('standings') or {}).get('entries')]
+            entries = (children[-1].get('standings') or {}).get('entries', []) if children else []
+            if not entries:
+                continue
+            for item in payload.get('items', []):
+                if item.get('league') != 'ligamx':
+                    continue
+                try:
+                    dt = datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00'))
+                except (KeyError, TypeError, ValueError):
+                    continue
+                if (dt.year if dt.month >= 7 else dt.year - 1) != season_year:
+                    continue
+                for side in ('home', 'away'):
+                    existing_rec = (item.get('records') or {}).get(side) or {}
+                    if existing_rec.get('record') and existing_rec.get('sideRecord'):
+                        continue
+                    matches = [entry for entry in entries if side_matches(item, side, {'team': entry.get('team') or {}})]
+                    if len(matches) != 1:
+                        continue
+                    entry = matches[0]
+                    overall = existing_rec.get('record') or next(
+                        (stat.get('displayValue') for stat in entry.get('stats', []) if stat.get('name') == 'overall'),
+                        None,
+                    )
+                    if not (overall and re.fullmatch(r'\d+-\d+-\d+', overall)):
+                        continue
+                    record = item.setdefault('records', {}).setdefault(side, {})
+                    record['record'] = overall
+                    if record.get('sideRecord'):
+                        continue
+                    team_id = str((entry.get('team') or {}).get('id') or '')
+                    if not team_id:
+                        continue
+                    key = ('soccer/mex.1', team_id, season_year)
+                    if key not in schedules:
+                        if calls >= MAX_CALLS - 10:
+                            continue
+                        try:
+                            schedules[key] = get(f'https://site.api.espn.com/apis/site/v2/sports/soccer/mex.1/teams/{team_id}/schedule?season={season_year}')
+                        except Exception:
+                            continue
+                    venue = venue_record(schedules[key], team_id, side, overall, item['kickoff'])
+                    if venue:
+                        record['sideRecord'] = venue
+        except Blocked:
+            break
+        except Exception as error:
+            stats['failed'] += 1
+            log('Liga MX standings', season_year, 'failed:', error)
     return stats
 
 

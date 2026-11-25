@@ -347,6 +347,63 @@ class RecentForm(TestCase):
         self.assertEqual([row['matchStatus'] for row in rows], ['live', 'finished'])
         self.assertEqual(len(calls), 1)
 
+    def test_ligamx_playoff_uses_standings_and_team_schedule_records(self):
+        item = {
+            'league': 'ligamx',
+            'kickoff': '2026-11-27T01:00:00Z',
+            'teams': {'home': 'GDL', 'away': 'CAZ'},
+            'names': {'home': 'Guadalajara', 'away': 'Cruz Azul'},
+            'espnEventId': '999001',
+            'formCheckedAt': '2026-11-26T00:00:00Z',
+            'recentForm': {'home': ['W', 'D'], 'away': ['W', 'W']},
+        }
+        standings = {
+            'children': [{
+                'name': '2026 Torneo Apertura',
+                'standings': {
+                    'entries': [
+                        {'team': {'id': '219', 'displayName': 'Guadalajara'}, 'stats': [{'name': 'overall', 'displayValue': '1-1-0'}]},
+                        {'team': {'id': '218', 'displayName': 'Cruz Azul'}, 'stats': [{'name': 'overall', 'displayValue': '1-0-1'}]},
+                    ]
+                }
+            }]
+        }
+        schedules = {
+            '219': {'events': [
+                {'date': '2026-11-10T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                    {'homeAway': 'home', 'team': {'id': '219'}, 'score': {'value': 2}},
+                    {'homeAway': 'away', 'team': {'id': '100'}, 'score': {'value': 0}},
+                ]}]},
+                {'date': '2026-11-15T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                    {'homeAway': 'away', 'team': {'id': '219'}, 'score': {'value': 1}},
+                    {'homeAway': 'home', 'team': {'id': '101'}, 'score': {'value': 1}},
+                ]}]},
+            ]},
+            '218': {'events': [
+                {'date': '2026-11-11T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                    {'homeAway': 'away', 'team': {'id': '218'}, 'score': {'value': 3}},
+                    {'homeAway': 'home', 'team': {'id': '102'}, 'score': {'value': 1}},
+                ]}]},
+                {'date': '2026-11-16T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                    {'homeAway': 'home', 'team': {'id': '218'}, 'score': {'value': 0}},
+                    {'homeAway': 'away', 'team': {'id': '103'}, 'score': {'value': 2}},
+                ]}]},
+            ]},
+        }
+        def fetch(url):
+            if '/soccer/mex.1/standings?season=2026' in url:
+                return standings
+            if '/teams/219/schedule?season=2026' in url:
+                return schedules['219']
+            if '/teams/218/schedule?season=2026' in url:
+                return schedules['218']
+            raise AssertionError('unexpected url: ' + url)
+
+        now_ts = 1795568400  # 2026-11-26T01:00:00Z
+        module.enrich_recent_form({'items': [item]}, {'items': [dict(item)]}, fetch, now=now_ts, pause=0)
+        self.assertEqual(item['records']['home'], {'record': '1-1-0', 'sideRecord': '1-0-0'})
+        self.assertEqual(item['records']['away'], {'record': '1-0-1', 'sideRecord': '1-0-0'})
+
 
 if __name__ == '__main__':
     main()

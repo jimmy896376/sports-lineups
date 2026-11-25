@@ -46,10 +46,10 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
       - name: Validate NPB published start times
@@ -70,7 +70,7 @@ jobs:
         run: python3 scripts/test_espn_international.py
       - name: Fetch current lineup projections
         run: python3 scripts/update-projections.py
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
       - name: Validate game outcome estimates

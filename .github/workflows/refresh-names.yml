@@ -38,10 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
       - name: Validate sandboxed board initialization
@@ -50,7 +50,7 @@ jobs:
         run: node scripts/check-baseball-pitchers.mjs
       - name: Validate game outcome estimates
         run: node scripts/check-win-probability.mjs
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
       - name: Test name verification

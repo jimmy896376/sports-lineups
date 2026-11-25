@@ -556,7 +556,7 @@ def enrich_confirmed_lineups(payload, fetch_json, now=None, log=print):
         path, event_id = ESPN_PATHS.get(item.get('league')), str(item.get('espnEventId') or '')
         if not path or not event_id:
             continue
-        if not (path.startswith('soccer/') or path == 'basketball/nba'):
+        if not (path.startswith('soccer/') or path in ('basketball/nba', 'hockey/nhl')):
             continue
         statuses = item.setdefault('statuses', {})
         if statuses.get('home') == 'confirmed' and statuses.get('away') == 'confirmed':
@@ -611,6 +611,37 @@ def enrich_confirmed_lineups(payload, fetch_json, now=None, log=print):
                     lineups[side] = parsed
                     statuses[side] = 'confirmed'
                     changed_any = True
+        elif path == 'hockey/nhl':
+            comp = ((summary.get('header') or {}).get('competitions') or [{}])[0]
+            state = ((comp.get('status') or {}).get('type') or {}).get('state')
+            if state in ('in', 'post'):
+                id_to_side = {str((c.get('team') or {}).get('id') or ''): c.get('homeAway')
+                              for c in (comp.get('competitors') or []) if isinstance(c, dict)}
+                for team_box in (summary.get('boxscore', {}).get('players') or []):
+                    side = id_to_side.get(str((team_box.get('team') or {}).get('id') or ''))
+                    if side not in ('home', 'away') or statuses.get(side) == 'confirmed':
+                        continue
+                    groups = {g.get('name'): [
+                        (row.get('athlete') or {}).get('displayName', '').strip()
+                        for row in (g.get('athletes') or [])
+                        if (row.get('athlete') or {}).get('displayName')
+                    ] for g in (team_box.get('statistics') or []) if isinstance(g, dict)}
+                    fwds, defs, goals = groups.get('forwards', []), groups.get('defenses', []), groups.get('goalies', [])
+                    if len(fwds) >= 3 and len(defs) >= 2 and len(goals) >= 1:
+                        prev = [str(p.get('name') or '').strip() for p in (lineups.get(side) or [])]
+                        def pick_active(pool, preferred, count):
+                            chosen = [n for n in preferred if n in pool][:count]
+                            for n in pool:
+                                if len(chosen) >= count:
+                                    break
+                                if n not in chosen:
+                                    chosen.append(n)
+                            return chosen[:count]
+                        selected = pick_active(fwds, prev[:3], 3) + pick_active(defs, prev[3:5], 2) + pick_active(goals, prev[5:6], 1)
+                        if len(selected) == 6:
+                            lineups[side] = [{'name': name, 'position': '', 'flag': ''} for name in selected]
+                            statuses[side] = 'confirmed'
+                            changed_any = True
         if changed_any:
             upgraded += 1
             if statuses.get('home') == 'confirmed' and statuses.get('away') == 'confirmed':

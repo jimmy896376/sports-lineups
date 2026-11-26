@@ -1257,6 +1257,78 @@ def scrape_kbl_statgg():
     return events
 
 
+def kovo_official_schedule(now=None):
+    """Fetch all completed regular-season games of the current V-League season from KOVO official API."""
+    now = now or datetime.now(ZoneInfo('Asia/Seoul'))
+    season_year = now.year if now.month >= 7 else now.year - 1
+    def _get(url):
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return json.loads(resp.read().decode('utf-8'))
+    season_payload = _get('https://user-api.kovo.co.kr/stat/season-list?gcode=001')
+    season = next((item for item in (season_payload.get('payload') or [])
+                   if str(item.get('ryear') or '').startswith(f'{season_year}-')), None)
+    if not season:
+        return []
+    query = urllib.parse.urlencode({'gcode': '001', 'seasonCode': season['seasonCode'], 'leagueCode': '201'})
+    schedule = _get('https://user-api.kovo.co.kr/stat/game-schedule?' + query)
+    rows = []
+    for row in (schedule.get('payload') or {}).get('content') or []:
+        if row.get('result') not in ('W', 'L'):
+            continue
+        try:
+            kickoff_local = datetime.strptime(f"{row['gdate']} {row['gstime']}", '%Y-%m-%d %H:%M').replace(tzinfo=ZoneInfo('Asia/Seoul'))
+            home_sets, away_sets = int(row['hspoint']), int(row['aspoint'])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if home_sets == away_sets:
+            continue
+        rows.append({
+            'kickoff': kickoff_local.astimezone(timezone.utc),
+            'home': str(row.get('hname') or ''),
+            'away': str(row.get('aname') or ''),
+            'home_won': home_sets > away_sets,
+        })
+    return rows
+
+
+def kovo_records_before(official_games, home, away, kickoff_utc):
+    """Compute official current-season W-L, home/away W-L, and oldest-first last-5 form before kickoff."""
+    team_keys = (
+        '대한항공', '삼성화재', 'KB손해보험', '현대캐피탈', '한국전력', 'OK저축은행', '우리카드',
+        '현대건설', '한국도로공사', '정관장', '흥국생명', 'GS칼텍스', 'IBK기업은행', 'SOOP', '페퍼저축은행',
+    )
+    def canonical(name):
+        text = str(name or '').strip()
+        for key in team_keys:
+            if key in text:
+                return key
+        return text
+
+    recent_form, records = {}, {}
+    for side, team_name in (('home', home), ('away', away)):
+        target = canonical(team_name)
+        history = []
+        for game in official_games:
+            if game['kickoff'] >= kickoff_utc:
+                continue
+            if canonical(game['home']) == target:
+                history.append((game['kickoff'], 'home', 'W' if game['home_won'] else 'L'))
+            elif canonical(game['away']) == target:
+                history.append((game['kickoff'], 'away', 'L' if game['home_won'] else 'W'))
+        if not history:
+            continue
+        history.sort(key=lambda item: item[0])
+        recent_form[side] = [res for _, _, res in history[-5:]]
+        wins = sum(res == 'W' for _, _, res in history)
+        at_venue = [res for _, venue, res in history if venue == side]
+        records[side] = {
+            'record': f'{wins}-{len(history) - wins}',
+            'sideRecord': f'{sum(res == "W" for res in at_venue)}-{sum(res == "L" for res in at_venue)}',
+        }
+    return recent_form, records
+
+
 def scrape_kovo_bkvolley():
     """Build six-player KOVO estimates from the match-linked registered roster."""
     from html.parser import HTMLParser
@@ -1274,6 +1346,10 @@ def scrape_kovo_bkvolley():
         def handle_data(self, data):
             self.value.append(data)
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
+    try:
+        official_games = kovo_official_schedule()
+    except Exception:
+        official_games = []
     page = fetch_text('https://bkvolley.kr/matches')
     public_match = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)
     public_data = json.loads(public_match.group(1)).get('data', {}) if public_match else {}
@@ -1312,27 +1388,27 @@ def scrape_kovo_bkvolley():
         if not today <= kickoff_local.date() < today.fromordinal(today.toordinal()+WINDOW_DAYS):
             continue
         home, away = [name.strip() for name in pair.groups()]
-        kickoff = kickoff_local.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
+        kickoff_utc = kickoff_local.astimezone(timezone.utc)
+        kickoff = kickoff_utc.isoformat().replace('+00:00', 'Z')
         fixture = next((item for item in public_data.get('upcomingMatches', []) if str(item.get('id')) == path.rsplit('/', 1)[-1]), {})
         division = {'KOVO 남자부': 'men', 'KOVO 여자부': 'women'}.get(fixture.get('league'), '')
-        recent_form, records = {}, {}
-        for side in ('home', 'away'):
-            team_id = fixture.get(side + 'TeamId')
-            history = []
-            for result in completed:
-                if result.get('status') != 'finished' or not result.get('matchDate') or datetime.fromisoformat(result['matchDate'].replace('Z', '+00:00')) >= kickoff_local.astimezone(timezone.utc):
-                    continue
-                venue = next((position for position in ('home', 'away') if result.get(position + 'TeamId') == team_id), None)
-                if venue and isinstance(result.get('homeSets'), int) and isinstance(result.get('awaySets'), int):
-                    won = result['homeSets'] > result['awaySets'] if venue == 'home' else result['awaySets'] > result['homeSets']
-                    history.append((result['matchDate'], venue, 'W' if won else 'L', result.get('season')))
-            history.sort(reverse=True)
-            if history:
-                recent_form[side] = [result for _, _, result, _ in history[:5]]
-                season_history = [(venue, result) for _, venue, result, season in history if season == fixture.get('season')]
-                wins = sum(result == 'W' for _, result in season_history)
-                at_venue = [result for venue, result in season_history if venue == side]
-                records[side] = {'record': f'{wins}-{len(season_history)-wins}', 'sideRecord': f'{sum(result == "W" for result in at_venue)}-{sum(result == "L" for result in at_venue)}'}
+        recent_form, records = kovo_records_before(official_games, home, away, kickoff_utc) if official_games else ({}, {})
+        if not recent_form and not records:
+            for side in ('home', 'away'):
+                team_id = fixture.get(side + 'TeamId')
+                history = []
+                for result in completed:
+                    if result.get('status') != 'finished' or not result.get('matchDate') or datetime.fromisoformat(result['matchDate'].replace('Z', '+00:00')) >= kickoff_utc:
+                        continue
+                    if fixture.get('season') and result.get('season') != fixture.get('season'):
+                        continue
+                    venue = next((position for position in ('home', 'away') if result.get(position + 'TeamId') == team_id), None)
+                    if venue and isinstance(result.get('homeSets'), int) and isinstance(result.get('awaySets'), int):
+                        won = result['homeSets'] > result['awaySets'] if venue == 'home' else result['awaySets'] > result['homeSets']
+                        history.append((result['matchDate'], venue, 'W' if won else 'L'))
+                history.sort()
+                if history:
+                    recent_form[side] = [result for _, _, result in history[-5:]]
         logos = {'home': logo(home), 'away': logo(away)}
         competitors = [
             {'homeAway': 'home', 'team': {'id': home, 'displayName': home, 'shortDisplayName': home, 'abbreviation': home, 'logo': logos['home']}},

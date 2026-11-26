@@ -44,7 +44,7 @@ ESPN_PATHS = {
 }
 REFRESH_SECONDS = 3 * 3600      # form and records only change after a game; 3 hours keeps calls low
 KEEP_STALE_SECONDS = 12 * 3600  # if ESPN fails, previous values younger than this are kept (they were read, not guessed)
-MAX_CALLS = 240                 # cover the full five-day lineup slate, including soccer venue records
+MAX_CALLS = 600                 # cover the full five-day lineup slate including mid-tier European & Asian leagues
 RESULT = {'W': 'W', 'L': 'L', 'D': 'D', 'T': 'D'}
 
 

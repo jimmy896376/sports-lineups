@@ -202,6 +202,12 @@ ESPN_INTERNATIONAL = {
     'uel': ('soccer/uefa.europa', 'UEFA 유로파리그'),
     'uecl': ('soccer/uefa.europa.conf', 'UEFA 컨퍼런스리그'),
     'acle': ('soccer/afc.champions', 'AFC 챔피언스리그 엘리트'),
+    'championship': ('soccer/eng.2', '잉글랜드 챔피언십'),
+    'eredivisie': ('soccer/ned.1', '에레디비시'),
+    'scottish': ('soccer/sco.1', '스코틀랜드 프리미어십'),
+    'j1': ('soccer/jpn.1', 'J1 리그'),
+    'jupiler': ('soccer/bel.1', '벨기에 주필러리그'),
+    'primeira': ('soccer/por.1', '포르투갈 프리메이라리가'),
     'fa_cup': ('soccer/eng.fa', '잉글랜드 FA컵'),
     'efl_cup': ('soccer/eng.league_cup', '카라바오컵 (EFL컵)'),
     'copa_del_rey': ('soccer/esp.copa_del_rey', '코파 델 레이'),
@@ -1383,14 +1389,37 @@ def scrape_kovo_bkvolley():
                     if len(chosen) >= 6: break
                     if player not in chosen: chosen.append(player)
                 return chosen[:6]
-            lineups = {'home': estimate(home, away), 'away': estimate(away, home)}
+            def official_starters(team_id):
+                if not team_id:
+                    return []
+                for record in public_data.get('setLineups', []):
+                    same_match = str(record.get('matchId', '')) == str(match_id) or (record.get('matchDate') and record['matchDate'] == kickoff)
+                    if not same_match:
+                        continue
+                    team_record = next((entry for entry in record.get('teams', []) if entry.get('teamId') == team_id), None)
+                    starters = [player for player in (team_record or {}).get('players', []) if player.get('role') == 'starter']
+                    if len(starters) == 6:
+                        return [{'name': player['name'], 'position': player.get('position', ''), 'flag': ''} for player in starters]
+                return []
+            home_confirmed = official_starters(team_ids.get('home'))
+            away_confirmed = official_starters(team_ids.get('away'))
+            lineups = {
+                'home': home_confirmed or estimate(home, away),
+                'away': away_confirmed or estimate(away, home),
+            }
+            kovo_statuses = {
+                'home': 'confirmed' if home_confirmed else 'predicted',
+                'away': 'confirmed' if away_confirmed else 'predicted',
+            }
         except Exception:
             lineups = {'home': [], 'away': []}
+            kovo_statuses = {'home': 'predicted', 'away': 'predicted'}
+        both_kovo_confirmed = kovo_statuses['home'] == 'confirmed' and kovo_statuses['away'] == 'confirmed'
         prediction = {'league': 'kovo', 'division': division, 'kickoff': kickoff, 'names': {'home': home, 'away': away}, 'teams': {'home': home, 'away': away}, 'logos': logos,
             'recentForm': recent_form, 'records': records,
-            'lineups': lineups, 'injuries': {}, 'statuses': {'home': 'predicted', 'away': 'predicted'},
-            'note': '등록 선수 명단과 포지션을 기준으로 구성한 6인 예상 라인업', 'source': url}
-        events.append({'event': {'id': path.rsplit('/', 1)[-1], 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': False})
+            'lineups': lineups, 'injuries': {}, 'statuses': kovo_statuses,
+            'note': 'KOVO 당일 1세트 공식 선발 6인' if both_kovo_confirmed else '등록 선수 명단과 포지션을 기준으로 구성한 6인 예상 라인업', 'source': url}
+        events.append({'event': {'id': path.rsplit('/', 1)[-1], 'date': kickoff, 'competitions': [{'competitors': competitors}]}, 'prediction': prediction, 'confirmed': both_kovo_confirmed})
     return events
 
 

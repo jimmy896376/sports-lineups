@@ -32,7 +32,7 @@ ESPN_PATHS = {
     'bundesliga': 'soccer/ger.1', 'seriea': 'soccer/ita.1', 'ligue1': 'soccer/fra.1',
     'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
     'scottish': 'soccer/sco.1', 'j1': 'soccer/jpn.1', 'mls': 'soccer/usa.1', 'ligamx': 'soccer/mex.1',
-    'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa',
+    'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa', 'uecl': 'soccer/uefa.europa.conf',
     'uefa_nl': 'soccer/uefa.nations', 'intl_friendly': 'soccer/fifa.friendly',
     'fifa_world': 'soccer/fifa.world', 'afc_asian_cup': 'soccer/afc.asian.cup',
     'caf_nations': 'soccer/caf.nations', 'uefa_euro': 'soccer/uefa.euro',

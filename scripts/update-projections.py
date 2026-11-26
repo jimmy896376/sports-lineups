@@ -186,7 +186,7 @@ def fetch_json(url):
 
 
 ESPN_INJURY_PATHS = {
-    'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa',
+    'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa', 'uecl': 'soccer/uefa.europa.conf',
     'epl': 'soccer/eng.1', 'championship': 'soccer/eng.2', 'laliga': 'soccer/esp.1',
     'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
     'scottish': 'soccer/sco.1', 'bundesliga': 'soccer/ger.1', 'seriea': 'soccer/ita.1',
@@ -196,6 +196,8 @@ ESPN_INJURY_PATHS = {
 }
 
 ESPN_INTERNATIONAL = {
+    'uel': ('soccer/uefa.europa', 'UEFA 유로파리그'),
+    'uecl': ('soccer/uefa.europa.conf', 'UEFA 컨퍼런스리그'),
     'uefa_nl': ('soccer/uefa.nations', 'UEFA 네이션스 리그'),
     'intl_friendly': ('soccer/fifa.friendly', '국가대표 친선'),
     'fifa_world': ('soccer/fifa.world', 'FIFA 월드컵'),
@@ -1604,15 +1606,6 @@ def main():
             source_status[league] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get(league, {}).get('checkedAt')}
         all_results.extend(found)
         print(league, len(found))
-    try:
-        europa = scrape_europa()
-        source_status['uel'] = {'fresh': True, 'checkedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')}
-    except Exception as error:
-        print('uel source unavailable:', error)
-        europa = [item for item in previous.get('items', []) if item.get('league') == 'uel' and within_window(item, 'kickoff')]
-        source_status['uel'] = {'fresh': False, 'checkedAt': previous.get('sourceStatus', {}).get('uel', {}).get('checkedAt')}
-    all_results.extend(europa)
-    print('uel', len(europa))
     for league, (espn_path, _) in ESPN_INTERNATIONAL.items():
         try:
             national = scrape_espn_international(league, espn_path, target_days)

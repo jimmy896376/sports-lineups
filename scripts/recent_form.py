@@ -571,7 +571,11 @@ def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause
                             schedules[key] = get(f'https://site.api.espn.com/apis/site/v2/sports/soccer/mex.1/teams/{team_id}/schedule?season={season_year}')
                         except Exception:
                             continue
-                    venue = venue_record(schedules[key], team_id, side, overall, item['kickoff'])
+                    regular_events = [
+                        ev for ev in schedules[key].get('events', [])
+                        if str((ev.get('seasonType') or {}).get('id') or '1') == '1'
+                    ]
+                    venue = venue_record({'events': regular_events}, team_id, side, overall, item['kickoff'])
                     if venue:
                         record['sideRecord'] = venue
         except Blocked:

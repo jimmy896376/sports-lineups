@@ -370,11 +370,18 @@ class RecentForm(TestCase):
         }
         schedules = {
             '219': {'events': [
-                {'date': '2026-11-10T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                {'date': '2026-11-26T03:10:00Z', 'seasonType': {'id': '2', 'name': 'Apertura - Quarterfinals'},
+                 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                    {'homeAway': 'home', 'team': {'id': '219'}, 'score': {'value': 0}},
+                    {'homeAway': 'away', 'team': {'id': '218'}, 'score': {'value': 1}},
+                ]}]},
+                {'date': '2026-11-10T01:00:00Z', 'seasonType': {'id': '1', 'name': 'Torneo Apertura'},
+                 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
                     {'homeAway': 'home', 'team': {'id': '219'}, 'score': {'value': 2}},
                     {'homeAway': 'away', 'team': {'id': '100'}, 'score': {'value': 0}},
                 ]}]},
-                {'date': '2026-11-15T01:00:00Z', 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
+                {'date': '2026-11-15T01:00:00Z', 'seasonType': {'id': '1', 'name': 'Torneo Apertura'},
+                 'competitions': [{'status': {'type': {'completed': True}}, 'competitors': [
                     {'homeAway': 'away', 'team': {'id': '219'}, 'score': {'value': 1}},
                     {'homeAway': 'home', 'team': {'id': '101'}, 'score': {'value': 1}},
                 ]}]},

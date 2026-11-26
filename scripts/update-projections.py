@@ -1259,6 +1259,8 @@ def scrape_kbl_statgg():
 
 def kovo_official_schedule(now=None):
     """Fetch all completed regular-season games of the current V-League season from KOVO official API."""
+    import urllib.parse
+    import urllib.request
     now = now or datetime.now(ZoneInfo('Asia/Seoul'))
     season_year = now.year if now.month >= 7 else now.year - 1
     def _get(url):
@@ -1348,7 +1350,8 @@ def scrape_kovo_bkvolley():
     today = datetime.now(ZoneInfo('Asia/Seoul')).date()
     try:
         official_games = kovo_official_schedule()
-    except Exception:
+    except Exception as error:
+        print('KOVO official schedule unavailable:', error)
         official_games = []
     page = fetch_text('https://bkvolley.kr/matches')
     public_match = re.search(r'<script id="volley-public-data" type="application/json">(.*?)</script>', page, re.S)

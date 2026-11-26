@@ -187,6 +187,9 @@ def fetch_json(url):
 
 ESPN_INJURY_PATHS = {
     'ucl': 'soccer/uefa.champions', 'uel': 'soccer/uefa.europa', 'uecl': 'soccer/uefa.europa.conf',
+    'acle': 'soccer/afc.champions', 'fa_cup': 'soccer/eng.fa', 'efl_cup': 'soccer/eng.league_cup',
+    'copa_del_rey': 'soccer/esp.copa_del_rey', 'dfb_pokal': 'soccer/ger.dfb_pokal',
+    'coppa_italia': 'soccer/ita.coppa_italia', 'coupe_de_france': 'soccer/fra.coupe_de_france',
     'epl': 'soccer/eng.1', 'championship': 'soccer/eng.2', 'laliga': 'soccer/esp.1',
     'eredivisie': 'soccer/ned.1', 'jupiler': 'soccer/bel.1', 'primeira': 'soccer/por.1',
     'scottish': 'soccer/sco.1', 'bundesliga': 'soccer/ger.1', 'seriea': 'soccer/ita.1',
@@ -198,6 +201,15 @@ ESPN_INJURY_PATHS = {
 ESPN_INTERNATIONAL = {
     'uel': ('soccer/uefa.europa', 'UEFA 유로파리그'),
     'uecl': ('soccer/uefa.europa.conf', 'UEFA 컨퍼런스리그'),
+    'acle': ('soccer/afc.champions', 'AFC 챔피언스리그 엘리트'),
+    'fa_cup': ('soccer/eng.fa', '잉글랜드 FA컵'),
+    'efl_cup': ('soccer/eng.league_cup', '카라바오컵 (EFL컵)'),
+    'copa_del_rey': ('soccer/esp.copa_del_rey', '코파 델 레이'),
+    'dfb_pokal': ('soccer/ger.dfb_pokal', 'DFB-포칼'),
+    'coppa_italia': ('soccer/ita.coppa_italia', '코파 이탈리아'),
+    'coupe_de_france': ('soccer/fra.coupe_de_france', '쿠프 드 프랑스'),
+    'wcq_afc': ('soccer/fifa.worldq.afc', '월드컵 아시아 예선'),
+    'copa_america': ('soccer/conmebol.america', '코파 아메리카'),
     'uefa_nl': ('soccer/uefa.nations', 'UEFA 네이션스 리그'),
     'intl_friendly': ('soccer/fifa.friendly', '국가대표 친선'),
     'fifa_world': ('soccer/fifa.world', 'FIFA 월드컵'),
@@ -229,6 +241,21 @@ NATIONAL_TEAM_KO = {
     'Spain': '스페인', 'Sweden': '스웨덴', 'Switzerland': '스위스',
     'Türkiye': '튀르키예', 'Ukraine': '우크라이나',
     'Uzbekistan': '우즈베키스탄', 'Wales': '웨일스', 'India': '인도',
+    # 아시아·남미·북중미·아프리카 주요 국가대표팀
+    'South Korea': '대한민국', 'Korea Republic': '대한민국', 'Japan': '일본',
+    'Australia': '호주', 'Iran': '이란', 'IR Iran': '이란', 'Saudi Arabia': '사우디아라비아',
+    'Qatar': '카타르', 'Iraq': '이라크', 'Jordan': '요르단', 'United Arab Emirates': '아랍에미리트',
+    'Oman': '오만', 'Bahrain': '바레인', 'Kuwait': '쿠웨이트', 'Palestine': '팔레스타인',
+    'China PR': '중국', 'China': '중국', 'Thailand': '태국', 'Vietnam': '베트남',
+    'Indonesia': '인도네시아', 'North Korea': '북한', 'Syria': '시리아', 'Kyrgyzstan': '키르기스스탄',
+    'Brazil': '브라질', 'Argentina': '아르헨티나', 'Uruguay': '우루과이', 'Colombia': '콜롬비아',
+    'Ecuador': '에콰도르', 'Chile': '칠레', 'Paraguay': '파라과이', 'Peru': '페루',
+    'Venezuela': '베네수엘라', 'Bolivia': '볼리비아',
+    'United States': '미국', 'Mexico': '멕시코', 'Canada': '캐나다', 'Costa Rica': '코스타리카',
+    'Panama': '파나마', 'Jamaica': '자메이카', 'Honduras': '온두라스',
+    'Morocco': '모로코', 'Senegal': '세네갈', 'Egypt': '이집트', 'Nigeria': '나이지리아',
+    'Cameroon': '카메룬', 'Ghana': '가나', 'Algeria': '알제리', 'Tunisia': '튀니지',
+    'Ivory Coast': '코트디부아르', "Côte d'Ivoire": '코트디부아르', 'South Africa': '남아프리카공화국',
 }
 
 

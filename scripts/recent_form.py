@@ -273,33 +273,50 @@ def venue_record(schedule, team_id, side, expected_total, kickoff):
     """Count verified completed league games only when they reproduce ESPN's season total."""
     if not re.fullmatch(r'\d+-\d+-\d+', str(expected_total or '')):
         return None
-    total = {'W': 0, 'D': 0, 'L': 0}
-    venue = {'W': 0, 'D': 0, 'L': 0}
     cutoff = datetime.fromisoformat(kickoff.replace('Z', '+00:00'))
-    for event in schedule.get('events', []):
-        competition = (event.get('competitions') or [{}])[0]
-        if not (competition.get('status') or {}).get('type', {}).get('completed'):
-            continue
-        try:
-            date = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
-            if date >= cutoff:
+
+    def compute(events):
+        total = {'W': 0, 'D': 0, 'L': 0}
+        venue = {'W': 0, 'D': 0, 'L': 0}
+        for event in events:
+            competition = (event.get('competitions') or [{}])[0]
+            if not (competition.get('status') or {}).get('type', {}).get('completed'):
                 continue
-            competitors = competition['competitors']
-            own = next(c for c in competitors if str((c.get('team') or {}).get('id')) == str(team_id))
-            opponent = next(c for c in competitors if c is not own)
-            own_score = float(own['score']['value'])
-            other_score = float(opponent['score']['value'])
-            if own['homeAway'] not in ('home', 'away'):
+            try:
+                date = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
+                if date >= cutoff:
+                    continue
+                competitors = competition['competitors']
+                own = next(c for c in competitors if str((c.get('team') or {}).get('id')) == str(team_id))
+                opponent = next(c for c in competitors if c is not own)
+                own_score = float(own['score']['value'])
+                other_score = float(opponent['score']['value'])
+                if own['homeAway'] not in ('home', 'away'):
+                    return None
+            except (KeyError, TypeError, ValueError, StopIteration):
                 return None
-        except (KeyError, TypeError, ValueError, StopIteration):
+            result = 'W' if own_score > other_score else 'L' if own_score < other_score else 'D'
+            total[result] += 1
+            if own['homeAway'] == side and not competition.get('neutralSite'):
+                venue[result] += 1
+        if '-'.join(str(total[key]) for key in ('W', 'D', 'L')) != expected_total:
             return None
-        result = 'W' if own_score > other_score else 'L' if own_score < other_score else 'D'
-        total[result] += 1
-        if own['homeAway'] == side and not competition.get('neutralSite'):
-            venue[result] += 1
-    if '-'.join(str(total[key]) for key in ('W', 'D', 'L')) != expected_total:
-        return None
-    return '-'.join(str(venue[key]) for key in ('W', 'D', 'L'))
+        return '-'.join(str(venue[key]) for key in ('W', 'D', 'L'))
+
+    events = schedule.get('events', [])
+    direct = compute(events)
+    if direct is not None:
+        return direct
+    # When qualifying/playoff rounds share the same schedule, accept a seasonType subset only if unique.
+    by_type = defaultdict(list)
+    for event in events:
+        st_id = str((event.get('seasonType') or {}).get('id') or '')
+        if st_id:
+            by_type[st_id].append(event)
+    matches = [res for subset in by_type.values() if (res := compute(subset)) is not None]
+    if len(set(matches)) == 1:
+        return matches[0]
+    return None
 
 
 def enrich_recent_form(payload, previous, fetch_json, now=None, log=print, pause=0.25):

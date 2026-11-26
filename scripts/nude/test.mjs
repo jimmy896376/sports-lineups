@@ -85,6 +85,17 @@ oldKovo.domestic.kovo[0].prediction.names.home='대한항공';
 oldKovo.domestic.kovo[1].prediction.names.home='GS칼텍스';
 oldKovo.domestic.kovo.forEach(row=>delete row.prediction.division);
 assert.deepEqual(buildFeed(oldKovo,catalog,teams,config,'test').matches.map(match=>match.league),['v_league','v_league_w']);
+const kovoFinalResults={items:[
+ {eventId:'999999',league:'v_league_w',kickoff:'2026-11-04T10:00:00+00:00',status:'final',homeId:'현대건설',awayId:'정관장'},
+]};
+const kovoWithFinal=structuredClone(splitKovo);
+kovoWithFinal.asOf='2026-11-04T12:30:00Z';
+kovoWithFinal.domestic.kovo[1].event.date='2026-11-04T10:00:00Z';
+kovoWithFinal.domestic.kovo[1].prediction.kickoff='2026-11-04T10:00:00Z';
+kovoWithFinal.domestic.kovo[1].prediction.teams={home:'현대건설',away:'정관장'};
+kovoWithFinal.domestic.kovo[1].prediction.names={home:'현대건설',away:'정관장'};
+const finishedKovo=buildFeed(kovoWithFinal,catalog,teams,config,'test',{matches:[]},kovoFinalResults).matches.find(m=>m.league==='v_league_w');
+assert.equal(finishedKovo.matchStatus,'finished','공식 results.json에 종료된 V리그 경기는 즉시 finished로 전환한다');
 const kblRecord=structuredClone(scopedGame);
 kblRecord.domestic.kleague2[0].event.competitions=[{competitors:[{homeAway:'home',records:[{name:'overall',summary:'5-3'}]}]}];
 kblRecord.domestic.kleague2[0].event.recentForm={home:['W','L']};

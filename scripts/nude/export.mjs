@@ -62,12 +62,27 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  const model=globalThis.NudeLineupData.normalize(snapshot,reviewedCatalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
  const fallback=createPlayerNameFallback(playerNames);
+ const INJURY_STATUS_KO={out:'결장',ques:'출전 불투명',questionable:'출전 불투명',sus:'출장정지',suspension:'출장정지',suspended:'출장정지','injured reserve':'부상자 명단',ir:'부상자 명단','day-to-day':'당일 결정',dtd:'당일 결정',doubtful:'출전 불확실',probable:'출전 유력'};
+ const logoByTeam=new Map();
  for(const match of model.matches)for(const team of match.teams){
   team.name=teams[team.name]||team.name;
+  if(team.logo&&!logoByTeam.has(team.name))logoByTeam.set(team.name,team.logo);
   for(const player of team.players)player.name=fallback(player.name);
-  for(const player of team.injuries||[])player.name=fallback(player.name);
+  for(const player of team.injuries||[]){
+   player.name=fallback(player.name);
+   if(!player.statusLabel&&player.status){
+    const label=INJURY_STATUS_KO[String(player.status).trim().toLowerCase()];
+    if(label)player.statusLabel=label;
+   }
+  }
   if(typeof team.pitcher==='string')team.pitcher=fallback(team.pitcher);
   else if(team.pitcher?.name)team.pitcher.name=fallback(team.pitcher.name);
+ }
+ for(const match of model.matches)for(const team of match.teams){
+  if(!team.logo&&logoByTeam.has(team.name)){
+   team.logo=logoByTeam.get(team.name);
+   if(match.logos&&!match.logos[team.side])match.logos[team.side]=team.logo;
+  }
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
  for(const match of model.matches){

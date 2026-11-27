@@ -30,7 +30,11 @@
    if(teams.some(t=>!t.name)){rejected++;continue;}
    // Names/translation changes do not change the identity; home and away remain ordered.
    const identity=JSON.stringify([league,new Date(kickoff).toISOString(),teams[0].id,teams[1].id]);
-   if(seen.has(identity))continue;seen.add(identity);
+   const rawEventId=text(String(p.espnEventId||row.event?.id||''));
+   const eventKey=rawEventId?JSON.stringify(['ev',league,rawEventId]):'';
+   const nameKey=JSON.stringify(['nm',league,new Date(kickoff).toISOString(),teams[0].name,teams[1].name]);
+   if(seen.has(identity)||(eventKey&&seen.has(eventKey))||seen.has(nameKey))continue;
+   seen.add(identity);if(eventKey)seen.add(eventKey);seen.add(nameKey);
    const source=snapshot.sourceStatus?.[league]||{};
    const competitorRecords=Object.fromEntries(['home','away'].map(side=>{
     const records=row.event?.competitions?.[0]?.competitors?.find(t=>t.homeAway===side)?.records||[];

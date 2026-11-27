@@ -1664,9 +1664,9 @@ def scrape_wkbl_official():
                     venue = 'home' if prior['home'] == team else 'away'
                     own, other = prior['scores'] if venue == 'home' else prior['scores'][::-1]
                     history.append((prior['date'], venue, 'W' if own > other else 'L', id(prior) in season_games))
-                history.sort(reverse=True)
+                history.sort()
                 if history:
-                    recent_form[side] = [result for _, _, result, _ in history[:5]]
+                    recent_form[side] = [result for _, _, result, _ in history[-5:]]
                     current = [(venue, result) for _, venue, result, in_season in history if in_season]
                     wins = sum(result == 'W' for _, result in current)
                     at_venue = [result for venue, result in current if venue == side]
@@ -1700,23 +1700,64 @@ def restore_missing_lineups(entries, previous_entries):
 def retain_started_lineups(entries, previous_entries, now=None):
     """Keep a published lineup when its schedule source drops the game at kickoff."""
     now = now or datetime.now(timezone.utc)
-    def key(row):
+    def norm(value):
+        return re.sub(r'[^a-z0-9가-힣]+', '', str(value or '').lower())
+    def keys(row):
         item = row.get('prediction', row)
-        kickoff = item.get('kickoff') or row.get('event', {}).get('date', '')
+        league = item.get('league')
+        kickoff = (item.get('kickoff') or row.get('event', {}).get('date', ''))[:13]
         teams = item.get('teams') or {}
-        return item.get('league'), kickoff[:13], teams.get('home'), teams.get('away')
-    seen = {key(row) for row in entries}
+        names = item.get('names') or {}
+        out = [('code', league, kickoff, norm(teams.get('home')), norm(teams.get('away')))]
+        if names.get('home') and names.get('away'):
+            out.append(('name', league, kickoff, norm(names.get('home')), norm(names.get('away'))))
+        event_id = str(item.get('espnEventId') or row.get('event', {}).get('id') or '').strip()
+        if event_id:
+            out.append(('event', league, event_id))
+        return out
+    seen = {k for row in entries for k in keys(row)}
     for old in previous_entries:
         item = old.get('prediction', old)
         try:
             age = now - datetime.fromisoformat(item['kickoff'].replace('Z', '+00:00'))
         except (KeyError, TypeError, ValueError):
             continue
-        if not timedelta(0) <= age <= timedelta(hours=8) or key(old) in seen or not any((item.get('lineups') or {}).get(side) for side in ('home', 'away')):
+        row_keys = keys(old)
+        if not timedelta(0) <= age <= timedelta(hours=8) or any(k in seen for k in row_keys) or not any((item.get('lineups') or {}).get(side) for side in ('home', 'away')):
             continue
         retained = {**old, 'prediction': {**item, 'matchStatus': 'unknown'}} if 'prediction' in old else {**old, 'matchStatus': 'unknown'}
         entries.append(retained)
-        seen.add(key(old))
+        seen.update(row_keys)
+
+
+def share_known_team_logos(payload):
+    """Copy verified logos from domestic/league fixtures to cross-competition fixtures missing a logo."""
+    def norm(value):
+        text = re.sub(r'\b(fc|cf|sc|afc|ac|club)\b', '', str(value or '').lower())
+        return re.sub(r'[^a-z0-9가-힣]+', '', text)
+    logo_by_name = {}
+    all_predictions = list(payload.get('items', []))
+    for entries in (payload.get('domestic') or {}).values():
+        for entry in entries:
+            if isinstance(entry, dict) and isinstance(entry.get('prediction'), dict):
+                all_predictions.append(entry['prediction'])
+    for item in all_predictions:
+        logos = item.get('logos') or {}
+        names = item.get('names') or {}
+        for side in ('home', 'away'):
+            logo = str(logos.get(side) or '').strip()
+            key = norm(names.get(side))
+            if logo.startswith('https://') and key and key not in logo_by_name:
+                logo_by_name[key] = logo
+    for item in all_predictions:
+        logos = item.setdefault('logos', {})
+        names = item.get('names') or {}
+        for side in ('home', 'away'):
+            if str(logos.get(side) or '').strip():
+                continue
+            key = norm(names.get(side))
+            if key in logo_by_name:
+                logos[side] = logo_by_name[key]
 
 
 def main():
@@ -1797,6 +1838,7 @@ def main():
             fetch_text))
     except Exception as error:
         print('recent form unavailable:', error)
+    share_known_team_logos(payload)
     if previous.get('items') == payload.get('items') and previous.get('domestic') == payload.get('domestic') and previous.get('sourceStatus') == payload.get('sourceStatus'):
         print('No lineup changes')
         return

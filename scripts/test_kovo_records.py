@@ -30,6 +30,43 @@ class KovoRecordsTests(unittest.TestCase):
         self.assertEqual(recent_form['away'], ['L'])
         self.assertEqual(records['away'], {'record': '0-1', 'sideRecord': '0-1'})
 
+    def test_retain_started_lineups_deduplicates_by_event_id_and_names(self):
+        now = datetime(2026, 11, 26, 19, 0, tzinfo=timezone.utc)
+        current = [{
+            'league': 'uecl', 'kickoff': '2026-11-26T17:45:00Z', 'espnEventId': '401915814',
+            'teams': {'home': 'BHA', 'away': 'UCRA'},
+            'names': {'home': 'Brighton', 'away': 'Universitatea Craiova'},
+            'lineups': {'home': [{'name': 'A'}], 'away': [{'name': 'B'}]},
+        }]
+        previous = [{
+            'league': 'uecl', 'kickoff': '2026-11-26T17:45:00Z', 'espnEventId': '401915814',
+            'teams': {'home': 'BHA', 'away': 'CRA'},
+            'names': {'home': 'Brighton', 'away': 'Universitatea Craiova'},
+            'lineups': {'home': [{'name': 'A'}], 'away': [{'name': 'B'}]},
+        }]
+        MODULE.retain_started_lineups(current, previous, now=now)
+        self.assertEqual(len(current), 1)
+
+    def test_share_known_team_logos_fills_cross_competition_missing_logo(self):
+        payload = {
+            'items': [{
+                'league': 'acle',
+                'names': {'home': 'FC Tokyo', 'away': 'Daejeon Hana Citizen FC'},
+                'logos': {'home': 'https://a.espncdn.com/i/teamlogos/soccer/500/17689.png', 'away': ''},
+            }],
+            'domestic': {
+                'kleague1': [{
+                    'prediction': {
+                        'league': 'kleague1',
+                        'names': {'home': 'FC Seoul', 'away': 'Daejeon Hana Citizen'},
+                        'logos': {'home': 'https://example.com/seoul.png', 'away': 'https://images.fotmob.com/133900.png'},
+                    }
+                }]
+            },
+        }
+        MODULE.share_known_team_logos(payload)
+        self.assertEqual(payload['items'][0]['logos']['away'], 'https://images.fotmob.com/133900.png')
+
 
 if __name__ == '__main__':
     unittest.main()

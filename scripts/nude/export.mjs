@@ -62,7 +62,16 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  const model=globalThis.NudeLineupData.normalize(snapshot,reviewedCatalog,teams);
  if(model.rejected)throw Error(`${model.rejected} source rows rejected; update scripts/nude/source-adapter.cjs before publishing.`);
  const fallback=createPlayerNameFallback(playerNames);
- const INJURY_STATUS_KO={out:'결장',ques:'출전 불투명',questionable:'출전 불투명',sus:'출장정지',suspension:'출장정지',suspended:'출장정지','injured reserve':'부상자 명단',ir:'부상자 명단','day-to-day':'당일 결정',dtd:'당일 결정',doubtful:'출전 불확실',probable:'출전 유력'};
+ const INJURY_STATUS_KO={
+  out:['out','결장'],inactive:['out','결장'],injured:['out','결장'],
+  ques:['ques','출전 불투명'],questionable:['ques','출전 불투명'],doubt:['ques','출전 불투명'],doubtful:['ques','출전 불확실'],
+  sus:['sus','출장정지'],susp:['sus','출장정지'],suspension:['sus','출장정지'],suspended:['sus','출장정지'],
+  'injured reserve':['ir','부상자 명단'],ir:['ir','부상자 명단'],ltir:['ir','장기 부상자 명단'],il:['ir','부상자 명단'],
+  '7-day il':['ir','7일 부상자 명단'],'10-day il':['ir','10일 부상자 명단'],'15-day il':['ir','15일 부상자 명단'],'60-day il':['ir','60일 부상자 명단'],
+  pup:['ir','출전 불가 명단'],nfi:['ir','비경기 부상 명단'],
+  'day-to-day':['dtd','당일 결정'],dtd:['dtd','당일 결정'],gtd:['dtd','당일 결정'],'game-time decision':['dtd','당일 결정'],
+  prob:['prob','출전 유력'],probable:['prob','출전 유력'],
+ };
  const logoByTeam=new Map();
  for(const match of model.matches)for(const team of match.teams){
   team.name=teams[team.name]||team.name;
@@ -70,9 +79,12 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
   for(const player of team.players)player.name=fallback(player.name);
   for(const player of team.injuries||[]){
    player.name=fallback(player.name);
-   if(!player.statusLabel&&player.status){
-    const label=INJURY_STATUS_KO[String(player.status).trim().toLowerCase()];
-    if(label)player.statusLabel=label;
+   if((!player.statusLabel||!player.statusKind)&&player.status){
+    const mapped=INJURY_STATUS_KO[String(player.status).trim().toLowerCase()];
+    if(mapped){
+     if(!player.statusKind)player.statusKind=mapped[0];
+     if(!player.statusLabel)player.statusLabel=mapped[1];
+    }
    }
   }
   if(typeof team.pitcher==='string')team.pitcher=fallback(team.pitcher);

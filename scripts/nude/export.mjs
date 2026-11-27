@@ -20,22 +20,22 @@ export function matchState(match,now=Date.now()){
  return age>=0?'live':'scheduled';
 }
 
-function isFinalResult(match,results){
+function findFinalResult(match,results){
  const items=Array.isArray(results?.items)?results.items:[];
- if(!items.length)return false;
+ if(!items.length)return null;
  const norm=v=>String(v||'').trim().toLowerCase();
  const homeKeys=new Set([norm(match.teams?.[0]?.id),norm(match.teams?.[0]?.name)].filter(Boolean));
  const awayKeys=new Set([norm(match.teams?.[1]?.id),norm(match.teams?.[1]?.name)].filter(Boolean));
  for(const row of items){
   if(row?.status!=='final'||row.league!==match.league)continue;
-  if(row.eventId&&match.eventId&&String(row.eventId)===String(match.eventId))return true;
+  if(row.eventId&&match.eventId&&String(row.eventId)===String(match.eventId))return row;
   const rk=Date.parse(row.kickoff);
   if(!Number.isFinite(rk)||Math.abs(rk-match.kickoff)>30*60000)continue;
   const rHome=[norm(row.homeId),norm(row.homeName)].filter(Boolean);
   const rAway=[norm(row.awayId),norm(row.awayName)].filter(Boolean);
-  if(rHome.some(k=>homeKeys.has(k))&&rAway.some(k=>awayKeys.has(k)))return true;
+  if(rHome.some(k=>homeKeys.has(k))&&rAway.some(k=>awayKeys.has(k)))return row;
  }
- return false;
+ return null;
 }
 
 export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matches:[]},results={items:[]}){
@@ -98,7 +98,13 @@ export function buildFeed(snapshot,catalog,teams,config,revision,scorebase={matc
  }
  model.matches.sort((a,b)=>a.kickoff-b.kickoff||a.id.localeCompare(b.id));
  for(const match of model.matches){
-  if(isFinalResult(match,results))match.matchStatus='finished';
+  const finalRow=findFinalResult(match,results);
+  if(finalRow){
+   match.matchStatus='finished';
+   if(Number.isFinite(finalRow.homeScore)&&Number.isFinite(finalRow.awayScore)){
+    match.score={home:finalRow.homeScore,away:finalRow.awayScore};
+   }
+  }
   match.matchStatus=matchState(match);
  }
  const published=model.matches.filter(match=>match.teams.some(team=>team.players.length));

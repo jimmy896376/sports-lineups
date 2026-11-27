@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   actions: write
+  issues: write
 
 jobs:
   check:
@@ -34,4 +35,22 @@ jobs:
           queued=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow refresh-lineups.yml --status queued --json databaseId --jq length)
           if [ "$running" -eq 0 ] && [ "$queued" -eq 0 ]; then
             gh workflow run refresh-lineups.yml --repo "$GITHUB_REPOSITORY" --ref main
+          fi
+      - name: Close health alert after recovery
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          issue=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 50 --json number,title --jq '[.[] | select(.title == "Lineup feed health check failure") | .number][0] // empty')
+          if [ -n "$issue" ]; then
+            gh issue close "$issue" --repo "$GITHUB_REPOSITORY" --comment "Lineup health recovered: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
+      - name: Notify owner of health check failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          issue=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 50 --json number,title --jq '[.[] | select(.title == "Lineup feed health check failure") | .number][0] // empty')
+          if [ -z "$issue" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "Lineup feed health check failure" --assignee "$GITHUB_REPOSITORY_OWNER" --body "Lineup feed health check failed. Inspect the run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           fi

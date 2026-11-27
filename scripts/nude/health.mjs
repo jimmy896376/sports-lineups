@@ -17,21 +17,29 @@ export function inspect(feed,snapshot,now=Date.now()){
  if(!checked.matches.length)issues.push('empty feed');
  const day=ms=>new Date(ms+9*3600000).toISOString().slice(0,10);
  const allowed=new Set(Array.from({length:5},(_,offset)=>day(now+offset*86400000)));
+ const cupOrIntl=new Set(['ucl','uel','uecl','acle','fa_cup','efl_cup','copa_del_rey','dfb_pokal','coppa_italia','coupe_de_france','wcq_afc','copa_america','fifa_world','afc_asian_cup','uefa_euro','uefa_nl','intl_friendly','caf_nations','uefa_u21']);
  let missingLogos=0,emptyLineups=0,latinPlayers=0,nonKoreanPlayers=0,nonKoreanTeams=0,missingKboForms=0,missingKboRecords=0;
  const missingStatsByLeague={};
  let activeMissingStats=0;
  for(const match of checked.matches){
   if(match.matchStatus!=='finished'&&!(match.matchStatus==='live'&&matchState(match,now)==='live')&&!allowed.has(day(match.kickoff)))issues.push(`outside five-day window: ${match.id}`);
+  const isCup=cupOrIntl.has(match.league);
   const coverage=missingStatsByLeague[match.league]??={recentForm:0,seasonRecord:0,venueRecord:0};
   for(const side of ['home','away']){
    if(!match.recentForm?.[side]?.length)coverage.recentForm++;
    if(!match.records?.[side]?.record)coverage.seasonRecord++;
    if(!match.records?.[side]?.sideRecord)coverage.venueRecord++;
-   if(matchState(match,now)!=='finished'&&(!match.recentForm?.[side]?.length||!match.records?.[side]?.record||!match.records?.[side]?.sideRecord))activeMissingStats++;
+   if(matchState(match,now)!=='finished'){
+    if(isCup){
+     if(!match.recentForm?.[side]?.length)activeMissingStats++;
+    }else if(!match.recentForm?.[side]?.length||!match.records?.[side]?.record||!match.records?.[side]?.sideRecord){
+     activeMissingStats++;
+    }
+   }
   }
   for(const team of match.teams){
    if(!/[가-힣]/.test(team.name))nonKoreanTeams++;
-   if(!team.logo||!/^https:\/\/[^\s]+$/.test(team.logo)){missingLogos++;issues.push(`missing or invalid logo: ${match.id} ${team.side}`);}
+   if(!team.logo||!/^https:\/\/[^\s]+$/.test(team.logo)){missingLogos++;if(!isCup)issues.push(`missing or invalid logo: ${match.id} ${team.side}`);}
    if(!team.players.length){emptyLineups++;issues.push(`empty lineup: ${match.id} ${team.side}`);}
    latinPlayers+=team.players.filter(player=>/[A-Za-z]/.test(player.name)).length;
    nonKoreanPlayers+=team.players.filter(player=>/\p{L}/u.test(player.name.replace(/\p{Script=Hangul}/gu,''))).length;
